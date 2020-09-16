@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<script src="index.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	</head>
+
+	<div class="container">
+
+  <h1>High or Low?</h1>
+  <div>
+    <label for="player-guess">Guess a number (between 1 and 20):</label>
+    <input type="number" id="player-guess" name="player-guess" min="1" max="20">
+    <button id="guess">Guess!</button>
+  </div>
+
+  <div id="results">
+    <div id="messages" class="alert"></div>
+    <div>Previous guesses: <span id="previous-guesses"></span></div>
+    <div>Number of guesses this round: <span id="num-guesses">0</span> out of <span id="max-guesses">5</span></div>
+    <div class="row">
+      <div class="col">
+        Wins: <span id="wins">0</span>
+      </div>
+      <div class="col">
+        Losses: <span id="losses">0</span>
+      </div>
+      <div class="col">
+        <button id="replay">Play Again</button>
+      </div>
+    </div>
+  </div>
+</html>
