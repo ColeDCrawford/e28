@@ -5,8 +5,48 @@
   </head>
 
   <body>
-    <h1>Application</h1>
-    <div id='app' v-cloak></div>
+    <h1>Blackjack</h1>
+    <div id="app" v-cloak>
+      <div v-if="!playing">
+        <input type="text" v-model="playerState.name">
+        <button @click="start">Start</button>
+      </div>
+
+      <div v-else>
+        <div>
+          <h2>Actions</h2>
+          <button @click="hit" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('HIT')">Hit</button>
+          <button @click="stand" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('STAND')">Stand</button>
+          <button @click="double" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('DOUBLE')">Double Down</button>
+          <button @click="split" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('SPLIT')">Split</button>
+          <button @click="deal" v-bind:class="{active: !handState.playerTurn}" :disabled="handState.playerTurn">Deal</button>
+        </div>
+        <div>
+          <h2>{{playerState.name}}'s Hand</h2>
+          <span>Count: {{playerScore}}</span>
+          <span>Cards: </span>
+          <ul>
+            <li v-for='thisCard in handState.playerCards'>{{thisCard.str}}</li>
+          </ul>
+          <h2>Dealer Hand</h2>
+          <span>Count: {{dealerScore}}</span>
+          <span>Cards: 
+            <ul>
+              <li v-for='thisCard in dealerShowCards'>{{thisCard.str}}</li>
+              <li v-for='thisCard in dealerDownCards'>[X]</li>
+            </ul>
+          </span>
+          <h2>Stack: {{playerState.stack}}</h2>
+          <h2>Bet: {{ handState.bet}} </h2>
+          <h3>Hands Played: {{playerState.handNumber}}</h3>
+          <h3>Hands Won: {{playerState.handsWon}}</h3>
+          <h3>Hands Lost: {{playerState.handsLost}}</h3>
+          <h3>Hands Pushed: {{playerState.handsPushed}}</h3>
+          <h3>Discard Size: {{discard.length}}</h3>
+          <h3>Valid Options: {{validOptions}}</h3>
+        </div>
+      </div>
+    </div>
 
     <!-- development version, includes helpful console warnings -->
     <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js'></script>
