@@ -1,0 +1,60 @@
+#intro{
+    padding-top: 200px;
+}
+
+#player, #dealer {
+    padding-top: 50px;
+}
+.pokerTable {
+    background-image: url(../img/table.jpg);
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+body {
+    color: white;
+    height: 100%;
+}
+.playingCards .card {
+    font-size: 3em;
+}
+#deck .playingCards .card, #discard .playingCards .card {
+    font-size: 2em;
+}
+#deck h2, #discard h2 {
+    padding-bottom: 50px;
+}
+
+.score {
+    font-size: 2em;
+}
+
+/** chip CSS from https://codepen.io/yakovd33/pen/jbbbPM */
+.chip {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 5px dashed white;
+    transition: all 1s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    margin: 0px 8px;
+    background-color: #073d91;
+}
+
+.chip-amount {
+    border: 3px dashed white;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 80px;
+}
+.stacked {
+    margin-left: -90px;
+}

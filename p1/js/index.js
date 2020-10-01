@@ -1,6 +1,7 @@
 let app = new Vue({
     el: "#app",
     data: {
+      message: '',
       playing: false,
       playerState: {
         name: "Player",
@@ -9,15 +10,16 @@ let app = new Vue({
         handNumber: 0,
         handsWon: 0,
         handsLost: 0,
-        handsPushed: 0
+        handsPushed: 0,
       },
       handState: {
         dealerCards: [],
         playerCards: [],
-        // dealerShowTotal: 0,
         bet: 0,
         playerTurn: true,
-        playerActions: []
+        splitting: false,
+        splitOne: [],
+        splitTwo: []
       },
       deck: [],
       discard:[],
@@ -64,25 +66,25 @@ let app = new Vue({
                 }
                 return options;
             }
-        }
+        },
     },
     methods: {
       hit: function(){
-          console.log("hit");
           let card = dealCard(this.deck)
           this.handState.playerCards.push(card);
           if(this.playerScore > 21){
               console.log("Bust");
+              this.message = "Bust!";
               this.handState.playerTurn = false;
               this.playerState.handsLost++;
           }
           if(this.handState.playerCards.length == 2 && this.playerScore == 21){
               console.log("Natural blackjack!");
+              this.message = "Blackjack!";
               this.endHand();
           }
       },
       stand: function(){
-          console.log("stand");
           this.handState.playerTurn = false;
           this.endHand();
       },
@@ -94,31 +96,37 @@ let app = new Vue({
         //   this.handState.dealerShowTotal = score(this.handState.dealerCards);
 
         //   while(this.handState.dealerShowTotal <= 17){
-        while(this.dealerScore <= 17){
-              let card = dealCard(this.deck);
-              this.handState.dealerCards.push(card);
-            //   this.handState.dealerShowTotal = score(this.handState.dealerCards);
-          }
+        if(this.handState.playerCards.length == 2 && this.playerScore == 21){
+            // player has natural blackjack - dealer gets no more cards
+        } else {
+            while(this.dealerScore <= 17){
+                let card = dealCard(this.deck);
+                this.handState.dealerCards.push(card);
+                //   this.handState.dealerShowTotal = score(this.handState.dealerCards);
+            }
+        }
 
           // End of round
           if(this.dealerScore > 21){
-            console.log("Dealer busts");
+            this.message = "Dealer busts";
             this.playerState.stack += this.handState.bet * 2
             this.playerState.handsWon++
           }
           else if(this.dealerScore > this.playerScore){
             console.log("Dealer wins");
+            this.message = "Dealer wins ...";
             this.playerState.handsLost++
           }
           else if(this.playerScore > 21){
               console.log("Player busts");
+              this.message = `${this.playerState.name} busts ...`;
               this.playerState.handsLost++
           }
           else if (this.dealerScore < this.playerScore){
               console.log("Player wins");
+              this.message = `${this.playerState.name} wins!`
               this.playerState.handsWon++
               if(this.handState.playerCards.length == 2 && this.playerScore == 21){
-                console.log("with a natural");
                 this.playerState.stack += this.handState.bet * 3;
               } else {
                 this.playerState.stack += this.handState.bet * 2
@@ -127,11 +135,13 @@ let app = new Vue({
           }
           else if (this.dealerScore == this.playerScore){
               console.log("Push")
+              this.message = "Push";
               this.playerState.stack += this.handState.bet
               this.playerState.handsPushed++
           }
       },
       double: function(){
+          this.message = "Doubling down!"
           this.playerState.stack -= this.playerState.betDefault;
           this.handState.bet += this.playerState.betDefault;
           let card = dealCard(this.deck)
@@ -141,15 +151,21 @@ let app = new Vue({
       },
       split: function(){
           console.log("split");
+          this.message = "Splitting"
+          this.handState.splitting = true;
+          this.playerState.
+          this.handState.splitOne.push(this.handState.playerCards.pop());
+          this.handState.splitTwo.push(this.playerState.playerCards.pop());
       },
       start: function(){
-        console.log('starting');
+        this.message = "New Game"
         this.deck = shuffle(createDeck());
         this.playing = true;
         this.deal();
       },
       deal: function(){
           console.log("Dealing next round");
+          this.message = '';
           if(this.playerState.stack < this.playerState.betDefault){
               this.playing = false;
               console.log("Sorry, your stack is too low to bet. At least it wasn't real money!");
@@ -204,6 +220,13 @@ let app = new Vue({
           }
           
       },
+      cardClasses: function(item){
+        classes = []
+        rank = `rank-${item.face}`;
+        classes.push(rank);
+        classes.push(item.suitFullname)
+        return classes;
+      }
     }
   })
 
@@ -218,7 +241,19 @@ function dealCard(deck){
       'Q': 10,
       'K': 10,
       'A': 11
-    }
+  }
+  const suitFullnameMap = {
+      'H': 'hearts',
+      'S': 'spades',
+      'C': 'clubs',
+      'D': 'diams'
+  }
+  const suitUniMap = {
+      'S': '♠',
+      'H': '♥',
+      'C': '♣',
+      'D': '♦'
+  }
   function getValue(face){
     if(face in values){
       return values[face];
@@ -236,7 +271,9 @@ function dealCard(deck){
           'face': f,
           'value': getValue(f),
           'str': `${s}-${f}`,
-          'show': true
+          'show': true,
+          'suitFullname': suitFullnameMap[s],
+          'uni': suitUniMap[s]
         });
       });
     })
@@ -261,11 +298,28 @@ function dealCard(deck){
 
   function score(cards){
       let score = 0;
-      console.log(cards)
+      let aces = 0;
       cards.forEach(function(card){
-          score += card.value;
+          if(card.face=="A"){
+            aces += 1;
+          } else {
+            score += card.value;
+          }
       })
-      return score;
+      if(aces > 0){
+        let high = score + 11;
+        high += (aces - 1);
+
+        let low = score + aces;
+        if(high <= 21){
+            return high;
+        } else {
+            return low;
+        }
+      } else {
+          return score;
+      }
+
   }
   
   
