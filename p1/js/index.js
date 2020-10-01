@@ -189,6 +189,9 @@ let app = new Vue({
                     this.deck.push(this.discard.pop());
                 }
                 shuffle(this.deck);
+                this.deck.forEach(card){
+                    card.show = true;
+                }
             }
 
             let dealerUp = dealCard(this.deck);

@@ -25,7 +25,7 @@
             <div class="row" id="dealer">
               <div class="col d-flex justify-content-center text-center">
                 <div id="deck">
-                  <h2 style="">Deck ({{deck.length}})</h2>
+                  <h2>Deck ({{deck.length}})</h2>
                   <div class="playingCards">
                     <ul class="deck">
                       <li v-for='thisCard in deck' class="card back">{{deck.length}}</li>
@@ -33,15 +33,21 @@
                   </div>
                 </div>
               </div>
-              <div class="col-6 d-flex justify-content-center text-center">
-                <div class="playingCards faceImages">
-                  <ul class="table">
-                    <li v-for='thisCard in dealerShowCards' class="card" :class="cardClasses(thisCard)">
-                      <span class="rank">{{thisCard.face}}</span>
-                      <span class="suit">{{thisCard.uni}}</span>
-                    </li>
-                    <li v-for='thisCard in dealerDownCards' class="card back"></li>
-                  </ul>
+              <div class="col-6">
+                <div class="row justify-content-md-center">
+                  <div class="playingCards faceImages">
+                    <ul class="table">
+                      <transition-group name="slide-fade"></transition-group>
+                        <li :key="thisCard.str" v-for='thisCard in dealerShowCards' class="card" :class="cardClasses(thisCard)">
+                          <span class="rank">{{thisCard.face}}</span>
+                          <span class="suit">{{thisCard.uni}}</span>
+                        </li>
+                        <li :key="thisCard.str" v-for='thisCard in dealerDownCards' class="card back"></li>
+                      </transition-group>
+                      </ul>
+                  </div>
+                </div>
+                <div class="row justify-content-md-center">
                   <div class="score">{{dealerScore}}</div>
                 </div>
               </div>
@@ -63,16 +69,28 @@
 
             <div class="row" id="player">
               <div class="col"> </div>
-              <div class="col-6 d-flex justify-content-center text-center" style="margin-left">
-                <div class="playingCards faceImages">
-                  <ul class="table">
-                    <li v-for='thisCard in handState.playerCards' class="card" :class="cardClasses(thisCard)">
-                      <span class="rank">{{thisCard.face}}</span>
-                      <span class="suit">{{thisCard.uni}}</span>
-                    </li>
-                  </ul>
-                  <div class="score">{{playerScore}}</div>
-                  <span class="chip" v-for='chip in handState.bet'><span class="chip-amount">$1</span></span>
+              <div class="col-6">
+                <div class="row justify-content-md-center">
+                  <div class="playingCards faceImages">
+                    <ul class="table">
+                      <transition-group name="slide-fade">
+                        <li v-for='thisCard in handState.playerCards' class="card" :class="cardClasses(thisCard)" :key="thisCard.str">
+                          <span class="rank">{{thisCard.face}}</span>
+                          <span class="suit">{{thisCard.uni}}</span>
+                        </li>
+                      </transition-group>
+                    </ul>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row justify-content-md-center">
+                      <div class="score">{{playerScore}}</div>
+                    </div>
+                    <div class="row justify-content-md-center bet">
+                      <span class="chip" v-for='chip in handState.bet'><span class="chip-amount">$1</span></span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col d-flex justify-content-center text-center">
@@ -97,14 +115,17 @@
 
             <div id="stats" class="row">
               
-              <div class="col"></div>
-              <div class="col-8 d-flex justify-content-center text-center">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-8 text-center">
                 <h3>{{playerState.name}}'s Stats</h3>
-                <div>
-                  <span>Hands Played: {{playerState.handNumber}}</span> |
-                  <span>Hands Won: {{playerState.handsWon}}</span> |
-                  <span>Hands Lost: {{playerState.handsLost}}</span> |
-                  <span>Hands Pushed: {{playerState.handsPushed}}</span>
+                <div class="row">
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-8 text-center">
+                    <span>Hands Played: {{playerState.handNumber}}</span> |
+                    <span>Hands Won: {{playerState.handsWon}}</span> |
+                    <span>Hands Lost: {{playerState.handsLost}}</span> |
+                    <span>Hands Pushed: {{playerState.handsPushed}}</span>
+                  </div>
                 </div>
               </div>
               <div class="col"></div>
