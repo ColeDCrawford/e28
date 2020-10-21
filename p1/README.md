@@ -6,4 +6,4 @@
 - Uses (`css-playing-cards`)[http://selfthinker.github.com/CSS-Playing-Cards/] library 
 
 ## Notes for instructor
-- n/a
+- Ability to split a hand not implemented.

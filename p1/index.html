@@ -8,6 +8,7 @@
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <link rel="stylesheet" type="text/css" href="lib/css-playing-cards/cards.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Cole's Vue Blackjack</title>
   </head>
 
   <body>
@@ -108,7 +109,7 @@
                 <button @click="hit" class="btn btn-primary" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('HIT')">Hit</button>
                 <button @click="stand" class="btn btn-secondary" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('STAND')">Stand</button>
                 <button @click="double" class="btn btn-success" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('DOUBLE')">Double Down</button>
-                <button @click="split" class="btn btn-info" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('SPLIT')">Split</button>
+                <!-- <button @click="split" class="btn btn-info" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('SPLIT')">Split</button> -->
                 <button @click="deal" class="btn btn-dark" v-bind:class="{active: !handState.playerTurn}" :disabled="handState.playerTurn">Deal</button>
               </div>
               <div class="col"></div>
