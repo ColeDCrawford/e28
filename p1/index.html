@@ -109,14 +109,7 @@
                 <button @click="hit" class="btn btn-primary" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('HIT')">Hit</button>
                 <button @click="stand" class="btn btn-secondary" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('STAND')">Stand</button>
                 <button @click="double" class="btn btn-success" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('DOUBLE')">Double Down</button>
-                <!-- <button @click="split" class="btn btn-info" v-bind:class="{active: handState.playerTurn}" :disabled="!validOptions.includes('SPLIT')">Split</button> -->
                 <button @click="deal" class="btn btn-dark" v-bind:class="{active: !handState.playerTurn}" :disabled="handState.playerTurn">Deal</button>
-              </div>
-              <div class="col"></div>
-            </div>
-            <div class="row">
-              <div class="col"></div>
-              <div class="col-8 d-flex justify-content-center text-center">
                 <button @click="reset" class="btn btn-warning">Reset</button>
               </div>
               <div class="col"></div>
@@ -130,13 +123,11 @@
                 <div class="row">
                   <div class="col-sm-2"></div>
                   <div class="col-sm-8 text-center">
-                    <span>Hands Played: {{playerState.stats.handNumber}}</span> |
-                    <span>Hands Won: {{playerState.stats.handsWon}}</span> |
-                    <span>Hands Lost: {{playerState.stats.handsLost}}</span> |
-                    <span>Hands Pushed: {{playerState.stats.handsPushed}}</span>
                     <player-stat
-                      v-for='key in playerState.stats'
-                      v-bind:title=`${key}`
+                      v-for='s in playerState.stats'
+                      v-bind:title=`${s.title}`
+                      v-bind:value=`${s.value}`
+                      class="player-stat"
                     >
                     </player-stat>
                   </div>

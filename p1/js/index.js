@@ -1,16 +1,8 @@
 Vue.component('player-stat', {
-  data(){
-    return {
-
-    }
-  },
   template: `
-    <span>{{ title }}: {{ stat }}</span>
+    <span>{{ title }}: {{ value }}</span>
   `,
-  methods: {
-
-  },
-  props: ['title', 'stat']
+  props: ['title', 'value']
 });
 
 let app = new Vue({
@@ -24,10 +16,22 @@ let app = new Vue({
         stack: 10,
         betDefault: 1,
         stats: {
-          handNumber: 0,
-          handsWon: 0,
-          handsLost: 0,
-          handsPushed: 0,
+          handNumber: {
+            title: "Hand Number",
+            value: 0
+          },
+          handsWon: {
+            title: "Hands Won",
+            value: 0
+          },
+          handsLost: {
+            title: "Hands Lost",
+            value: 0
+          },
+          handsPushed: {
+            title: "Hands Pushed",
+            value: 0
+          }
         }
       },
       handState: {
@@ -95,7 +99,7 @@ let app = new Vue({
               this.message = "Bust!";
               this.alertType = 'alert-danger';
               this.handState.playerTurn = false;
-              this.playerState.stats.handsLost++;
+              this.playerState.stats.handsLost.value++;
           }
           if(this.handState.playerCards.length == 2 && this.playerScore == 21){
               this.message = "Blackjack!";
@@ -127,41 +131,41 @@ let app = new Vue({
               this.message = "Natural, but the dealer has one too. Push. Rough!";
               this.alertType = 'alert-warning';
               this.playerState.stack += this.handState.bet;
-              this.playerState.stats.handsPushed++;
+              this.playerState.stats.handsPushed.value++;
             } else {
               this.message = `Blackjack! ${this.playerState.name} wins on a natural!`
               this.alertType = 'alert-success';
               this.playerState.stack += this.handState.bet * 3;
-              this.playerState.stats.handsWon++
+              this.playerState.stats.handsWon.value++
             }
           }
           else if(this.playerScore > 21){
             this.message = `${this.playerState.name} busts ...`;
             this.alertType = 'alert-danger';
-            this.playerState.stats.handsLost++
+            this.playerState.stats.handsLost.value++
          }
           else if(this.dealerScore > 21){
             this.message = "Dealer busts";
             this.alertType = 'alert-success';
             this.playerState.stack += this.handState.bet * 2
-            this.playerState.stats.handsWon++
+            this.playerState.stats.handsWon.value++
           }
           else if(this.dealerScore > this.playerScore){
             this.message = "Dealer wins ...";
             this.alertType = 'alert-danger';
-            this.playerState.stats.handsLost++
+            this.playerState.stats.handsLost.value++
           }
           else if (this.dealerScore < this.playerScore){
               this.message = `${this.playerState.name} wins!`
               this.alertType = 'alert-success';
-              this.playerState.stats.handsWon++
+              this.playerState.stats.handsWon.value++
               this.playerState.stack += this.handState.bet * 2
           }
           else if (this.dealerScore == this.playerScore){
               this.message = "Push";
               this.alertType = 'alert-warning';
               this.playerState.stack += this.handState.bet
-              this.playerState.stats.handsPushed++
+              this.playerState.stats.handsPushed.value++
           }
       },
       double: function(){
@@ -189,7 +193,7 @@ let app = new Vue({
               this.message = "Sorry, your stack is too low to bet. At least it wasn't real money! Click reset to play again."
               this.alertType = 'alert-danger';
           } else {
-            this.playerState.stats.handNumber++;
+            this.playerState.stats.handNumber.value++;
             this.handState.bet = this.playerState.betDefault;
             this.playerState.stack -= this.playerState.betDefault;
 
@@ -240,10 +244,10 @@ let app = new Vue({
       },
       reset: function(){
         this.playerState.stack = 10;
-        this.playerState.stats.handNumber = 0;
-        this.playerState.stats.handsWon = 0;
-        this.playerState.stats.handsLost = 0;
-        this.playerState.stats.handsPushed = 0;
+        this.playerState.stats.handNumber.value = 0;
+        this.playerState.stats.handsWon.value = 0;
+        this.playerState.stats.handsLost.value = 0;
+        this.playerState.stats.handsPushed.value = 0;
         this.handState.playerCards = [];
         this.handState.dealerCards = [];
         this.deck = [];

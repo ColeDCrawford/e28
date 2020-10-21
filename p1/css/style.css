@@ -3,7 +3,7 @@
 }
 
 #player, #dealer, #actions, #stats {
-    padding-top: 50px;
+    padding-top: 25px;
 }
 .pokerTable {
     background-image: url(../img/table.jpg);
@@ -87,4 +87,12 @@ body {
   /* .slide-fade-leave-active below version 2.1.8 */ {
     transform: translateX(10px);
     opacity: 0;
+  }
+
+  .player-stat {
+      margin-left: 10px;
+  }
+  
+  .btn {
+      margin-left: 5px;
   }
