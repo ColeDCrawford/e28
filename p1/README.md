@@ -1,9 +1,9 @@
 # Project 1
 - By: Cole Crawford
-- Production URL: (https://e28project1.coledcrawford.me/)[https://e28project1.coledcrawford.me/]
+- Production URL: [https://e28project1.coledcrawford.me/](https://e28project1.coledcrawford.me/)
 
 ## Outside resources
-- Uses (`css-playing-cards`)[http://selfthinker.github.com/CSS-Playing-Cards/] library 
+- Uses [`css-playing-cards`](http://selfthinker.github.com/CSS-Playing-Cards/) library 
 
 ## Notes for instructor
 - Ability to split a hand not implemented.
