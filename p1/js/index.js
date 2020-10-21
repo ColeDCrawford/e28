@@ -1,3 +1,18 @@
+Vue.component('player-stat', {
+  data(){
+    return {
+
+    }
+  },
+  template: `
+    <span>{{ title }}: {{ stat }}</span>
+  `,
+  methods: {
+
+  },
+  props: ['title', 'stat']
+});
+
 let app = new Vue({
     el: "#app",
     data: {
@@ -7,10 +22,12 @@ let app = new Vue({
         name: '',
         stack: 10,
         betDefault: 1,
-        handNumber: 0,
-        handsWon: 0,
-        handsLost: 0,
-        handsPushed: 0,
+        stats: {
+          handNumber: 0,
+          handsWon: 0,
+          handsLost: 0,
+          handsPushed: 0,
+        }
       },
       handState: {
         dealerCards: [],
@@ -76,7 +93,7 @@ let app = new Vue({
               console.log("Bust");
               this.message = "Bust!";
               this.handState.playerTurn = false;
-              this.playerState.handsLost++;
+              this.playerState.stats.handsLost++;
           }
           if(this.handState.playerCards.length == 2 && this.playerScore == 21){
               this.message = "Blackjack!";
@@ -110,35 +127,35 @@ let app = new Vue({
             if(this.dealerScore == 21){
               this.message = "Natural, but the dealer has one too. Push. Rough!";
               this.playerState.stack += this.handState.bet;
-              this.playerState.handsPushed++;
+              this.playerState.stats.handsPushed++;
             } else {
               this.message = `Blackjack! ${this.playerState.name} wins on a natural!`
               this.playerState.stack += this.handState.bet * 3;
-              this.playerState.handsWon++
+              this.playerState.stats.handsWon++
             }
           }
           else if(this.playerScore > 21){
             this.message = `${this.playerState.name} busts ...`;
-            this.playerState.handsLost++
+            this.playerState.stats.handsLost++
          }
           else if(this.dealerScore > 21){
             this.message = "Dealer busts";
             this.playerState.stack += this.handState.bet * 2
-            this.playerState.handsWon++
+            this.playerState.stats.handsWon++
           }
           else if(this.dealerScore > this.playerScore){
             this.message = "Dealer wins ...";
-            this.playerState.handsLost++
+            this.playerState.stats.handsLost++
           }
           else if (this.dealerScore < this.playerScore){
               this.message = `${this.playerState.name} wins!`
-              this.playerState.handsWon++
+              this.playerState.stats.handsWon++
               this.playerState.stack += this.handState.bet * 2
           }
           else if (this.dealerScore == this.playerScore){
               this.message = "Push";
               this.playerState.stack += this.handState.bet
-              this.playerState.handsPushed++
+              this.playerState.stats.handsPushed++
           }
       },
       double: function(){
@@ -165,13 +182,12 @@ let app = new Vue({
         this.deal();
       },
       deal: function(){
-          console.log("Dealing next round");
           this.message = '';
           if(this.playerState.stack < this.playerState.betDefault){
               this.playing = false;
-              console.log("Sorry, your stack is too low to bet. At least it wasn't real money!");
+              this.message = "Sorry, your stack is too low to bet. At least it wasn't real money! Click reset to play again."
           } else {
-            this.playerState.handNumber++;
+            this.playerState.stats.handNumber++;
             this.handState.bet = this.playerState.betDefault;
             this.playerState.stack -= this.playerState.betDefault;
 
@@ -221,6 +237,20 @@ let app = new Vue({
             
           }
           
+      },
+      reset: function(){
+        this.playerState.stack = 10;
+        this.playerState.stats.handNumber = 0;
+        this.playerState.stats.handsWon = 0;
+        this.playerState.stats.handsLost = 0;
+        this.playerState.stats.handsPushed = 0;
+        this.handState.playerCards = [];
+        this.handState.dealerCards = [];
+        this.deck = [];
+        this.discard = [];
+        this.message = "Resetting game ...";
+
+        this.start();
       },
       cardClasses: function(item){
         classes = []
