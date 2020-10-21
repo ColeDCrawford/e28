@@ -125,6 +125,7 @@
                   <div class="col-sm-8 text-center">
                     <player-stat
                       v-for='s in playerState.stats'
+                      v-bind:key='s.title'
                       v-bind:title=`${s.title}`
                       v-bind:value=`${s.value}`
                       class="player-stat"
