@@ -112,16 +112,12 @@ let app = new Vue({
         this.handState.dealerCards.forEach(function(c){
             c.show = true;
           })
-        //   this.handState.dealerShowTotal = score(this.handState.dealerCards);
-
-        //   while(this.handState.dealerShowTotal <= 17){
         if(this.handState.playerCards.length == 2 && this.playerScore == 21){
             // player has natural blackjack - dealer gets no more cards
         } else {
             while(this.dealerScore <= 17){
                 let card = dealCard(this.deck);
                 this.handState.dealerCards.push(card);
-                //   this.handState.dealerShowTotal = score(this.handState.dealerCards);
             }
         }
 
@@ -178,15 +174,6 @@ let app = new Vue({
           this.handState.playerTurn = false;
           this.endHand();
       },
-      split: function(){
-          console.log("split");
-          this.message = "Splitting"
-          this.alertType = 'alert-info';
-          this.handState.splitting = true;
-          // this.playerState.
-          this.handState.splitOne.push(this.handState.playerCards.pop());
-          this.handState.splitTwo.push(this.playerState.playerCards.pop());
-      },
       start: function(){
         this.message = "New Game"
         this.alertType = 'alert-info';
@@ -231,9 +218,6 @@ let app = new Vue({
             let dealerDown = dealCard(this.deck);
             let playerCardOne = dealCard(this.deck);
             let playerCardTwo = dealCard(this.deck);
-
-            //   this.handState.dealerShowTotal += dealerUp.value;
-            //   this.handState.playerScore += playerCard.value;
 
             this.handState.dealerCards.push(dealerUp);
             dealerDown['show'] = false;
