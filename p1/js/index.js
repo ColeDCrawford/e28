@@ -189,9 +189,9 @@ let app = new Vue({
                     this.deck.push(this.discard.pop());
                 }
                 shuffle(this.deck);
-                this.deck.forEach(card){
+                this.deck.forEach(function(card){
                     card.show = true;
-                }
+                });
             }
 
             let dealerUp = dealCard(this.deck);
@@ -324,94 +324,3 @@ function dealCard(deck){
       }
 
   }
-  
-  
-  /* class Deck {
-    suits = ['H', 'S', 'C', 'D']
-    faces = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-    values = {
-      'J': 11,
-      'Q': 12,
-      'K': 13,
-      'A': 14
-    }
-    function getValue(face){
-      if(face in values){
-        return values[face];
-      } else {
-        return parseInt(face);
-      }
-    }
-    deck = [];
-    suits.forEach(function(s){
-      faces.forEach(function(f){
-        deck.push({
-          'suit': s,
-          'face': f,
-          'value': getValue(f),
-          'str': `${s}-${f}`
-        });
-      });
-    })
-    
-  *
-   * Shuffles array in place. ES6 version
-   * @param {Array} a items An array containing the items.
-   * From https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
-  function shuffle(a) {
-      var j, x, i;
-      for (i = a.length - 1; i > 0; i--) {
-          j = Math.floor(Math.random() * (i + 1));
-          x = a[i];
-          a[i] = a[j];
-          a[j] = x;
-      }
-      return a;
-  }
-  
-  function shuffleDeck(){
-    return shuffle(deck);
-  }
-  
-  function deal(deck, numPlayers){
-    stacks = []
-    for(var i = 0; i < numPlayers; i++){
-      stacks.push([])
-    }
-    extra = []
-    while(deck.length > numPlayers){
-      for(var i = 0; i < numPlayers; i ++){
-        stacks[i].push(deck.pop());
-      }
-    }
-    deck.forEach(function(c){
-      extra.push(c);
-    })
-    return({
-      'stacks': stacks,
-      'extra': extra
-     });
-  }
-  
-  }
-  
-  class Game{
-    computerScore = 0
-    playerScore = 0
-    roundCount = 0
-    
-  }
-  
-  class Round{
-  
-  }
-  
-  class Hand {
-    cards = []
-    pass = []
-    
-  }
-  
-  class Trick {
-    cards = []
-  } */

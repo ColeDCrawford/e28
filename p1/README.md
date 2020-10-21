@@ -1,9 +1,9 @@
 # Project 1
 - By: Cole Crawford
-- Production URL: None yet
+- Production URL: (https://e28project1.coledcrawford.me/)[https://e28project1.coledcrawford.me/]
 
 ## Outside resources
-- n/a
+- Uses (`css-playing-cards`)[http://selfthinker.github.com/CSS-Playing-Cards/] library 
 
 ## Notes for instructor
 - n/a
