@@ -17,6 +17,7 @@ let app = new Vue({
     el: "#app",
     data: {
       message: '',
+      alertType: '',
       playing: false,
       playerState: {
         name: '',
@@ -92,11 +93,13 @@ let app = new Vue({
           if(this.playerScore > 21){
               console.log("Bust");
               this.message = "Bust!";
+              this.alertType = 'alert-danger';
               this.handState.playerTurn = false;
               this.playerState.stats.handsLost++;
           }
           if(this.handState.playerCards.length == 2 && this.playerScore == 21){
               this.message = "Blackjack!";
+              this.alertType = 'alert-success';
               this.endHand();
           }
       },
@@ -126,40 +129,48 @@ let app = new Vue({
           if(this.handState.playerCards.length == 2 && this.playerScore == 21){
             if(this.dealerScore == 21){
               this.message = "Natural, but the dealer has one too. Push. Rough!";
+              this.alertType = 'alert-warning';
               this.playerState.stack += this.handState.bet;
               this.playerState.stats.handsPushed++;
             } else {
               this.message = `Blackjack! ${this.playerState.name} wins on a natural!`
+              this.alertType = 'alert-success';
               this.playerState.stack += this.handState.bet * 3;
               this.playerState.stats.handsWon++
             }
           }
           else if(this.playerScore > 21){
             this.message = `${this.playerState.name} busts ...`;
+            this.alertType = 'alert-danger';
             this.playerState.stats.handsLost++
          }
           else if(this.dealerScore > 21){
             this.message = "Dealer busts";
+            this.alertType = 'alert-success';
             this.playerState.stack += this.handState.bet * 2
             this.playerState.stats.handsWon++
           }
           else if(this.dealerScore > this.playerScore){
             this.message = "Dealer wins ...";
+            this.alertType = 'alert-danger';
             this.playerState.stats.handsLost++
           }
           else if (this.dealerScore < this.playerScore){
               this.message = `${this.playerState.name} wins!`
+              this.alertType = 'alert-success';
               this.playerState.stats.handsWon++
               this.playerState.stack += this.handState.bet * 2
           }
           else if (this.dealerScore == this.playerScore){
               this.message = "Push";
+              this.alertType = 'alert-warning';
               this.playerState.stack += this.handState.bet
               this.playerState.stats.handsPushed++
           }
       },
       double: function(){
           this.message = "Doubling down!"
+          this.alertType = 'alert-info';
           this.playerState.stack -= this.playerState.betDefault;
           this.handState.bet += this.playerState.betDefault;
           let card = dealCard(this.deck)
@@ -170,6 +181,7 @@ let app = new Vue({
       split: function(){
           console.log("split");
           this.message = "Splitting"
+          this.alertType = 'alert-info';
           this.handState.splitting = true;
           // this.playerState.
           this.handState.splitOne.push(this.handState.playerCards.pop());
@@ -177,15 +189,18 @@ let app = new Vue({
       },
       start: function(){
         this.message = "New Game"
+        this.alertType = 'alert-info';
         this.deck = shuffle(createDeck());
         this.playing = true;
         this.deal();
       },
       deal: function(){
           this.message = '';
+          this.alertType = '';
           if(this.playerState.stack < this.playerState.betDefault){
               this.playing = false;
               this.message = "Sorry, your stack is too low to bet. At least it wasn't real money! Click reset to play again."
+              this.alertType = 'alert-danger';
           } else {
             this.playerState.stats.handNumber++;
             this.handState.bet = this.playerState.betDefault;
@@ -201,7 +216,8 @@ let app = new Vue({
 
             // check deck size
             if (this.deck.length < 10){
-                console.log("low on cards, bringing back in discard and shuffling");
+                this.message = "Low on cards, bringing back in discard and shuffling";
+                this.alertType = 'alert-info';
                 while(this.discard.length > 0){
                     this.deck.push(this.discard.pop());
                 }
@@ -248,6 +264,7 @@ let app = new Vue({
         this.handState.dealerCards = [];
         this.deck = [];
         this.discard = [];
+        this.alertType = 'alert-info';
         this.message = "Resetting game ...";
 
         this.start();
