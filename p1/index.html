@@ -16,7 +16,7 @@
         <div class="container.fluid">
           <div v-if="!playing" class="row" id="intro">
             <div class="col d-flex justify-content-center text-center">
-              <input type="text" v-model="playerState.name">
+              <input type="text" v-model="playerState.name" placeholder="Enter player name ..." @keyup.enter="start">
               <button @click="start" class="btn btn-primary">Start</button>
             </div>
           </div>

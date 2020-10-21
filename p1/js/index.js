@@ -4,7 +4,7 @@ let app = new Vue({
       message: '',
       playing: false,
       playerState: {
-        name: "Player",
+        name: '',
         stack: 10,
         betDefault: 1,
         handNumber: 0,
@@ -79,7 +79,6 @@ let app = new Vue({
               this.playerState.handsLost++;
           }
           if(this.handState.playerCards.length == 2 && this.playerScore == 21){
-              console.log("Natural blackjack!");
               this.message = "Blackjack!";
               this.endHand();
           }
@@ -107,34 +106,36 @@ let app = new Vue({
         }
 
           // End of round
-          if(this.dealerScore > 21){
+          if(this.handState.playerCards.length == 2 && this.playerScore == 21){
+            if(this.dealerScore == 21){
+              this.message = "Natural, but the dealer has one too. Push. Rough!";
+              this.playerState.stack += this.handState.bet;
+              this.playerState.handsPushed++;
+            } else {
+              this.message = `Blackjack! ${this.playerState.name} wins on a natural!`
+              this.playerState.stack += this.handState.bet * 3;
+              this.playerState.handsWon++
+            }
+          }
+          else if(this.playerScore > 21){
+            this.message = `${this.playerState.name} busts ...`;
+            this.playerState.handsLost++
+         }
+          else if(this.dealerScore > 21){
             this.message = "Dealer busts";
             this.playerState.stack += this.handState.bet * 2
             this.playerState.handsWon++
           }
           else if(this.dealerScore > this.playerScore){
-            console.log("Dealer wins");
             this.message = "Dealer wins ...";
             this.playerState.handsLost++
           }
-          else if(this.playerScore > 21){
-              console.log("Player busts");
-              this.message = `${this.playerState.name} busts ...`;
-              this.playerState.handsLost++
-          }
           else if (this.dealerScore < this.playerScore){
-              console.log("Player wins");
               this.message = `${this.playerState.name} wins!`
               this.playerState.handsWon++
-              if(this.handState.playerCards.length == 2 && this.playerScore == 21){
-                this.playerState.stack += this.handState.bet * 3;
-              } else {
-                this.playerState.stack += this.handState.bet * 2
-              }
-
+              this.playerState.stack += this.handState.bet * 2
           }
           else if (this.dealerScore == this.playerScore){
-              console.log("Push")
               this.message = "Push";
               this.playerState.stack += this.handState.bet
               this.playerState.handsPushed++
@@ -153,7 +154,7 @@ let app = new Vue({
           console.log("split");
           this.message = "Splitting"
           this.handState.splitting = true;
-          this.playerState.
+          // this.playerState.
           this.handState.splitOne.push(this.handState.playerCards.pop());
           this.handState.splitTwo.push(this.playerState.playerCards.pop());
       },
@@ -208,12 +209,10 @@ let app = new Vue({
             this.handState.playerCards.push(playerCardOne);
             this.handState.playerCards.push(playerCardTwo);
 
-            if(this.dealerHiddenScore == 21){
-                console.log("dealer blackjack :(");
+            if(this.dealerHiddenScore == 21){ //dealer blackjack
                 this.handState.playerTurn = false;
                 this.endHand();
-            } else if (this.playerScore == 21){
-                console.log("Blackjack!")
+            } else if (this.playerScore == 21){ //player natural
                 this.handState.playerTurn = false;
                 this.endHand();
             } else {
