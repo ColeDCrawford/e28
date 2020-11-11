@@ -1,28 +1,47 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <nav>
+      <ul>
+          <li v-for="link in links" :key="link">
+              <router-link
+                :to="paths[link]"
+                exact
+              >{{ link }}</router-link>
+          </li>
+      </ul>
+    </nav>
+    <router-view></router-view>
+
   </div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import ShowRoute from './components/ShowRoute.vue'
+// import ShowUser from './components/ShowUser.vue'
+// import ShowStream from '@/components/ShowStream.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    // ShowRoute,
+    // ShowStream
+  },
+  data() {
+    return {
+        /* Store links in an array to maintain order */
+        links: ['home', 'routes'],
+
+        /* Map links to the appropriate component */
+        paths: {
+            home: '/',
+            routes: '/routes'
+        },
+    };
+  },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang='scss'>
+  @import '@/assets/scss/ww.scss';
 </style>
