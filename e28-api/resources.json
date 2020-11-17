@@ -104,7 +104,7 @@
         }
     },
     "follow": {
-        "user_id": {
+        "mp_user_id": {
             "type": "integer",
             "validators": [
                 "required",
@@ -115,12 +115,6 @@
             "type": "integer",
             "validators": [
                 "numeric"
-            ]
-        },
-        "follow_mp_user_email": {
-            "type": "string",
-            "validators": [
-                "email"
             ]
         }
     },
@@ -166,6 +160,24 @@
         },
         "mp_user_id": {
             "type": "integer",
+            "validators": []
+        }
+    },
+    "profile": {
+        "name": {
+            "type": "text",
+            "validators": []
+        },
+        "url": {
+            "type": "text",
+            "validators": []
+        },
+        "avatar": {
+            "type": "text",
+            "validators": []
+        },
+        "location": {
+            "type": "text",
             "validators": []
         }
     }
