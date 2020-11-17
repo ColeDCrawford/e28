@@ -161,6 +161,10 @@
         "mp_user_id": {
             "type": "integer",
             "validators": []
+        },
+        "mp_name": {
+            "type": "text",
+            "validators": []
         }
     },
     "profile": {
