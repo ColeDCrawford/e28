@@ -4,60 +4,60 @@
         "name": "Mason Glidden",
         "location": "",
         "url": "https://www.mountainproject.com/user/200249441/mason-glidden",
-        "avatar": "/img/user/missing2.svg",
+        "avatar": "/img/user/missing2.svg"
     }, {
         "id": 200415321,
         "name": "Nicolas Romeo",
         "location": "Cambridge, MA",
         "url": "https://www.mountainproject.com/user/200415321/nicolas-romeo",
-        "avatar": "https://graph.facebook.com/v8.0/10218970144144038/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b",
+        "avatar": "https://graph.facebook.com/v8.0/10218970144144038/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b"
     }, {
         "id": 200227434,
         "name": "Karina Smolyar",
         "location": "Boston, MA",
         "url": "https://www.mountainproject.com/user/200227434/karina-smolyar",
-        "avatar": "https://graph.facebook.com/v8.0/10213493547670622/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b",
+        "avatar": "https://graph.facebook.com/v8.0/10213493547670622/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b"
     }, {
         "id": 200386524,
         "name": "Josh B",
-=        "location": "Cambridge, MA",
+        "location": "Cambridge, MA",
         "url": "https://www.mountainproject.com/user/200386524/josh-b",
-        "avatar": "https://graph.facebook.com/v8.0/10156829962120803/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b",
+        "avatar": "https://graph.facebook.com/v8.0/10156829962120803/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b"
     }, {
         "id": 110534118,
         "name": "Chris Saulnier",
-=        "location": "Cambridge, MA",
+        "location": "Cambridge, MA",
         "url": "https://www.mountainproject.com/user/110534118/chris-saulnier",
-        "avatar": "https://www.mountainproject.com/photos/avatars/110534118.jpg?1586483927",
+        "avatar": "https://www.mountainproject.com/photos/avatars/110534118.jpg?1586483927"
     }, {
         "id": 200314827,
         "name": "Evan Williams",
-=        "location": "Somerville, MA",
+        "location": "Somerville, MA",
         "url": "https://www.mountainproject.com/user/200314827/evan-williams",
-        "avatar": "https://www.mountainproject.com/photos/avatars/200314827.jpg?1586483938",
+        "avatar": "https://www.mountainproject.com/photos/avatars/200314827.jpg?1586483938"
     }, {
         "id": 200018075,
         "name": "Mike Nawrot",
-=        "location": "Boston, MA",
+        "location": "Boston, MA",
         "url": "https://www.mountainproject.com/user/200018075/mike-nawrot",
-        "avatar": "https://graph.facebook.com/v8.0/10154997019532093/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b",
+        "avatar": "https://graph.facebook.com/v8.0/10154997019532093/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b"
     }, {
         "id": 200370327,
         "name": "Paul Lilin",
         "location": "Boston",
         "url": "https://www.mountainproject.com/user/200370327/paul-lilin",
-        "avatar": "https://graph.facebook.com/v8.0/1879695118733554/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b",
+        "avatar": "https://graph.facebook.com/v8.0/1879695118733554/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b"
     }, {
         "id": 200155809,
         "name": "Brian Nelson",
         "location": "Stoughton",
         "url": "https://www.mountainproject.com/user/200155809/brian-nelson",
-        "avatar": "https://www.mountainproject.com/photos/avatars/200155809.jpg?1586483933",
+        "avatar": "https://www.mountainproject.com/photos/avatars/200155809.jpg?1586483933"
     }, {
         "id": 200527701,
         "name": "Florian Pagnoux",
         "location": "Cambridge (Massachusetts)",
         "url": "https://www.mountainproject.com/user/200527701/florian-pagnoux",
-        "avatar": "https://graph.facebook.com/v8.0/10219814543291338/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b",
+        "avatar": "https://graph.facebook.com/v8.0/10219814543291338/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b"
     }]
 }
