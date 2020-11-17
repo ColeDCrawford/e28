@@ -6,14 +6,6 @@
                 "required"
             ]
         },
-        "mp_id": {
-            "type": "integer",
-            "validators": [
-                "required",
-                "numeric",
-                "unique"
-            ]
-        },
         "type": {
             "type": "string",
             "validators": []
@@ -28,7 +20,7 @@
                 "numeric"
             ]
         },
-        "starVotes": {
+        "star_votes": {
             "type": "integer",
             "validators": [
                 "numeric"
@@ -48,19 +40,19 @@
             "type": "string",
             "validators": []
         },
-        "imgSqSmall": {
+        "img_sq_small": {
             "type": "string",
             "validators": []
         },
-        "imgSmall": {
+        "img_small": {
             "type": "string",
             "validators": []
         },
-        "imgSmallMed": {
+        "img_small_med": {
             "type": "string",
             "validators": []
         },
-        "imgMedium": {
+        "img_medium": {
             "type": "string",
             "validators": []
         },
@@ -88,25 +80,17 @@
                 "required"
             ]
         },
-        "mp_id": {
-            "type": "integer",
-            "validators": [
-                "required",
-                "numeric",
-                "unique"
-            ]
-        },
-        "mp_parent_id": {
+        "parent_id": {
             "type": "integer",
             "validators": [
                 "numeric"
             ]
         },
-        "mp_url": {
+        "url": {
             "type": "string",
             "validators": []
         },
-        "mp_parent_url": {
+        "parent_url": {
             "type": "string",
             "validators": []
         },
@@ -141,7 +125,7 @@
         }
     },
     "tick": {
-        "route_mp_id": {
+        "route_id": {
             "type": "integer",
             "validators": [
                 "numeric"
@@ -165,25 +149,18 @@
             "type": "text",
             "validators": []
         },
-        "leadStyle": {
+        "lead_style": {
             "type": "text",
             "validators": []
         },
-        "mp_tick_id": {
+        "user_stars": {
             "type": "integer",
             "validators": [
                 "numeric",
                 "unique"
             ]
         },
-        "userStars": {
-            "type": "integer",
-            "validators": [
-                "numeric",
-                "unique"
-            ]
-        },
-        "userRating": {
+        "user_rating": {
             "type": "text",
             "validators": []
         },
