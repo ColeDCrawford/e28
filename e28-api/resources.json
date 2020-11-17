@@ -1,4 +1,198 @@
 {
+    "route": {
+        "name": {
+            "type": "string",
+            "validators": [
+                "required"
+            ]
+        },
+        "mp_id": {
+            "type": "integer",
+            "validators": [
+                "required",
+                "numeric",
+                "unique"
+            ]
+        },
+        "type": {
+            "type": "string",
+            "validators": []
+        },
+        "rating": {
+            "type": "string",
+            "validators": []
+        },
+        "stars": {
+            "type": "float",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "starVotes": {
+            "type": "integer",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "pitches": {
+            "type": "integer",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "location": {
+            "type": "text",
+            "validators": []
+        },
+        "mp_url": {
+            "type": "string",
+            "validators": []
+        },
+        "imgSqSmall": {
+            "type": "string",
+            "validators": []
+        },
+        "imgSmall": {
+            "type": "string",
+            "validators": []
+        },
+        "imgSmallMed": {
+            "type": "string",
+            "validators": []
+        },
+        "imgMedium": {
+            "type": "string",
+            "validators": []
+        },
+        "longitude": {
+            "type": "float",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "latitude": {
+            "type": "float",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "mp_location_id": {
+            "type": "integer",
+            "validators": []
+        }
+    },
+    "area": {
+        "name": {
+            "type": "string",
+            "validators": [
+                "required"
+            ]
+        },
+        "mp_id": {
+            "type": "integer",
+            "validators": [
+                "required",
+                "numeric",
+                "unique"
+            ]
+        },
+        "mp_parent_id": {
+            "type": "integer",
+            "validators": [
+                "numeric",
+            ]
+        },
+        "mp_url": {
+            "type": "string",
+            "validators": []
+        },
+        "mp_parent_url": {
+            "type": "string",
+            "validators": []
+        },
+        "routes": {
+            "type": "boolean",
+            "validators": []
+        },
+        "level": {
+            "type": "integer",
+            "validators": []
+        }
+    },
+    "follow": {
+        "user_id": {
+            "type": "integer",
+            "validators": [
+                "required",
+                "numeric"
+            ]
+        },
+        "follow_mp_user_id": {
+            "type": "integer",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "follow_mp_user_email": {
+            "type": "string",
+            "validators": [
+                "email"
+            ]
+        }
+    },
+    "tick": {
+        "route_mp_id": {
+            "type": "integer",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "date": {
+            "type": "timestamp",
+            "validators": []
+        },
+        "pitches": {
+            "type": "integer",
+            "validators": [
+                "numeric"
+            ]
+        },
+        "notes": {
+            "type": "text",
+            "validators": []
+        },
+        "style": {
+            "type": "text",
+            "validators": []
+        },
+        "leadStyle": {
+            "type": "text",
+            "validators": []
+        },
+        "mp_tick_id": {
+            "type": "integer",
+            "validators": [
+                "numeric",
+                "unique"
+            ]
+        },
+        "userStars": {
+            "type": "integer",
+            "validators": [
+                "numeric",
+                "unique"
+            ]
+        },
+        "userRating": {
+            "type": "text",
+            "validators": []
+        },
+        "mp_user_id": {
+            "type": "integer",
+            "validators": []
+        }
+    },
+
     "product": {
         "name": {
             "type": "string",
