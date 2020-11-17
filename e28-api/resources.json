@@ -99,7 +99,7 @@
         "mp_parent_id": {
             "type": "integer",
             "validators": [
-                "numeric",
+                "numeric"
             ]
         },
         "mp_url": {
@@ -192,7 +192,6 @@
             "validators": []
         }
     },
-
     "product": {
         "name": {
             "type": "string",
