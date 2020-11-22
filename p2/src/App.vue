@@ -1,16 +1,37 @@
 <template>
   <div id="app">
-    <nav>
-      <ul>
-          <li v-for="link in links" :key="link">
+    <nav class="navbar navbar-light bg-light navbar-expand-lg">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav mr-auto">
+            <router-link
+              v-for="link in links"
+              :key="link"
+              :to="paths[link]"
+              exact
+              class="nav-link"
+            >{{ link }}</router-link>
+        </div>
+      </div>
+      <!-- <ul class="navbar-nav">
+          <li class="nav-item" v-for="link in links" :key="link">
               <router-link
                 :to="paths[link]"
                 exact
               >{{ link }}</router-link>
           </li>
-      </ul>
+      </ul> -->
     </nav>
-    <router-view></router-view>
+    <router-view
+      :routes="routes"
+      :profiles="profiles"
+      :areas="areas"
+      :ticks="ticks"
+      :follows="follows"
+      v-on:update-follows="updateFollows()"
+    ></router-view>
 
   </div>
 
@@ -21,6 +42,8 @@
 // import ShowUser from './components/ShowUser.vue'
 // import ShowStream from '@/components/ShowStream.vue'
 
+import { axios } from '@/app.js';
+
 export default {
   name: 'App',
   components: {
@@ -30,15 +53,44 @@ export default {
   data() {
     return {
         /* Store links in an array to maintain order */
-        links: ['home', 'routes'],
+        links: ['Home', 'Routes', 'Profiles'],
 
         /* Map links to the appropriate component */
         paths: {
-            home: '/',
-            routes: '/routes'
+            Home: '/',
+            Routes: '/routes',
+            Profiles: '/profiles'
         },
+
+        routes: [],
+        profiles: [],
+        areas: [],
+        ticks: [],
+        follows: []
     };
   },
+  mounted() {
+    axios.get('route').then((response) => {
+      this.routes = response.data.route;
+    });
+    axios.get('profile').then((response) => {
+      this.profiles = response.data.profile;
+    });
+    axios.get('area').then((response) => {
+      this.areas = response.data.area;
+    });
+    axios.get('tick').then((response) => {
+      this.ticks = response.data.tick;
+    });
+    this.updateFollows();
+  },
+  methods: {
+    updateFollows(){
+      axios.get('follow').then((response) =>{
+        this.follows = response.data.follow;
+      });
+    }
+  }
 }
 </script>
 
