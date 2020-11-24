@@ -7,16 +7,19 @@ import RoutePage from '@/components/pages/RoutePage.vue';
 import RoutesPage from '@/components/pages/RoutesPage.vue';
 import ProfilePage from '@/components/pages/ProfilePage.vue';
 import ProfilesPage from '@/components/pages/ProfilesPage.vue';
+import ShowFeed from '@/components/ShowFeed.vue';
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'jquery/src/jquery.js'
 import 'bootstrap/dist/js/bootstrap.min.js'
 
+// Lazy loading images on routes page
+import VueLazyload from 'vue-lazyload'
+
 Vue.config.productionTip = false
 
 Vue.use(VueRouter);
-
 const router = new VueRouter({
   mode: 'history',
   routes: [
@@ -24,10 +27,13 @@ const router = new VueRouter({
     { path: '/routes/:id', component: RoutePage, props: true},
     { path: '/routes', component: RoutesPage, props: true },
     { path: '/profiles/:id', component: ProfilePage, props: true},
-    { path: '/profiles', component: ProfilesPage, props: true}
+    { path: '/profiles', component: ProfilesPage, props: true},
+    { path: '/feed', component: ShowFeed, props: true}
   ],
   linkActiveClass: 'active'
 })
+
+Vue.use(VueLazyload)
 
 new Vue({
   router: router,

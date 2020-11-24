@@ -2,14 +2,14 @@
     <div id="profiles">
         <h1>Profiles</h1>
         <div class="card-columns">
-            <router-link
+            <show-profile
                 v-for="profile in profiles"
                 :key="profile.id"
-                v-bind:to="'/profiles/' + profile.id"
-                exact
-            >
-                <show-profile :profile="profile" :follows="follows"></show-profile>
-            </router-link>
+                :profile="profile"
+                :follows="follows"
+                :ticks="ticks"
+                @update-follows="updateFollows">
+            </show-profile>
         </div>
     </div>
 </template>
@@ -22,10 +22,15 @@
         components: {
             'show-profile': ShowProfile,
         },
-        props: ['profiles', 'follows'],
+        props: ['profiles', 'follows', 'ticks'],
         data: function(){
             return {};
         },
+        methods: {
+            updateFollows(){
+                this.$emit('update-follows');
+            }
+        }
     };
 
 </script>

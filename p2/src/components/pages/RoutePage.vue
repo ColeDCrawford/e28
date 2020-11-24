@@ -1,14 +1,19 @@
 <template>
     <div id='route-page'>
-        <h1>Route {{ id }}</h1>
-        <show-route :route="route"></show-route>
+        <show-route
+            :route="route"
+            :individual="true"
+            :ticks="ticks"
+            :routes="routes">
+        </show-route>
     </div>
 </template>
 
 <script>
 import ShowRoute from '@/components/ShowRoute.vue';
+
 export default {
-    props: ['id', 'routes'],
+    props: ['id', 'routes', "ticks"],
     components: {
         'show-route': ShowRoute,
     },
@@ -25,3 +30,8 @@ export default {
     }
 };
 </script>
+<style>
+    .tick:nth-child(even) {
+        background-color:#e9e9e9
+    }
+</style>

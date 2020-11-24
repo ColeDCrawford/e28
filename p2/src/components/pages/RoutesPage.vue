@@ -8,7 +8,10 @@
                 v-bind:to="'/routes/' + route.id"
                 exact
             >
-                <show-route :route="route"></show-route>
+                <show-route
+                    :route="route"
+                    :individual="false">
+                </show-route>
             </router-link>
         </div>
     </div>
@@ -30,29 +33,29 @@
 
 </script>
 
-<style>
+<style >
     /** Modify number of columns https://stackoverflow.com/questions/34140793/bootstrap-4-responsive-cards-in-card-columns */
     @media (min-width: 576px) {
         .card-columns {
-            column-count: 2;
+            column-count: 2 !important;
         }
     }
 
     @media (min-width: 768px) {
         .card-columns {
-            column-count: 3;
+            column-count: 3 !important;
         }
     }
 
     @media (min-width: 992px) {
         .card-columns {
-            column-count: 4;
+            column-count: 4 !important;
         }
     }
 
     @media (min-width: 1200px) {
         .card-columns {
-            column-count: 5;
+            column-count: 5 !important;
         }
     }
 </style>

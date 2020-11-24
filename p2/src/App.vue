@@ -15,14 +15,6 @@
             >{{ link }}</router-link>
         </div>
       </div>
-      <!-- <ul class="navbar-nav">
-          <li class="nav-item" v-for="link in links" :key="link">
-              <router-link
-                :to="paths[link]"
-                exact
-              >{{ link }}</router-link>
-          </li>
-      </ul> -->
     </nav>
     <router-view
       :routes="routes"
@@ -53,13 +45,14 @@ export default {
   data() {
     return {
         /* Store links in an array to maintain order */
-        links: ['Home', 'Routes', 'Profiles'],
+        links: ['Home', 'Routes', 'Profiles', 'Feed'],
 
         /* Map links to the appropriate component */
         paths: {
             Home: '/',
             Routes: '/routes',
-            Profiles: '/profiles'
+            Profiles: '/profiles',
+            Feed: '/feed'
         },
 
         routes: [],

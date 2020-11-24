@@ -1,19 +1,12 @@
 <template>
-    <div id='profile-page'>
+    <div id='profile-page' class="container">
         <div v-if="profile">
-            <div>{{ id }}</div>
             <show-profile
                 :profile="profile"
                 :follows="follows"
-
+                :ticks="ticks"
+                @update-follows="updateFollows"
             ></show-profile>
-            <!-- <div v-for="tick in userTicks"
-                :key="tick.id"
-                :tick="tick"
-            >
-                {{tick.id}}
-                <show-tick></show-tick>
-            </div> -->
         <show-tick
             v-for="tick in userTicks"
             :key="tick.id"
@@ -50,7 +43,13 @@ export default {
             return this.profile == null;
         },
         userTicks(){
-            return this.ticks.filter(t => t.mp_user_id == this.id);
+            let filtered = this.ticks.filter(t => t.mp_user_id == this.id);
+            return filtered.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
+        }
+    },
+    methods: {
+        updateFollows(){
+            this.$emit('update-follows');
         }
     }
 };
