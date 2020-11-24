@@ -30,18 +30,12 @@
 </template>
 
 <script>
-// import ShowRoute from './components/ShowRoute.vue'
-// import ShowUser from './components/ShowUser.vue'
-// import ShowStream from '@/components/ShowStream.vue'
 
 import { axios } from '@/app.js';
 
 export default {
   name: 'App',
-  components: {
-    // ShowRoute,
-    // ShowStream
-  },
+  components: {},
   data() {
     return {
         /* Store links in an array to maintain order */
