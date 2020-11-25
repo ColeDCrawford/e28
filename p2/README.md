@@ -33,3 +33,5 @@ The current data is based on a scrape I did of Mountain Project where I recursiv
 
 ## Notes for instructor
 Apologies for this being late. Bit off more than I could chew on this one. Getting the API stood up and ingesting this amount of data took some work, as did massaging the data into JSON for consumption. I did much of the data scraping earlier in the semester with the intention of using it for this project but still had to do some substantial cleanup work. Code for this is at [https://github.com/ColeDCrawford/mp-scrape](https://github.com/ColeDCrawford/mp-scrape) - this is currently public but it was and will be private after this is graded, don't want to run into copyright issues.
+
+I am also only pointing to the production API; I ran into issues getting the API to run locally.
