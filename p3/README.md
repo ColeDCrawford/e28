@@ -1,4 +1,4 @@
-# Project 3: Mountain Project Browser
+# Project 2: Mountain Project Browser
 + By: *Cole Crawford*
 + Production URL: <https://e28project2.coledcrawford.me/>
 
