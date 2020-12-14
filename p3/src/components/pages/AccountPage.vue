@@ -106,9 +106,9 @@ export default {
         },
     },
     watch: {
-        // user() {
-        //     this.loadFollows();
-        // },
+        user() {
+            this.loadFollows();
+        },
     },
     mounted() {
         this.loadFollows();

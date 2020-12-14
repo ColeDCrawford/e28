@@ -6,8 +6,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        // routesListCount: 0,
-        // routesList: [],
         routes: [],
         profiles: [],
         areas: [],
@@ -16,12 +14,6 @@ export default new Vuex.Store({
         user: null
     },
     mutations: {
-        // setRoutesListCount(state, payload) {
-        //     state.routesListCount = payload;
-        // },
-        // setRoutesList(state, payload){
-        //     state.routesList = payload;
-        // },
         setRoutes(state, payload){
             state.routes = payload;
         },
