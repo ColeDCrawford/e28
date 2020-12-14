@@ -104,9 +104,12 @@ export default new Vuex.Store({
         },
         getTicksByProfileId(state){
             return function(profileid){
-                return state.ticks.filter((tick) => {
+                let filteredTicks = state.ticks.filter((tick) => {
                     return tick.mp_user_id == profileid           // this is the same as profile_id, update it
                 }, this.id);
+                return filteredTicks.sort(function(x,y){
+                    return Date.parse(y.date) - Date.parse(x.date);
+                })
             }
         },
         getProfileById(state) {
@@ -124,13 +127,17 @@ export default new Vuex.Store({
                 let filteredTicks = state.ticks.filter((tick) => {
                     return followingIds.includes(tick.mp_user_id)
                 });
+                let sortedTicks = filteredTicks.sort(function(x,y){
+                    return Date.parse(y.date) - Date.parse(x.date);
+                })
                 if(limit > 0){
-                    return filteredTicks.slice(0, limit);
+                    return sortedTicks.slice(0, limit);
                 } else {
-                    return filteredTicks;
+                    return sortedTicks;
                 }
             }
         }
+
         // getMostRecentTickByProfileId(state){
         //     //https://www.reddit.com/r/vuejs/comments/7dqlfc/vuex_best_practice_do_you_keep_sorted_data_in_the/
         //     const ticks = [...state.ticks].sort((a,b)) => {
