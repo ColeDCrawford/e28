@@ -29,7 +29,7 @@
 
     export default {
         name: 'show-profile',
-        props: ['profile','follows', 'id'],
+        props: ['profile','id'],
         data: function () {
             return {};
         },
@@ -43,8 +43,8 @@
             // TODO lift this out into isFollowing Vuex getter function? 
             following(){
                 let following = this.follows.filter((f) => {
-                    return f.follow_mp_user_id == this.profile.id;
-                }, this.profile.id)[0];
+                    return f.profile_id == this.id;
+                }, this.id)[0];
                 if(following == null) {
                     return false;
                 } else {
@@ -62,6 +62,9 @@
             },
             userTicks() {
                 return this.$store.getters.getTicksByProfileId(this.id);
+            },
+            follows(){
+                return this.$store.state.follows;
             }
         },
         methods: {
@@ -73,9 +76,9 @@
             },
             followUser(){
                 let follow = this.follows.filter((f) => {
-                    return f.follow_mp_user_id == this.profile.id;
+                    return f.profile_id == this.id;
                 }, this.profile.id)[0];
-                if(follow == null){
+                if(this.following == null){
                     // start following
                     // TODO change to the logged in user
                     let f = {
