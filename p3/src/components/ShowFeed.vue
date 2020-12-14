@@ -33,9 +33,9 @@
         computed: {
             followingTicks(){
                 let followingIds = this.follows.map(f => {
-                    return f.follow_mp_user_id;
+                    return f.profile_id;
                 });
-                let followingTicks = this.ticks.filter(({mp_user_id}) => followingIds.includes(mp_user_id));
+                let followingTicks = this.ticks.filter(({user_id}) => followingIds.includes(user_id));
                 followingTicks = followingTicks.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
                 if(this.limit < 0){
                     return followingTicks;
