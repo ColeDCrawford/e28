@@ -21,6 +21,7 @@ import VueLazyload from 'vue-lazyload'
 import store from '@/common/store'
 
 Vue.config.productionTip = false
+Vue.config.devtools = true;
 
 Vue.use(VueRouter);
 const router = new VueRouter({
