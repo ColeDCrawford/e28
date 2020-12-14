@@ -32,8 +32,12 @@
                 let followingIds = this.follows.map(f => {
                     return f.profile_id;
                 });
+                console.log("I follow ...");
+                console.log(followingIds);
                 let followingTicksArr = [];
                 followingIds.forEach(function(profile_id){
+                    console.log("ticks of profileIds");
+                    console.log(this.$store.getters.getTicksByProfileId(profile_id));
                     followingTicksArr.push(this.$store.getters.getTicksByProfileId(profile_id));
                 })
                 if(this.limit < 0){
