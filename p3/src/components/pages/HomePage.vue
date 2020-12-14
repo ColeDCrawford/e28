@@ -27,9 +27,7 @@
                 <div><router-link to="/profiles/">Follow / unfollow profiles</router-link></div>
                 <show-feed
                     :limit="10"
-                    :ticks="ticks"
-                    :routes="routes"
-                    :follows="follows">
+                >
                 </show-feed>
             </div>
         </div>
@@ -57,17 +55,17 @@
                 return featured;
             },
             // TODO lift this to a getter
-            recentFollowingTicks(){
-                let followingIds = this.follows.map(f => {
-                    return f.profile_id;
-                });
-                let followingTicks = this.ticks.filter(({user_id}) => followingIds.includes(user_id));
-                followingTicks = followingTicks.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
-                return followingTicks.slice(0,20);
-            },
-            tickss(){
-                return this.$store.state.ticks;
-            },
+            // recentFollowingTicks(){
+            //     let followingIds = this.follows.map(f => {
+            //         return f.profile_id;
+            //     });
+            //     let followingTicks = this.ticks.filter(({user_id}) => followingIds.includes(user_id));
+            //     followingTicks = followingTicks.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
+            //     return followingTicks.slice(0,20);
+            // },
+            // tickss(){
+            //     return this.$store.state.ticks;
+            // },
             routes(){
                 return this.$store.state.routes;
             }

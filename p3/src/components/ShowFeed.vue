@@ -7,7 +7,7 @@
             :tick="tick"
             :displayProfile="true"
         ></show-tick>
-        <div>{{ followingTicksVuex }}</div>
+        <div>{{ followingTicks }}</div>
     </div>
 </template>
 
@@ -16,7 +16,6 @@
     export default {
         name: 'show-feed',
         props: {
-            'ticks': {},
             'limit': {
                 default: -1
             }
@@ -28,35 +27,30 @@
             return {};
         },
         computed: {
+            // followingTicks(){
+            //     let followingIds = this.follows.map(f => {
+            //         return f.profile_id;
+            //     });
+            //     console.log("I follow ...");
+            //     console.log(followingIds);
+            //     let followingTicksArr = [];
+            //     for(var i = 0; i < followingIds.length; i++){
+            //         let profile_id = followingIds[i];
+            //         console.log("ticks of profileIds");
+            //         console.log(this.$store.getters.getTicksByProfileId(profile_id));
+            //         followingTicksArr.push(this.$store.getters.getTicksByProfileId(profile_id));
+            //     }
+            //     if(this.limit < 0){
+            //         return followingTicksArr;
+            //     } else {
+            //         return followingTicksArr.slice(0,this.limit);
+            //     }
+            // },
+            // follows(){
+            //     return this.$store.state.follows;
+            // },
             followingTicks(){
-                let followingIds = this.follows.map(f => {
-                    return f.profile_id;
-                });
-                console.log("I follow ...");
-                console.log(followingIds);
-                let followingTicksArr = [];
-                for(var i = 0; i < followingIds.length; i++){
-                    let profile_id = followingIds[i];
-                    console.log("ticks of profileIds");
-                    console.log(this.$store.getters.getTicksByProfileId(profile_id));
-                    followingTicksArr.push(this.$store.getters.getTicksByProfileId(profile_id));
-                }
-                // followingIds.forEach(function(profile_id){
-                //     console.log("ticks of profileIds");
-                //     console.log(this.$store.getters.getTicksByProfileId(profile_id));
-                //     followingTicksArr.push(this.$store.getters.getTicksByProfileId(profile_id));
-                // })
-                if(this.limit < 0){
-                    return followingTicksArr;
-                } else {
-                    return followingTicksArr.slice(0,this.limit);
-                }
-            },
-            follows(){
-                return this.$store.state.follows;
-            },
-            followingTicksVuex(){
-                return this.$store.getters.getFollowingTicks(10);
+                return this.$store.getters.getFollowingTicks(this.limit);
             }
         }
     }
