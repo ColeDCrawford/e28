@@ -50,7 +50,6 @@ export default new Vuex.Store({
                     modprops.forEach(el => newroute[el] = parseFloat(route[el]));
                     return newroute;
                 })
-                console.log(modRoutes);
                 context.commit('setRoutes', modRoutes);
             });
         },
@@ -117,6 +116,21 @@ export default new Vuex.Store({
                 }, this.id)[0];
             }
         },
+        getFollowingTicks(state){
+            return function(limit){
+                let followingIds = state.follows.map(f => {
+                    return f.profile_id;
+                });
+                let filteredTicks = state.ticks.filter((tick) => {
+                    return followingIds.includes(tick.mp_user_id)
+                });
+                if(limit > 0){
+                    return filteredTicks.slice(0, limit);
+                } else {
+                    return filteredTicks;
+                }
+            }
+        }
         // getMostRecentTickByProfileId(state){
         //     //https://www.reddit.com/r/vuejs/comments/7dqlfc/vuex_best_practice_do_you_keep_sorted_data_in_the/
         //     const ticks = [...state.ticks].sort((a,b)) => {

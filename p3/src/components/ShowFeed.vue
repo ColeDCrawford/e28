@@ -5,10 +5,9 @@
             v-for="tick in followingTicks"
             :key="tick.id"
             :tick="tick"
-            :routes="routes"
-            :follows="follows"
             :displayProfile="true"
         ></show-tick>
+        <div>{{ followingTicksVuex }}</div>
     </div>
 </template>
 
@@ -18,8 +17,6 @@
         name: 'show-feed',
         props: {
             'ticks': {},
-            'routes': {},
-            'follows': {},
             'limit': {
                 default: -1
             }
@@ -35,14 +32,21 @@
                 let followingIds = this.follows.map(f => {
                     return f.profile_id;
                 });
-                let followingTicks = this.ticks.filter(({user_id}) => followingIds.includes(user_id));
-                followingTicks = followingTicks.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
+                let followingTicksArr = [];
+                followingIds.forEach(function(profile_id){
+                    followingTicksArr.push(this.$store.getters.getTicksByProfileId(profile_id));
+                })
                 if(this.limit < 0){
-                    return followingTicks;
+                    return followingTicksArr;
                 } else {
-                    return followingTicks.slice(0,this.limit);
+                    return followingTicksArr.slice(0,this.limit);
                 }
-                
+            },
+            follows(){
+                return this.$store.state.follows;
+            },
+            followingTicksVuex(){
+                return this.$store.getters.getFollowingTicks(10);
             }
         }
     }
