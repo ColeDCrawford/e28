@@ -35,11 +35,17 @@
                 console.log("I follow ...");
                 console.log(followingIds);
                 let followingTicksArr = [];
-                followingIds.forEach(function(profile_id){
+                for(var i = 0; i < followingIds.length; i++){
+                    let profile_id = followingIds[i];
                     console.log("ticks of profileIds");
                     console.log(this.$store.getters.getTicksByProfileId(profile_id));
                     followingTicksArr.push(this.$store.getters.getTicksByProfileId(profile_id));
-                })
+                }
+                // followingIds.forEach(function(profile_id){
+                //     console.log("ticks of profileIds");
+                //     console.log(this.$store.getters.getTicksByProfileId(profile_id));
+                //     followingTicksArr.push(this.$store.getters.getTicksByProfileId(profile_id));
+                // })
                 if(this.limit < 0){
                     return followingTicksArr;
                 } else {
