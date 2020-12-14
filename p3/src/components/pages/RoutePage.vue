@@ -2,9 +2,9 @@
     <div id='route-page'>
         <show-route
             :route="route"
+            :id="id"
             :individual="true"
-            :ticks="ticks"
-            :routes="routes">
+        >
         </show-route>
     </div>
 </template>
@@ -13,7 +13,8 @@
 import ShowRoute from '@/components/ShowRoute.vue';
 
 export default {
-    props: ['id', 'routes', "ticks"],
+    // props: ['id', "ticks"],
+    props: ['id'],
     components: {
         'show-route': ShowRoute,
     },
@@ -22,10 +23,13 @@ export default {
         };
     },
     computed: {
+        // route() {
+        //     return this.routes.filter((route) => {
+        //         return route.id == this.id;
+        //     }, this.id)[0];
+        // }
         route() {
-            return this.routes.filter((route) => {
-                return route.id == this.id;
-            }, this.id)[0];
+            return this.$store.getters.getRouteById(this.id);
         }
     }
 };

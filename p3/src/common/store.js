@@ -6,21 +6,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        routesListCount: 0,
-        routesList: [],
+        // routesListCount: 0,
+        // routesList: [],
         routes: [],
         profiles: [],
         areas: [],
         ticks: [],
-        follows: []
+        follows: [],
+        user: null
     },
     mutations: {
-        setRoutesListCount(state, payload) {
-            state.routesListCount = payload;
-        },
-        setRoutesList(state, payload){
-            state.routesList = payload;
-        },
+        // setRoutesListCount(state, payload) {
+        //     state.routesListCount = payload;
+        // },
+        // setRoutesList(state, payload){
+        //     state.routesList = payload;
+        // },
         setRoutes(state, payload){
             state.routes = payload;
         },
@@ -35,7 +36,10 @@ export default new Vuex.Store({
         },
         setProfiles(state, payload){
             state.profiles = payload;
-        }
+        },
+        setUser(state, payload) {
+            state.user = payload;
+        },
     },
     actions: {
         fetchRoutes(context) {
@@ -55,19 +59,73 @@ export default new Vuex.Store({
         },
         fetchTicks(context){
             axios.get('tick').then((response) => {
-                console.log("ticks fetched");
                 context.commit('setTicks', response.data.tick);
             });
-        }
+        },
+        fetchFollows(context){
+            axios.get('follow').then((response) => {
+                context.commit('setFollows', response.data.follow);
+            });
+        },
+        authUser(context) {
+            return new Promise((resolve) => {
+                axios.post('auth').then((response) => {
+                    if (response.data.authenticated) {
+                        context.commit('setUser', response.data.user);
+                    } else {
+                        context.commit('setUser', false);
+                    }
+
+                    resolve();
+                });
+            });
+        },
     },
     getters: {
-        // getRouteById(state) {
-        //     return function (id) {
-        //         return state.routes.filter((route) => {
-        //             return route.id == id;
-        //         }, this.id)[0];
+        getRouteById(state) {
+            return function (id) {
+                return state.routes.filter((route) => {
+                    return route.id == id;
+                }, this.id)[0];
+            }
+        },
+        getTicksByRouteId(state){
+            return function(routeid){
+                return state.ticks.filter((tick) => {
+                    return tick.route_id == routeid
+                }, this.routeid);
+            }
+        },
+        getTicksByProfileId(state){
+            return function(profileid){
+                return state.ticks.filter((tick) => {
+                    return tick.mp_user_id == profileid           // this is the same as profile_id, update it
+                }, this.id);
+            }
+        },
+        getProfileById(state) {
+            return function (id) {
+                return state.profiles.filter((profile) => {
+                    return profile.id == id;
+                }, this.id)[0];
+            }
+        },
+        // getMostRecentTickByProfileId(state){
+        //     //https://www.reddit.com/r/vuejs/comments/7dqlfc/vuex_best_practice_do_you_keep_sorted_data_in_the/
+        //     const ticks = [...state.ticks].sort((a,b)) => {
+        //         if()
         //     }
-        // },
+        //     return function(profileid){
+        //         return state.ticks.filter((tick) => {
+        //             return tick
+        //         })
+        //     }
+        // }
     }
+
+    // routeTicks(){
+    //     let filtered = this.ticks.slice(0).filter(t => t.route_id == this.route.id);
+    //     return filtered.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
+    //   }
     
 })

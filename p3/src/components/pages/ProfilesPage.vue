@@ -5,9 +5,9 @@
             <show-profile
                 v-for="profile in profiles"
                 :key="profile.id"
+                :id="profile.id"
                 :profile="profile"
                 :follows="follows"
-                :ticks="ticks"
                 @update-follows="updateFollows">
             </show-profile>
         </div>
@@ -22,13 +22,21 @@
         components: {
             'show-profile': ShowProfile,
         },
-        props: ['profiles', 'follows', 'ticks'],
+        props: ['ticks'],
         data: function(){
             return {};
         },
         methods: {
             updateFollows(){
                 this.$emit('update-follows');
+            }
+        },
+        computed: {
+            profiles(){
+                return this.$store.state.profiles;
+            },
+            follows(){
+                return this.$store.state.follows;
             }
         }
     };

@@ -4,14 +4,13 @@
             <show-profile
                 :profile="profile"
                 :follows="follows"
-                :ticks="ticks"
+                :id="id"
                 @update-follows="updateFollows"
             ></show-profile>
         <show-tick
             v-for="tick in userTicks"
             :key="tick.id"
             :tick="tick"
-            :routes="routes"
         ></show-tick>
         </div>
         <div v-if="profileNotFound">
@@ -25,7 +24,7 @@ import ShowProfile from '@/components/ShowProfile.vue';
 import ShowTick from '@/components/ShowTick.vue';
 export default {
     name: '',
-    props: ['id', 'profiles', 'ticks', 'routes', 'follows'],
+    props: ['id', 'follows'],
     components: {
         'show-profile': ShowProfile,
         'show-tick': ShowTick
@@ -34,17 +33,23 @@ export default {
         return {};
     },
     computed: {
-        profile() {
-            return this.profiles.filter((profile) => {
-                return profile.id == this.id;
-            }, this.id)[0];
+        // profile() {
+        //     return this.profiles.filter((profile) => {
+        //         return profile.id == this.id;
+        //     }, this.id)[0];
+        // },
+        profile(){
+            return this.$store.getters.getProfileById(this.id);
         },
         profileNotFound(){
             return this.profile == null;
         },
-        userTicks(){
-            let filtered = this.ticks.filter(t => t.mp_user_id == this.id);
-            return filtered.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
+        // userTicks(){
+        //     let filtered = this.ticks.filter(t => t.mp_user_id == this.id);
+        //     return filtered.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
+        // },
+        userTicks() {
+            return this.$store.getters.getTicksByProfileId(this.id);
         }
     },
     methods: {

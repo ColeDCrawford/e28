@@ -7,6 +7,7 @@ import RoutePage from '@/components/pages/RoutePage.vue';
 import RoutesPage from '@/components/pages/RoutesPage.vue';
 import ProfilePage from '@/components/pages/ProfilePage.vue';
 import ProfilesPage from '@/components/pages/ProfilesPage.vue';
+import AccountPage from '@/components/pages/AccountPage.vue';
 import ShowFeed from '@/components/ShowFeed.vue';
 
 // Bootstrap
@@ -30,7 +31,8 @@ const router = new VueRouter({
     { path: '/routes', component: RoutesPage, props: true },
     { path: '/profiles/:id', component: ProfilePage, props: true},
     { path: '/profiles', component: ProfilesPage, props: true},
-    { path: '/feed', component: ShowFeed, props: true}
+    { path: '/feed', component: ShowFeed, props: true},
+    { path: '/account', component: AccountPage, props: true}
   ],
   linkActiveClass: 'active'
 })

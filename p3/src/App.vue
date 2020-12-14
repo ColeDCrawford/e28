@@ -39,14 +39,21 @@ export default {
   data() {
     return {
         /* Store links in an array to maintain order */
-        links: ['Home', 'Routes', 'Profiles', 'Feed'],
+        links: [
+          'Home',
+          'Routes',
+          'Profiles',
+          'Feed',
+          'Account'
+          ],
 
         /* Map links to the appropriate component */
         paths: {
             Home: '/',
             Routes: '/routes',
             Profiles: '/profiles',
-            Feed: '/feed'
+            Feed: '/feed',
+            Account: '/account'
         },
 
         routes: [],
@@ -59,6 +66,12 @@ export default {
   mounted() {
     /** Set Vuex store */
     this.$store.dispatch('fetchTicks');
+    this.$store.dispatch('fetchProfiles');
+    this.$store.dispatch('fetchRoutes');
+    this.$store.dispatch('fetchAreas');
+    this.$store.dispatch('fetchFollows');
+
+
     axios.get('route').then((response) => {
       this.routes = response.data.route;
     });

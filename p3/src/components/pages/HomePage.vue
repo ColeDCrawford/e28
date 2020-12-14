@@ -3,9 +3,6 @@
         <div class="row">
             <h1 class="title">Weekend Warrior</h1>
         </div>
-        <div class="row temp">
-            {{ tickss }}
-        </div>
         <div class="row">
             <div class="col">
                 <h2>Featured Routes</h2>

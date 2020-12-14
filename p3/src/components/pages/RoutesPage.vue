@@ -25,10 +25,15 @@
         components: {
             'show-route': ShowRoute,
         },
-        props: ['routes'],
+        props: [],
         data: function(){
             return {};
         },
+        computed: {
+            routes(){
+                return this.$store.state.routes;
+            }
+        }
     };
 
 </script>

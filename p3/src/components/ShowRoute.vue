@@ -28,10 +28,9 @@
     </div>
     <div class="row ticks">
         <show-tick
-            v-for="tick in routeTicks"
+            v-for="tick in ticks"
             :key="tick.id"
             :tick="tick"
-            :routes="routes"
             :follows="follows"
             :displayRouteInfo="false"
             :displayProfile="true"
@@ -69,7 +68,7 @@ import ShowTick from '@/components/ShowTick.vue';
 
 export default {
   name: "show-route",
-  props: ["route", "individual", "ticks", "routes"],
+  props: ["route", "individual", "id"],
   data: function () {
     return {};
   },
@@ -84,9 +83,8 @@ export default {
           );
           return types;
       },
-      routeTicks(){
-        let filtered = this.ticks.slice(0).filter(t => t.route_id == this.route.id);
-        return filtered.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
+      ticks() {
+          return this.$store.getters.getTicksByRouteId(this.id);
       }
   }
 };
