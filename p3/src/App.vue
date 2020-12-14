@@ -17,7 +17,6 @@
       </div>
     </nav>
     <router-view
-      :routes="routes"
       :profiles="profiles"
       :areas="areas"
       :ticks="ticks"
@@ -56,7 +55,6 @@ export default {
             Account: '/account'
         },
 
-        routes: [],
         profiles: [],
         areas: [],
         ticks: [],
@@ -72,9 +70,9 @@ export default {
     this.$store.dispatch('fetchFollows');
     this.$store.dispatch('authUser');
 
-    axios.get('route').then((response) => {
-      this.routes = response.data.route;
-    });
+    // axios.get('route').then((response) => {
+    //   this.routes = response.data.route;
+    // });
     axios.get('profile').then((response) => {
       this.profiles = response.data.profile;
     });

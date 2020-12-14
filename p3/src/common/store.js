@@ -44,7 +44,14 @@ export default new Vuex.Store({
     actions: {
         fetchRoutes(context) {
             axios.get('route').then((response) => {
-                context.commit('setRoutes', response.data.route);
+                let modprops = ["latitude","longitude","pitches", "stars", "star_votes"]
+                let modRoutes = response.data.route.map(route => {
+                    let newroute = route;
+                    modprops.forEach(el => newroute[el] = parseFloat(route[el]));
+                    return newroute;
+                })
+                console.log(modRoutes);
+                context.commit('setRoutes', modRoutes);
             });
         },
         fetchProfiles(context){

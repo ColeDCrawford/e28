@@ -54,7 +54,7 @@
             :inline="true"
             :star-size="25"
             :show-rating="false"
-        ></star-rating>({{route.star_votes}})</div>
+        ></star-rating>({{route.star_votes }})</div>
         <div class="location">{{route.location}}</div>
       </div>
     </div>
@@ -86,7 +86,8 @@ export default {
       ticks() {
           return this.$store.getters.getTicksByRouteId(this.id);
       }
-  }
+  },
+  methods: {}
 };
 </script>
 

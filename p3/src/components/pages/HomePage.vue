@@ -43,7 +43,7 @@
 
     export default {
         name: 'App',
-        props: ['routes', 'ticks', 'follows'],
+        props: ['ticks', 'follows'],
         components: {
             ShowFeed,
             ShowRoute
@@ -67,6 +67,9 @@
             },
             tickss(){
                 return this.$store.state.ticks;
+            },
+            routes(){
+                return this.$store.state.routes;
             }
         }
     }

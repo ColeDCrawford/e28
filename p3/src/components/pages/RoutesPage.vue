@@ -9,6 +9,7 @@
                 exact
             >
                 <show-route
+                    :id="route.id"
                     :route="route"
                     :individual="false">
                 </show-route>
