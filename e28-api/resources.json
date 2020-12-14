@@ -104,16 +104,17 @@
         }
     },
     "follow": {
-        "mp_user_id": {
+        "user_id": {
             "type": "integer",
             "validators": [
                 "required",
                 "numeric"
             ]
         },
-        "follow_mp_user_id": {
+        "profile_id": {
             "type": "integer",
             "validators": [
+                "required",
                 "numeric"
             ]
         }
@@ -183,6 +184,16 @@
         "location": {
             "type": "text",
             "validators": []
+        },
+        "ww_user_id": {
+            "type": "integer",
+            "validators": []
+        },
+        "email": {
+            "type": "string",
+            "validators": [
+                "email"
+            ]
         }
     }
 }
