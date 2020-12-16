@@ -64,7 +64,9 @@
         "name": "Cole Crawford",
         "location": "Somerville, MA",
         "url": "https://www.mountainproject.com/user/200157044/cole-crawford",
-        "avatar": "https://graph.facebook.com/v8.0/10220151689439159/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b"
+        "avatar": "https://graph.facebook.com/v8.0/10220151689439159/picture?type=normal&access_token=11749012187|9bc8412633652b1b9b1ebbd355f16f4b",
+        "ww_user_id": 1,
+        "mp_apikey": "200157044-e39bcc082e1d854263a47239d609d945"
     }, {
         "id": 200219862,
         "name": "Avilash Cramer",

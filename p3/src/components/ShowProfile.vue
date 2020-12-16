@@ -40,17 +40,20 @@
             profilePicNotFound() {
                 return this.profile.avatar == "/img/user/missing2.svg" || this.profile.avatar == null;
             },
-            // TODO lift this out into isFollowing Vuex getter function? 
             following(){
-                let following = this.follows.filter((f) => {
-                    return f.profile_id == this.id;
-                }, this.id)[0];
-                if(following == null) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return this.$store.getters.isFollowing(this.id);
             },
+            // TODO lift this out into isFollowing Vuex getter function? 
+            // following(){
+            //     let following = this.follows.filter((f) => {
+            //         return f.profile_id == this.id;
+            //     }, this.id)[0];
+            //     if(following == null) {
+            //         return false;
+            //     } else {
+            //         return true;
+            //     }
+            // },
             // TODO lift this out into getMostRecentTickByProfileId()
             mostRecentTick(){
                 // let sortedTicks = this.ticks.slice(0).filter(t => t.mp_user_id == this.profile.id);
@@ -75,6 +78,7 @@
                 return sortedTicks;
             },
             followUser(){
+                console.log("follows data", this.follows);
                 let follow = this.follows.filter((f) => {
                     return f.profile_id == this.id;
                 }, this.profile.id)[0];

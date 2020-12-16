@@ -155,6 +155,20 @@ export default new Vuex.Store({
                     return sortedTicks;
                 }
             }
+        },
+        isFollowing(state){
+            return function (id) { //profile_id
+                let follows = state.follows.filter((follow) => {
+                    return follow.profile_id == id && state.user.id == follow.user_id;
+                }, this.id)[0];
+                console.log('isFollowing() vuex id', id);
+                console.log('isFollowing() vuex: ', follows);
+                if(follows == null) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
         }
 
         // getMostRecentTickByProfileId(state){
