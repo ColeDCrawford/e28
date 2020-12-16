@@ -169,17 +169,21 @@ export default new Vuex.Store({
                 // let f = state.follows.filter((follow) => {
                 //     return follow.profile_id == id;
                 // }, this.id)[0];
-                let f = state.follows.filter(function(follow){
-                    console.log(follow);
+                let followingIds = state.follows.map(f => {
+                    return f.profile_id;
+                });
+                console.log(followingIds);
+                var fol = state.follows.filter(function(f){
+                    console.log(f);
                     console.log(id);
-                    return follow.profile_id == id;
+                    return fol.profile_id == id;
                 }, this.id)[0];
                 console.log("isFollowing()")
                 console.log('state.follows: ', state.follows);
                 console.log('state.user.id ', state.user.id);
                 console.log('id ', id);
-                console.log('follow: ', f);
-                return f;
+                console.log('follow: ', fol);
+                return fol;
                 // if(follows == null) {
                 //     return false;
                 // } else {
