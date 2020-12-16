@@ -47,6 +47,7 @@
                 return this.$store.getters.isFollowing(this.id);
             },
             followingBoolean(){
+                console.log(this.$store.getters.isFollowing(this.id));
                 if(this.$store.getters.isFollowing(this.id)){
                     console.log("followingBoolean true");
                     return true;
@@ -106,7 +107,7 @@
                             this.errors = response.data.errors;
                         } else {
                             // this.$emit('update-follows'); no need to pass this up?
-                            this.$store.commit('setFollow', f);
+                            this.$store.commit('setFollow', response.data.follow);
                         }
                     });
                 } else {
