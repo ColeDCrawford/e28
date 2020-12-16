@@ -17,8 +17,8 @@
             <div class="card-text">{{ profile.location }}</div>
             <div class="card-text">Most Recent Tick: {{ mostRecentTick }}</div>
             <div class="card-text" v-if="user">
-                <button type="button" class="btn" :class="{'btn-outline-success':following}" @click="followUser" v-if="following">Following {{profile.name}}</button>
-                <button type="button" class="btn" :class="{'btn-outline-primary':!following}" @click="followUser" v-else>Follow {{profile.name}}</button>
+                <button type="button" class="btn" :class="{'btn-outline-success':isFollowingBoolean}" @click="followUser" v-if="following">Following {{profile.name}}</button>
+                <button type="button" class="btn" :class="{'btn-outline-primary':!isFollowingBoolean}" @click="followUser" v-else>Follow {{profile.name}}</button>
             </div>
         </div>
     </div>
@@ -31,7 +31,9 @@
         name: 'show-profile',
         props: ['profile','id'],
         data: function () {
-            return {};
+            return {
+                errors: null
+            };
         },
         computed: {
             user() {
@@ -40,8 +42,18 @@
             profilePicNotFound() {
                 return this.profile.avatar == "/img/user/missing2.svg" || this.profile.avatar == null;
             },
-            following(){
+            follow(){
+                // returns a follow, not boolean
                 return this.$store.getters.isFollowing(this.id);
+            },
+            followingBoolean(){
+                if(this.$store.getters.isFollowing(this.id)){
+                    console.log("followingBoolean true");
+                    return true;
+                } else {
+                    console.log('followingBoolean false');
+                    return false;
+                }
             },
             // TODO lift this out into isFollowing Vuex getter function? 
             // following(){
@@ -66,9 +78,9 @@
             userTicks() {
                 return this.$store.getters.getTicksByProfileId(this.id);
             },
-            follows(){
-                return this.$store.state.follows;
-            }
+            // follows(){
+            //     return this.$store.state.follows;
+            // }
         },
         methods: {
             sortedTicks(){
@@ -78,11 +90,11 @@
                 return sortedTicks;
             },
             followUser(){
-                console.log("follows data", this.follows);
-                let follow = this.follows.filter((f) => {
-                    return f.profile_id == this.id;
-                }, this.profile.id)[0];
-                if(this.following == null){
+                // console.log("follows data", this.follows);
+                // let follow = this.follows.filter((f) => {
+                //     return f.profile_id == this.id;
+                // }, this.profile.id)[0];
+                if(!this.followingBoolean){
                     // start following
                     // TODO change to the logged in user
                     let f = {
@@ -93,16 +105,18 @@
                         if(response.data.errors){
                             this.errors = response.data.errors;
                         } else {
-                            this.$emit('update-follows');
+                            // this.$emit('update-follows'); no need to pass this up?
+                            this.$store.commit('setFollow', f);
                         }
                     });
                 } else {
                     // stop following
-                    axios.delete(`/follow/${follow.id}`).then((response) => {
+                    axios.delete(`/follow/${this.follow.id}`).then((response) => {
                         if(response.data.errors){
                             this.errors = response.data.errors;
                         } else {
-                            this.$emit('update-follows');
+                            // this.$emit('update-follows');
+                            this.$store.commit('deleteFollow', this.follow.id);
                         }
                     });
                 }
