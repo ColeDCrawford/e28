@@ -11,7 +11,8 @@ export default new Vuex.Store({
         areas: [],
         ticks: [],
         follows: [],
-        user: null
+        user: null,
+        user_profile: null
     },
     mutations: {
         setRoutes(state, payload){
@@ -32,6 +33,13 @@ export default new Vuex.Store({
         setUser(state, payload) {
             state.user = payload;
         },
+        setUserProfile(state, payload){
+            state.userProfile = payload;
+        },
+        editProfile(state, payload){
+            const profile = state.profiles.find(profile => profile.id === payload.id);
+            Object.assign(profile, payload);
+        }
     },
     actions: {
         fetchRoutes(context) {
@@ -48,6 +56,19 @@ export default new Vuex.Store({
         fetchProfiles(context){
             axios.get('profile').then((response) => {
                 context.commit('setProfiles', response.data.profile);
+            });
+        },
+        fetchUserProfile(context){
+            axios.get('profile').then((response) => {
+                let profile = null;
+                for(var i = 0; i < response.data.profile.length; i++){
+                    if(response.data.profile[i].id == this.state.user.id){
+                        profile = response.data.profile[i];
+                    }
+                }
+                if(profile){
+                    context.commit('setUserProfile', profile);
+                }
             });
         },
         fetchAreas(context){
@@ -73,7 +94,6 @@ export default new Vuex.Store({
                     } else {
                         context.commit('setUser', false);
                     }
-
                     resolve();
                 });
             });
@@ -108,6 +128,13 @@ export default new Vuex.Store({
             return function (id) {
                 return state.profiles.filter((profile) => {
                     return profile.id == id;
+                }, this.id)[0];
+            }
+        },
+        getProfileByWWId(state) {
+            return function (ww_id) {
+                return state.profiles.filter((profile) => {
+                    return profile.ww_user_id == ww_id;
                 }, this.id)[0];
             }
         },

@@ -194,6 +194,10 @@
             "validators": [
                 "email"
             ]
+        },
+        "mp_apikey": {
+            "type": "string",
+            "validators": []
         }
     }
 }

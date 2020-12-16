@@ -69,6 +69,7 @@ export default {
     this.$store.dispatch('fetchAreas');
     this.$store.dispatch('fetchFollows');
     this.$store.dispatch('authUser');
+    this.$store.dispatch('fetchUserProfile');
 
     // axios.get('route').then((response) => {
     //   this.routes = response.data.route;
