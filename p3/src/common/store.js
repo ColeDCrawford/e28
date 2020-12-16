@@ -167,7 +167,7 @@ export default new Vuex.Store({
         isFollowing(state){
             return function (id) { //profile_id
                 let f = state.follows.filter((follow) => {
-                    return follow.profile_id == id && state.user.id == follow.user_id;
+                    return follow.profile_id == id;
                 }, this.id)[0];
                 console.log(state.follows);
                 console.log(state.user.id);
