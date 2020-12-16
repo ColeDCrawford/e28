@@ -41,7 +41,7 @@ export default new Vuex.Store({
             Object.assign(profile, payload);
         },
         setFollow(state, payload){
-            state.follows.push({payload});
+            state.follows.push(payload);
         },
         deleteFollow(state, payload){
             console.log("delete Follow", payload);
@@ -167,12 +167,14 @@ export default new Vuex.Store({
         isFollowing(state){
             return function (id) { //profile_id
                 let f = state.follows.filter((follow) => {
-                    return follow.profile_id == id;
+                    return follow.profile_id == this.id;
                 }, this.id)[0];
-                console.log(state.follows);
-                console.log(state.user.id);
-                console.log('isFollowing() vuex id', id);
-                console.log('isFollowing() vuex: ', f);
+                console.log("isFollowing()")
+                console.log('state.follows: ', state.follows);
+                console.log('state.user.id ', state.user.id);
+                console.log('id ', id);
+                console.log('this.id ', this.id);
+                console.log('follow: ', f);
                 return f;
                 // if(follows == null) {
                 //     return false;

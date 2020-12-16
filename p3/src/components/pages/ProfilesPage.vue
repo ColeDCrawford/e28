@@ -10,7 +10,6 @@
                 :key="profile.id"
                 :id="profile.id"
                 :profile="profile"
-                :follows="follows"
                 @update-follows="updateFollows">
             </show-profile>
         </div>
@@ -38,9 +37,9 @@
             profiles(){
                 return this.$store.state.profiles;
             },
-            follows(){
-                return this.$store.state.follows;
-            }
+            // follows(){
+            //     return this.$store.state.follows;
+            // }
         }
     };
 

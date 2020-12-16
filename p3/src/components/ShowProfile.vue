@@ -103,6 +103,8 @@
                         profile_id:this.profile.id
                     };
                     axios.post('/follow', f).then((response) => {
+                        console.log("follow response");
+                        console.log(response);
                         if(response.data.errors){
                             this.errors = response.data.errors;
                         } else {
@@ -113,6 +115,8 @@
                 } else {
                     // stop following
                     axios.delete(`/follow/${this.follow.id}`).then((response) => {
+                        console.log("delete response");
+                        console.log(response);
                         if(response.data.errors){
                             this.errors = response.data.errors;
                         } else {
