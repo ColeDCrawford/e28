@@ -13,7 +13,6 @@
 import ShowRoute from '@/components/ShowRoute.vue';
 
 export default {
-    // props: ['id', "ticks"],
     props: ['id'],
     components: {
         'show-route': ShowRoute,
@@ -23,11 +22,6 @@ export default {
         };
     },
     computed: {
-        // route() {
-        //     return this.routes.filter((route) => {
-        //         return route.id == this.id;
-        //     }, this.id)[0];
-        // }
         route() {
             return this.$store.getters.getRouteById(this.id);
         }

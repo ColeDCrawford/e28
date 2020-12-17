@@ -65,11 +65,6 @@
             return {};
         },
         computed : {
-            // route() {
-            //     return this.routes.filter((r) => {
-            //         return r.id == this.tick.route_id;
-            //     }, this.id)[0];
-            // },
             route() {
                 return this.$store.getters.getRouteById(this.tick.route_id);
             }

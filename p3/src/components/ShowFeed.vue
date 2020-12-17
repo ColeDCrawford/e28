@@ -27,6 +27,7 @@
         },
         computed: {
             followingTicks(){
+                // TODO This is not updating right away when the store state adds a new profile to follow
                 return this.$store.getters.getFollowingTicks(this.limit);
             }
         }

@@ -28,13 +28,7 @@
         </div>
       </div>
     </nav>
-    <router-view
-      :profiles="profiles"
-      :areas="areas"
-      :ticks="ticks"
-      :follows="follows"
-      v-on:update-follows="updateFollows()"
-    ></router-view>
+    <router-view></router-view>
 
   </div>
 
@@ -42,7 +36,7 @@
 
 <script>
 
-import { axios } from '@/app.js';
+// import { axios } from '@/app.js';
 
 export default {
   name: 'App',
@@ -86,16 +80,16 @@ export default {
     // axios.get('route').then((response) => {
     //   this.routes = response.data.route;
     // });
-    axios.get('profile').then((response) => {
-      this.profiles = response.data.profile;
-    });
-    axios.get('area').then((response) => {
-      this.areas = response.data.area;
-    });
-    axios.get('tick').then((response) => {
-      this.ticks = response.data.tick;
-    });
-    this.updateFollows();
+    // axios.get('profile').then((response) => {
+    //   this.profiles = response.data.profile;
+    // });
+    // axios.get('area').then((response) => {
+    //   this.areas = response.data.area;
+    // });
+    // axios.get('tick').then((response) => {
+    //   this.ticks = response.data.tick;
+    // });
+    // this.updateFollows();
   },
   computed: {
     user() {
@@ -103,11 +97,11 @@ export default {
       },
   },
   methods: {
-    updateFollows(){
-      axios.get('follow').then((response) =>{
-        this.follows = response.data.follow;
-      });
-    }
+    // updateFollows(){
+    //   axios.get('follow').then((response) =>{
+    //     this.follows = response.data.follow;
+    //   });
+    // }
   }
 }
 </script>

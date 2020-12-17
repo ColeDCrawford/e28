@@ -1,9 +1,6 @@
 <template>
     <div id="profiles">
         <h1>Profiles</h1>
-        <p v-for="follow in oldfollows" :key="follow.profile_id">
-            {{ follow }}
-        </p>
         <div class="card-columns">
             <show-profile
                 v-for="profile in profiles"
@@ -37,9 +34,6 @@
             profiles(){
                 return this.$store.state.profiles;
             },
-            oldfollows(){
-                return this.$store.state.follows;
-            }
         }
     };
 

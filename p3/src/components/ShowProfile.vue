@@ -17,7 +17,7 @@
             <div class="card-text">{{ profile.location }}</div>
             <div class="card-text">Most Recent Tick: {{ mostRecentTick }}</div>
             <div class="card-text" v-if="user">
-                <button type="button" class="btn" :class="{'btn-outline-success': hovering, 'btn-outline-danger': !hovering}" @click="unfollowProfile" @mouseover="hoverIn" @mouseleave="hoverOut" v-if="followingBoolean">{{hovertext}} {{profile.name}}</button>
+                <button type="button" class="btn" :class="{'btn-outline-success': !hovering, 'btn-outline-danger': hovering}" @click="unfollowProfile" @mouseover="hoverIn" @mouseleave="hoverOut" v-if="followingBoolean">{{hovertext}} {{profile.name}}</button>
                 <button type="button" class="btn btn-outline-primary" @click="followProfile" v-else>Follow {{profile.name}}</button>
             </div>
         </div>
@@ -51,39 +51,19 @@
             followingBoolean(){
                 console.log(this.$store.getters.isFollowing(this.id));
                 if(this.$store.getters.isFollowing(this.id)){
-                    console.log("followingBoolean true");
                     return true;
                 } else {
-                    console.log('followingBoolean false');
                     return false;
                 }
             },
-            // TODO lift this out into isFollowing Vuex getter function? 
-            // following(){
-            //     let following = this.follows.filter((f) => {
-            //         return f.profile_id == this.id;
-            //     }, this.id)[0];
-            //     if(following == null) {
-            //         return false;
-            //     } else {
-            //         return true;
-            //     }
-            // },
             // TODO lift this out into getMostRecentTickByProfileId()
             mostRecentTick(){
-                // let sortedTicks = this.ticks.slice(0).filter(t => t.mp_user_id == this.profile.id);
-                // let sortedTicks = this.ticks.sort(function(x,y){ // Need to copy the array to avoid mutating it
-                //     return Date.parse(y.date) - Date.parse(x.date);
-                // });
                 let sorted = this.sortedTicks();
                 return sorted[0].date;
             },
             userTicks() {
                 return this.$store.getters.getTicksByProfileId(this.id);
             },
-            // follows(){
-            //     return this.$store.state.follows;
-            // }
         },
         methods: {
             hoverIn(){
@@ -102,14 +82,11 @@
             },
             followProfile(){
                 // start following
-                console.log('following profile');
                 let f = {
                     user_id:this.user.id,
                     profile_id:this.profile.id
                 };
                 axios.post('/follow', f).then((response) => {
-                    console.log("follow response");
-                    console.log(response);
                     if(response.data.errors){
                         this.errors = response.data.errors;
                     } else {
@@ -120,10 +97,7 @@
             },
             unfollowProfile(){
                 // stop following
-                console.log('unfollow');
                 axios.delete(`/follow/${this.follow.id}`).then((response) => {
-                    console.log("delete response");
-                    console.log(response);
                     if(response.data.errors){
                         this.errors = response.data.errors;
                     } else {

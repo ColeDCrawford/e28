@@ -33,21 +33,12 @@ export default {
         return {};
     },
     computed: {
-        // profile() {
-        //     return this.profiles.filter((profile) => {
-        //         return profile.id == this.id;
-        //     }, this.id)[0];
-        // },
         profile(){
             return this.$store.getters.getProfileById(this.id);
         },
         profileNotFound(){
             return this.profile == null;
         },
-        // userTicks(){
-        //     let filtered = this.ticks.filter(t => t.mp_user_id == this.id);
-        //     return filtered.sort((x, y) => Date.parse(y.date) - Date.parse(x.date));
-        // },
         userTicks() {
             return this.$store.getters.getTicksByProfileId(this.id);
         }
