@@ -17,8 +17,8 @@
             <div class="card-text">{{ profile.location }}</div>
             <div class="card-text">Most Recent Tick: {{ mostRecentTick }}</div>
             <div class="card-text" v-if="user">
-                <button type="button" class="btn" :class="{'btn-outline-success':followingBoolean}" @click="followUser" v-if="following">Following {{profile.name}}</button>
-                <button type="button" class="btn" :class="{'btn-outline-primary':!followingBoolean}" @click="followUser" v-else>Follow {{profile.name}}</button>
+                <button type="button" class="btn btn-outline-success" @click="followUser" v-if="followingBoolean">Following {{profile.name}}</button>
+                <button type="button" class="btn btn-outline-primary" @click="followUser" v-else>Follow {{profile.name}}</button>
             </div>
         </div>
     </div>
