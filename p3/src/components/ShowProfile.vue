@@ -17,7 +17,7 @@
             <div class="card-text">{{ profile.location }}</div>
             <div class="card-text">Most Recent Tick: {{ mostRecentTick }}</div>
             <div class="card-text" v-if="user">
-                <button type="button" class="btn btn-outline-success" @click="unfollowProfile" @mouseover="hovertext='Unfollow'" @mouseleave="hovertext='Following'" v-if="followingBoolean">{{hovertext}} {{profile.name}}</button>
+                <button type="button" class="btn" :class="{'btn-outline-success': hovering, 'btn-outline-danger': !hovering}" @click="unfollowProfile" @mouseover="hoverIn" @mouseleave="hoverOut" v-if="followingBoolean">{{hovertext}} {{profile.name}}</button>
                 <button type="button" class="btn btn-outline-primary" @click="followProfile" v-else>Follow {{profile.name}}</button>
             </div>
         </div>
@@ -33,7 +33,8 @@
         data: function () {
             return {
                 errors: null,
-                hovertext: "Following"
+                hovertext: "Following",
+                hovering: false
             };
         },
         computed: {
@@ -85,6 +86,14 @@
             // }
         },
         methods: {
+            hoverIn(){
+                this.hovertext='Unfollow';
+                this.hovering=true;
+            },
+            hoverOut(){
+                this.hovertext='Following';
+                this.hovering=false;
+            },
             sortedTicks(){
                 let sortedTicks = this.userTicks.sort(function(x,y){
                     return Date.parse(y.date) - Date.parse(x.date);
