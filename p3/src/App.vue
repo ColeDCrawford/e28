@@ -13,6 +13,18 @@
               exact
               class="nav-link"
             >{{ link }}</router-link>
+            <router-link 
+              to="/account"
+              v-if="user"
+              exact
+              class="nav-link"
+            >Account</router-link>
+            <router-link
+              to="/account"
+              v-else
+              exact
+              class="nav-link"
+            >Login</router-link>
         </div>
       </div>
     </nav>
@@ -43,7 +55,7 @@ export default {
           'Routes',
           'Profiles',
           'Feed',
-          'Account'
+          // 'Account'
           ],
 
         /* Map links to the appropriate component */
@@ -52,7 +64,7 @@ export default {
             Routes: '/routes',
             Profiles: '/profiles',
             Feed: '/feed',
-            Account: '/account'
+            // Account: '/account'
         },
 
         profiles: [],
@@ -84,6 +96,11 @@ export default {
       this.ticks = response.data.tick;
     });
     this.updateFollows();
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+      },
   },
   methods: {
     updateFollows(){

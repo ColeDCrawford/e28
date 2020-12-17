@@ -80,7 +80,6 @@ export default {
         };
     },
     computed: {
-        // Get our user and products state from the Vuex store
         user() {
             return this.$store.state.user;
         },

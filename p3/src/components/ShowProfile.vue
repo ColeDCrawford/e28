@@ -17,8 +17,8 @@
             <div class="card-text">{{ profile.location }}</div>
             <div class="card-text">Most Recent Tick: {{ mostRecentTick }}</div>
             <div class="card-text" v-if="user">
-                <button type="button" class="btn btn-outline-success" @click="followUser" v-if="followingBoolean">Following {{profile.name}}</button>
-                <button type="button" class="btn btn-outline-primary" @click="followUser" v-else>Follow {{profile.name}}</button>
+                <button type="button" class="btn btn-outline-success" @click="unfollowProfile" @mouseover="hovertext='Unfollow'" @mouseleave="hovertext='Following'" v-if="followingBoolean">{{hovertext}} {{profile.name}}</button>
+                <button type="button" class="btn btn-outline-primary" @click="followProfile" v-else>Follow {{profile.name}}</button>
             </div>
         </div>
     </div>
@@ -32,7 +32,8 @@
         props: ['profile','id'],
         data: function () {
             return {
-                errors: null
+                errors: null,
+                hovertext: "Following"
             };
         },
         computed: {
@@ -90,41 +91,37 @@
                 })
                 return sortedTicks;
             },
-            followUser(){
-                // console.log("follows data", this.follows);
-                // let follow = this.follows.filter((f) => {
-                //     return f.profile_id == this.id;
-                // }, this.profile.id)[0];
-                if(!this.followingBoolean){
-                    // start following
-                    // TODO change to the logged in user
-                    let f = {
-                        user_id:this.user.id,
-                        profile_id:this.profile.id
-                    };
-                    axios.post('/follow', f).then((response) => {
-                        console.log("follow response");
-                        console.log(response);
-                        if(response.data.errors){
-                            this.errors = response.data.errors;
-                        } else {
-                            // this.$emit('update-follows'); no need to pass this up?
-                            this.$store.commit('setFollow', response.data.follow);
-                        }
-                    });
-                } else {
-                    // stop following
-                    axios.delete(`/follow/${this.follow.id}`).then((response) => {
-                        console.log("delete response");
-                        console.log(response);
-                        if(response.data.errors){
-                            this.errors = response.data.errors;
-                        } else {
-                            // this.$emit('update-follows');
-                            this.$store.commit('deleteFollow', this.follow.id);
-                        }
-                    });
-                }
+            followProfile(){
+                // start following
+                console.log('following profile');
+                let f = {
+                    user_id:this.user.id,
+                    profile_id:this.profile.id
+                };
+                axios.post('/follow', f).then((response) => {
+                    console.log("follow response");
+                    console.log(response);
+                    if(response.data.errors){
+                        this.errors = response.data.errors;
+                    } else {
+                        // this.$emit('update-follows'); no need to pass this up?
+                        this.$store.commit('setFollow', response.data.follow);
+                    }
+                });
+            },
+            unfollowProfile(){
+                // stop following
+                console.log('unfollow');
+                axios.delete(`/follow/${this.follow.id}`).then((response) => {
+                    console.log("delete response");
+                    console.log(response);
+                    if(response.data.errors){
+                        this.errors = response.data.errors;
+                    } else {
+                        // this.$emit('update-follows');
+                        this.$store.commit('deleteFollow', this.follow.id);
+                    }
+                });
             }
         }
     };
