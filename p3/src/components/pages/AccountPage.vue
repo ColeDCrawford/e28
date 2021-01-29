@@ -27,18 +27,18 @@
             </div>
             <button class="btn btn-secondary" @click="logout" data-test="logout-button">Logout</button>
         </div>
-
         <div v-else id="loginForm">
             <h2>Login</h2>
-            <div>
-                <label
-                    >Email:
-                    <input
-                        type="text"
-                        data-test="email-input"
-                        v-model="data.email"
-                /></label>
-            </div>
+            <form id="login-form">
+                <div>
+                    <label
+                        >Email:
+                        <input
+                            type="text"
+                            data-test="email-input"
+                            v-model="data.email"
+                    /></label>
+                </div>
             <div>
                 <label
                     >Password:
@@ -55,6 +55,7 @@
                     {{ error }}
                 </li>
             </ul>
+            </form>
         </div>
     </div>
 </template>
@@ -101,7 +102,9 @@ export default {
                 });
             }
         },
-        login() {
+        login(event) {
+            console.log(event);
+            event.preventDefault()
             axios.post('login', this.data).then((response) => {
                 if (response.data.authenticated) {
                     this.$store.commit('setUser', response.data.user);

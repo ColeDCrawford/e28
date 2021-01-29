@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: local-server/xampp-mac</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="xampp-mac.html" class="router-link-exact-active router-link-active">Mac - XAMPP</a></li>
+            <li><a href="xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="../vue/intro.html" class="">Introduction</a></li>
+            <li><a href="../vue/behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="../vue/vue3.html" class="">Vue 3</a></li>
+            <li><a href="../vue/conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="../vue/list-rendering.html" class="">List rendering</a></li>
+            <li><a href="../vue/event-handling.html" class="">Event handling</a></li>
+            <li><a href="../vue/attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="../vue/form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="../vue/computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="../vue/watchers.html" class="">Watchers</a></li>
+            <li><a href="../vue/lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="../vue/components.html" class="">Components</a></li>
+            <li><a href="../vue/components-props.html" class="">Props</a></li>
+            <li><a href="../vue/components-events.html" class="">Events</a></li>
+            <li><a href="../vue/components-slots.html" class="">Slots</a></li>
+            <li><a href="../vue/single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="../vue/build-systems.html" class="">Introduction</a></li>
+            <li><a href="../vue/package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="../vue/build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="../vue/build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="../vue/build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="../vue/applications-intro.html" class="">Introduction</a></li>
+            <li><a href="../vue/zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="../vue/diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="../vue/vue-router.html" class="">Vue Router</a></li>
+            <li><a href="../vue/vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="../vue/apis.html" class="">Server APIs</a></li>
+            <li><a href="../vue/e28-api.html" class="">e28-api</a></li>
+            <li><a href="../vue/ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="../vue/local-storage.html" class="">Local storage</a></li>
+            <li><a href="../vue/add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="../vue/vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="../vue/auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="../vue/auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="../vue/auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="../vue/testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="../vue/testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="../vue/validation.html" class="">Validation</a></li>
+            <li><a href="../vue/composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-mac-xampp-setup-instructions"><span id="mac-xampp-setup-instructions"
+                    class="heading-anchor"></span><a href="#mac-xampp-setup-instructions" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Mac - XAMPP setup instructions</h1>
+            <h2 id="jump-download"><span id="download" class="heading-anchor"></span><a href="#download"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Download</h2>
+            <p>Download:</p>
+            <p><a
+                 href="https://www.apachefriends.org/xampp-files/7.4.9/xampp-osx-7.4.9-0-installer.dmg">7.4.9/xampp-osx-7.4.9-0-installer.dmg</a>
+            </p>
+            <p><strong>Important: Use my download link above.</strong> Avoid downloading directly from the XAMPP site—
+              their downloads page is labeled poorly and it’s easy to accidentally download the “VM” (Virtual Machine)
+              version of XAMPP, which we don’t want.</p>
+            <h2 id="jump-updating-xampp-fyi-for-returning-students"><span id="updating-xampp-fyi-for-returning-students"
+                    class="heading-anchor"></span><a href="#updating-xampp-fyi-for-returning-students"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Updating XAMPP (FYI for returning students)</h2>
+            <p>If you’ve recently taken a course with me and already have XAMPP installed, it’s not required that you
+              update.</p>
+            <p>However, if you choose to update, first make a backup copy of the following directory/files, as they will
+              be erased during an update:</p>
+            <ul>
+              <li>Document root directory: <code v-pre>/Applications/XAMPP/xamppfiles/htdocs</code>
+              </li>
+              <li>VirtualHosts file : <code v-pre>/Applications/XAMPP/etc/extra/httpd-vhosts.conf</code>
+              </li>
+              <li>Apache config file: <code v-pre>/Applications/XAMPP/xamppfiles/etc/httpd.conf</code>
+              </li>
+            </ul>
+            <p><strong>Update procedures:</strong></p>
+            <ol>
+              <li>Run <code v-pre>/Applications/XAMPP/uninstall.app</code> to uninstall</li>
+              <li>Follow the download/install instructions shown on this page to reinstall</li>
+              <li>Replace the above listed directory/files with your backups</li>
+            </ol>
+            <h2 id="jump-install"><span id="install" class="heading-anchor"></span><a href="#install"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Install</h2>
+            <p>Typically, to install an app on a Mac you just download it and move it to your <em>Applications</em>
+              folder. XAMPP is different— they have an installer.</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/server-xampp-mac-installer@2x.png"
+                 style="max-width:986px;" alt="">
+            <p>Here are the steps of the installer:</p>
+            <p>(<a
+                 href="../../../../s3.amazonaws.com/making-the-internet/server-xampp-install-mac@2x.png">Enlarge...</a>)
+            </p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/server-xampp-install-mac@2x.png"
+                 style="max-width:1458px;" alt="">
+            <p>Once installation is complete, you’ll see the XAMPP Application Manager:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/server-xampp-mac-app-manager@2x.png"
+                 style="max-width:686px;" alt="">
+            <h2 id="jump-start-servers"><span id="start-servers" class="heading-anchor"></span><a href="#start-servers"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Start servers</h2>
+            <p>Within the XAMPP Application Manager switch to the <strong>Manage Servers</strong> tab, select the server
+              you wish to start, and then click <strong>Start</strong>. A server is successfully running when it’s lit
+              up green.</p>
+            <ul>
+              <li>e28 students - You only need Apache to run.</li>
+              <li>e2 and e15 students - You’ll need Apache and MySQL.</li>
+            </ul>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/server-xampp-mac-running@2x.png"
+                 style="max-width:686px;" alt="">
+            <p>If a server won’t start, skim down to the <a href="#troubleshooting">troubleshooting section below</a>.
+            </p>
+            <h2 id="jump-document-root"><span id="document-root" class="heading-anchor"></span><a href="#document-root"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Document root</h2>
+            <p>Now that your local server is running, you can start sending requests to it from the browser via the url
+              <code v-pre>http://localhost</code>.
+            </p>
+            <p>These requests will be routed to a <strong>document root</strong> configured on your server; by default,
+              the XAMPP document root is set to <code v-pre>/Applications/XAMPP/xamppfiles/htdocs</code>.</p>
+            <p>Out of the box, this directory will have the following contents:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/server-xampp-mac-default-htdocs@2x.png"
+                 style="max-width:528px;" alt="">
+            <p>When a request is made to a server, it’s typically configured to look for an <strong>index</strong> file
+              to serve.</p>
+            <p>Given that, in our setup, when we visit <code v-pre>http://localhost</code>, it will look in the
+              document root
+              (<code v-pre>/Applications/XAMPP/xamppfiles/htdocs</code>) for an index file. The index file can be of
+              different
+              types, but in this example it’s a PHP file: <code v-pre>index.php</code>.</p>
+            <p>To prove this, we want to replace the default contents of the XAMPP <code v-pre>index.php</code> file
+              with our
+              own content, then load it in the browser.</p>
+            <p>To do this, first delete the existing <code v-pre>index.php</code> file, then create a new one, also
+              called
+              <code v-pre>index.php</code>, with the following content. (We’re creating a new <code
+                    v-code>index.php</code> rather
+              than editing the existing one as the original one has default permissions which will prevent you from
+              editing it.)
+            </p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">'en'</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Hello from my XAMPP-powered server!<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">'utf-8'</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello from my XAMPP-powered server!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+            <p>Save your changes, then visit <code v-pre>http://localhost</code> in your browser and you should see the
+              following:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/server-xampp-mac-first-test@2x.png"
+                 style="max-width:675px;" alt="">
+            <h2 id="jump-config-amp-logs"><span id="config-amp-logs" class="heading-anchor"></span><a
+                 href="#config-amp-logs" class="heading-link"><i class="fa fa-link"></i> </a> Config &amp; Logs</h2>
+            <p>When working with or troubleshooting a server, it can be necessary to access your server’s config files
+              and error logs so make note of the following locations:</p>
+            <p>Apache</p>
+            <ul>
+              <li>Error log: <code v-pre>/Applications/XAMPP/xamppfiles/logs/error_log</code>
+              </li>
+              <li>Configuration file: <code v-pre>/Applications/XAMPP/xamppfiles/etc/httpd.conf</code>
+              </li>
+            </ul>
+            <p>MySQL</p>
+            <ul>
+              <li>Error log: <code v-pre>/Applications/XAMPP/xamppfiles/logs/mysql_error</code>
+              </li>
+              <li>Configuration file: <code v-pre>/Applications/XAMPP/xamppfiles/etc/my.conf</code>
+              </li>
+            </ul>
+            <p>Take a moment to open these files so you’re familiar with them, as you’ll need to refer to them when
+              errors arise or you need to make configuration changes. Note that some log files might not exist if
+              nothing has been written to them yet.</p>
+            <div markdown="1" class="squareTag important">
+              <div class="banner"><i class="icon fa fa-exclamation-circle"></i>IMPORTANT</div>
+              <ul>
+                <li>Make a backup copy of config files before making any changes</li>
+                <li>If you make a change to a config file, the server needs to be restarted to recognize those changes
+                </li>
+                <li>Whenever asking for help in the forum, be sure to include relevant details from error log files</li>
+              </ul>
+            </div>
+            <h2 id="jump-troubleshooting"><span id="troubleshooting" class="heading-anchor"></span><a
+                 href="#troubleshooting" class="heading-link"><i class="fa fa-link"></i> </a> Troubleshooting</h2>
+            <p>If your XAMPP Apache or MySQL servers (e2 and e15 students) won’t start, <strong>the first place you want
+                to check for clues is your log files</strong> (info above). Log files may provide errors or context
+              explaining why the servers can’t start.</p>
+            <p>Sometimes, though, the problem is a result of a port conflict, in which case you won’t see any details in
+              your error log. The following steps describe how to resolve a port conflict.</p>
+            <h3 id="jump-port-conflict"><span id="port-conflict" class="heading-anchor"></span><a href="#port-conflict"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Port conflict</h3>
+            <p>The #1 cause of XAMPP not being able to start Apache or MySQL is a <strong>conflicting port
+                issue</strong>.</p>
+            <p>XAMPP uses the typical default for Apache (<code v-pre>80</code>) and MySQL’s (<code v-pre>3306</code>)
+              ports, but
+              your computer may already be using those ports for something else (including existing installations of
+              Apache or MySQL).</p>
+            <p>As an example of how to troubleshoot this, let’s imagine XAMPP’s Apache won’t start. In command line, run
+              the following command to see what other processes might be using port 80:</p>
+            <pre v-pre><code class="hljs angelscript">$ sudo lsof -i :<span class="hljs-number">80</span>
+</code></pre>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>If you’re having difficulties with starting MySQL, use this same command but swap port 80 out for 3306.
+              </p>
+            </div>
+            <p>Example output if processes were found:</p>
+            <pre v-pre><code v-pre class="language-xml hljs">$ sudo lsof -i :80
+COMMAND     PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Google    26229 Susan   29u  IPv4 0xb68dc7a6f59f5dd7      0t0  TCP 192.168.7.54:65001-&gt;lga34s12-in-f16.1e100.net:http (CLOSED)
+Google    26229 Susan   31u  IPv4 0xb68dc7a76dc39a17      0t0  TCP 192.168.7.54:65002-&gt;lga34s16-in-f14.1e100.net:http (CLOSED)
+Google    26229 Susan   33u  IPv4 0xb68dc7a792a1b557      0t0  TCP 192.168.7.54:65003-&gt;173.194.185.199:http (CLOSED)
+httpd     68172  root    4u  IPv6 0xb68dc7a6e89184e7      0t0  TCP *:http (LISTEN)
+httpd     68176  _www    4u  IPv6 0xb68dc7a6e89184e7      0t0  TCP *:http (LISTEN)
+</code></pre>
+            <p>From these results, we can see a PID (Process ID) in the second column. You can then use the following
+              command to find out more details about a process via it’s given process id. For example:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ ps u 68172
+</code></pre>
+            <p>And you can use the following command to stop a given process, in order to free up the desired port:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ sudo <span class="hljs-built_in">kill</span> 68172
+</code></pre>
+            <p>Repeat this step for any process using the port in question. When you’re done, run
+              <code v-pre>sudo lsof -i :80</code> again and confirm there are no more processes using port 80, then
+              attempt to
+              start XAMPP's Apache again.
+            </p>
+            <p>If you run into a problem where the processes just keep regenerating despite you stopping them, try the
+              following commands to disable Mac’s default Apache install, and kill any other rogue Apache processes:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
+</code></pre>
+            <pre v-pre><code v-pre class="language-bash hljs">$ sudo killall httpd
+</code></pre>
+            <p>Hopefully, that should finally free up port 80, and you should be able to start Apache from XAMPP.</p>
+            <h3 id="jump-using-alternative-ports"><span id="using-alternative-ports" class="heading-anchor"></span><a
+                 href="#using-alternative-ports" class="heading-link"><i class="fa fa-link"></i> </a> Using alternative
+              ports</h3>
+            <p>If you are unable to free up the 80/3306 ports, or you wish to reserve these ports for existing software
+              on your machine, you can use alternative ports as a last-resort.</p>
+            <p>Common alternative ports are <code v-pre>8888</code> for Apache and <code v-pre>8889</code> for MySQL.
+            </p>
+            <p>Ports can be configured via the server’s configuration files, or from the XAMPP interface.</p>
+            <p>If you use an alternative Apache port, you will have to append this port to your URLs, e.g.
+              <code v-pre>http://localhost:8888</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

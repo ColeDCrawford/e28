@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/single-file-components</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="router-link-exact-active router-link-active">Single file
+                components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-single-file-components-sfc"><span id="single-file-components-sfc"
+                    class="heading-anchor"></span><a href="#single-file-components-sfc" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Single file components (SFC)</h1>
+            <h2 id="jump-summary"><span id="summary" class="heading-anchor"></span><a href="#summary"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Summary</h2>
+            <p>Single file components (SFC) allow you to encapsulate all the code for a Vue component into one file.</p>
+            <p>This includes the template, JS, and CSS.</p>
+            <p>The advantage of SFCs is they can then easily be imported and re-used throughout your project.</p>
+            <p>SFCs require a <strong>build system</strong> to compile them into browser-ready JavaScript.</p>
+            <p>Details covered here: <a href="build-systems.html">Build systems introduction...</a></p>
+            <h2 id="jump-creating-sfcs"><span id="creating-sfcs" class="heading-anchor"></span><a href="#creating-sfcs"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Creating SFCs</h2>
+            <p>Single file component files end with a <code v-pre>.vue</code> extension and the file name matches the
+              component name (e.g. <code v-pre>RoundDetail</code>).</p>
+            <p>Every SFC is broken down into 3 parts:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-comment">// ... component options    </span>
+};
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+</code></pre>
+            <p>On initial introduction, this mixing of HTML, JavaScript, and CSS together in one file might feel “wrong”
+              and contradictory to everything we’re taught about <strong>separation of concerns</strong> (SoC) when
+              learning about these technologies.</p>
+            <p>However, the designers of Vue argues that we‘re not loosing SoC - we’re just doing it in a different way.
+              Rather than separating concerns based on technologies, we’re separating based on modules/entities within
+              our application. <a
+                 href="https://vuejs.org/v2/guide/single-file-components.html#What-About-Separation-of-Concerns">Go here
+                to read more about this approach...</a></p>
+            <p>All that being said - if you’re not on board with this different way of looking at SoC, note that scripts
+              and styles can be included externally if you prefer, e.g.:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/src/js/round-detail.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/src/css/round-detail.css"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-using-sfcs"><span id="using-sfcs" class="heading-anchor"></span><a href="#using-sfcs"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Using SFCs</h2>
+            <p>To use a SFC you import it as a module:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> RoundDetail <span class="hljs-keyword">from</span> <span class="hljs-string">'/@components/RoundDetail.vue'</span>
+</code></pre>
+            <p>And then you list it in the <code v-pre>components</code> option of whatever Vue instance you wish to
+              use the
+              component:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">components: {
+    <span class="hljs-string">'round-detail'</span>: RoundDetail
+},
+</code></pre>
+            <h2 id="jump-vetur-vue-tooling-for-vs-code"><span id="vetur-vue-tooling-for-vs-code"
+                    class="heading-anchor"></span><a href="#vetur-vue-tooling-for-vs-code" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Vetur - Vue tooling for VS Code</h2>
+            <p>To get correct syntax highlighting in your .vue SFC files install the VSCode extension Vetur.</p>
+            <ul>
+              <li>
+                <a href="https://vuejs.github.io/vetur">https://vuejs.github.io/vetur</a>
+              </li>
+              <li>
+                <a
+                   href="https://marketplace.visualstudio.com/items?itemName=octref.vetur">https://marketplace.visualstudio.com/items?itemName=octref.vetur</a>
+              </li>
+            </ul>
+            <h2 id="jump-scoped-css"><span id="scoped-css" class="heading-anchor"></span><a href="#scoped-css"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Scoped CSS</h2>
+            <p>When setting up the CSS in your SFC, you have the option of including/excluding the <code
+                    v-code>scoped</code>
+              attribute:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+</code></pre>
+            <p>When scoped, the CSS will only apply to elements of that component.</p>
+            <p>For example, let’s say you set a style for h2 elements:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="css">
+    <span class="hljs-selector-tag">h2</span> { 
+        <span class="hljs-attribute">color</span>:red 
+    }
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+</code></pre>
+            <p>In traditional CSS, this would apply the style to <em>all</em> h2 elements on the page. But with scoped
+              CSS, it will only apply the style to h2 elements within the component’s template.</p>
+            <p><strong>Mixing scoped/non-scoped styles</strong></p>
+            <p>You can include both scoped and non-scoped styles in the same component:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
+<span class="hljs-comment">/* global styles */</span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="css">
+<span class="hljs-comment">/* local styles */</span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+</code></pre>
+            <p><strong>How it works</strong></p>
+            <p>Behind the scenes, Vue accomplishes scoped CSS by generating unique attributes to be used as selectors
+              that are applied to your component’s elements.</p>
+            <p>Example of how scoped CSS is rendered:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
+<span class="hljs-selector-class">.example</span><span class="hljs-selector-attr">[data-v-f3f3eg9]</span> {
+  <span class="hljs-attribute">color</span>: red;
+}
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'example'</span> <span class="hljs-attr">data-v-f3f3eg9</span>&gt;</span>Hello World<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-css-pre-processors"><span id="css-pre-processors" class="heading-anchor"></span><a
+                 href="#css-pre-processors" class="heading-link"><i class="fa fa-link"></i> </a> CSS Pre-processors</h2>
+            <p>You can use pre-processors CSS languages like SCSS in your components by setting the <code
+                    v-code>lang</code>
+              attribute:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">'scss'</span>&gt;</span>
+$green: #77ff33;
+
+.winner {
+    background-color: $green;
+}
+<span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+</code></pre>
+            <p>This will work ”out of the box” if using the <em>integrated</em> setup with Laravel Mix.</p>
+            <p>If using the <em>comprehensive</em> setup with Vue CLI, you’ll have to install the loader for your CSS
+              pre-processor, e.g.:</p>
+            <pre v-pre><code class="hljs cmake">$ npm <span class="hljs-keyword">install</span> -D sass-loader sass
+</code></pre>
+            <h2 id="jump-learn-more"><span id="learn-more" class="heading-anchor"></span><a href="#learn-more"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Learn more...</h2>
+            <p>Visit <a href="https://vue-loader.vuejs.org/">https://vue-loader.vuejs.org/</a> to learn more about the
+              capabilities of SFCs using vue-loader.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

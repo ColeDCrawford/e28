@@ -21,7 +21,9 @@
                     </router-link>
                 </div>
             </div>
-            <div class="col">
+            <div class="col"
+                v-if="user"
+            >
                 <h2>Recent Following Ticks</h2>
                 <div><router-link to="/feed/">See full feed</router-link></div>
                 <div><router-link to="/profiles/">Follow / unfollow profiles</router-link></div>
@@ -29,6 +31,10 @@
                     :limit="10"
                 >
                 </show-feed>
+            </div>
+            <div class="col"
+                v-else>
+                <h2><router-link to="/account">Sign in to Follow Climber Profiles</router-link></h2>
             </div>
         </div>
 
@@ -56,6 +62,9 @@
             },
             routes(){
                 return this.$store.state.routes;
+            },
+            user() {
+                return this.$store.state.user;
             }
         }
     }

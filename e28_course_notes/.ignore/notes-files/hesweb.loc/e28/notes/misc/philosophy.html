@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <title>Notes: misc/philosophy</title>
+    <meta charset="utf-8">
+
+    <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+    <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+<style type="text/css">#searchResults #searchTerm {
+  background-color: #ffffff;
+  padding: 5px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+#searchResults .result {
+  margin-top: 30px;
+  padding: 10px;
+}
+#searchResults .context {
+  border-left: 5px solid #eee;
+  margin-top: 10px;
+  padding: 10px;
+}
+#searchResults .highlight {
+  background-color: yellow;
+}
+</style><style type="text/css">/* Base16 Atelier Sulphurpool Light - Theme */
+/* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+/* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+/* Atelier-Sulphurpool Comment */
+.hljs-comment,
+.hljs-quote {
+  color: #6b7394;
+}
+
+/* Atelier-Sulphurpool Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-name,
+.hljs-regexp,
+.hljs-link,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #c94922;
+}
+
+/* Atelier-Sulphurpool Orange */
+.hljs-number,
+.hljs-meta,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params {
+  color: #c76b29;
+}
+
+/* Atelier-Sulphurpool Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet {
+  color: #ac9739;
+}
+
+/* Atelier-Sulphurpool Blue */
+.hljs-title,
+.hljs-section {
+  color: #3d8fd1;
+}
+
+/* Atelier-Sulphurpool Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #6679cc;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  background: #f5f7ff;
+  color: #5e6687;
+  padding: 0.5em;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+</style><style type="text/css">/* Blueish */
+.highlight {
+  background-color: #FFE787;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.25;
+}
+h2 {
+  font-size: 2.5rem;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.3rem;
+  margin-top: 60px;
+}
+h3 {
+  font-size: 2rem;
+}
+span.heading-anchor {
+  display: block;
+  border: 1px solid red;
+  position: relative;
+  top: -75px;
+  visibility: hidden;
+}
+a.heading-link:link,
+a.heading-link:visited,
+a.heading-link:active {
+  color: #ddd;
+  border-bottom: 0;
+}
+a.heading-link:hover {
+  color: #005b96;
+}
+img {
+  width: 100%;
+  margin: 10px 0px;
+}
+p {
+  line-height: 1.7;
+}
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+code {
+  color: #B71C1C;
+  background-color: #f8f8f8;
+  padding: 3px 5px;
+  font-size: 1.5rem;
+  font-family: 'Roboto Mono', Monaco, courier, monospace;
+}
+#nav {
+  border-top: 1px solid #eaecef;
+  padding-top: 10px;
+  margin-top: 20px;
+}
+a:link.nav,
+a:visited.nav {
+  display: block;
+  padding: 5px;
+  border: 0;
+}
+a:link.nav#prev,
+a:visited.nav#prev {
+  float: left;
+}
+a:link.nav#next,
+a:visited.nav#next {
+  float: right;
+}
+.squareTag {
+  border: 10px solid #aaa;
+  /* Each tag will overwrite this with its own color */
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 20px;
+}
+.squareTag .banner {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+}
+.squareTag .icon {
+  padding-right: 10px;
+}
+.squareTag h1,
+.squareTag h2,
+.squareTag h3,
+.squareTag h4,
+.squareTag h5,
+.squareTag h6 {
+  color: #2b2b2b;
+}
+.important {
+  border-color: #f9d9d9;
+}
+.important .banner {
+  color: #f9d9d9;
+}
+.fyi {
+  border-color: #f7f7f7;
+}
+.fyi .banner {
+  color: #aaa;
+}
+#suggestAnEditButton {
+  margin-bottom: 20px;
+}
+#suggestAnEdit {
+  position: relative;
+  font-size: 1.5rem;
+  background-color: #f7f7f7;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+#suggestAnEdit h2 {
+  margin-top: 0;
+}
+#suggestAnEdit #cancelSuggestion {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  text-align: center;
+}
+#suggestAnEdit #cancelSuggestion:hover {
+  color: #005b96;
+  cursor: pointer;
+}
+#suggestAnEdit textarea {
+  font-family: 'Courier New', Courier, monospace;
+  width: 100%;
+  height: 200px;
+}
+#suggestionConfirmation {
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 30px;
+  color: #2ECC40;
+  font-weight: bold;
+}
+</style></head>
+
+<body>
+    <div id="app"><header dusk="notesHeader"><h1><a href="https://hesweb.dev/e28">e28</a> |
+                <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a></h1></header> <menu><ul><li class="level-0">Misc
+
+    <ul><li><a href="e28-about.html" class="">About the notes</a></li> <li><a href="philosophy.html" class="router-link-exact-active router-link-active">Learning philosophies</a></li> <li><a href="e28-intro.html" class="">Course introduction</a></li> <li><a href="markdown.html" class="">Markdown</a></li> <li><a href="vscode.html" class="">VSCode</a></li></ul></li><li class="level-0">Command line
+
+    <ul><li><a href="../command-line/intro.html" class="">Introduction</a></li> <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li> <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li> <li><a href="../command-line/primer.html" class="">Primer</a></li> <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li> <li><a href="../command-line/common-commands.html" class="">Common commands</a></li></ul></li><li class="level-0">Local server
+
+    <ul><li><a href="../local-server/intro.html" class="">Introduction</a></li> <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li> <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li> <li><a href="../local-server/local-domains.html" class="">Local domains</a></li></ul></li><li class="level-0">Git
+
+    <ul><li><a href="../git/intro.html" class="">Introduction</a></li> <li><a href="../git/setup.html" class="">Setup</a></li> <li><a href="../git/github.html" class="">Github</a></li> <li><a href="../git/repository-setup.html" class="">Repository setup</a></li> <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li></ul></li><li class="level-0">Production server
+
+    <ul><li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li> <li><a href="../production-server/production-domains.html" class="">Production domains</a></li> <li><a href="../production-server/deploying.html" class="">Deploying</a></li> <li><a href="../production-server/summary.html" class="">Summary</a></li> <li><a href="../production-server/https.html" class="">HTTPS</a></li> <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li></ul></li><li class="level-0">JavaScript
+
+    <ul><li><a href="../javascript/review.html" class="">Review</a></li> <li><a href="../javascript/evolution.html" class="">Evolution</a></li></ul></li><li class="level-0">Vue.js essentials
+
+    <ul><li><a href="../vue/intro.html" class="">Introduction</a></li> <li><a href="../vue/behind-the-scenes.html" class="">Behind the scenes</a></li> <li><a href="../vue/vue3.html" class="">Vue 3</a></li> <li><a href="../vue/conditional-rendering.html" class="">Conditional rendering</a></li> <li><a href="../vue/list-rendering.html" class="">List rendering</a></li> <li><a href="../vue/event-handling.html" class="">Event handling</a></li> <li><a href="../vue/attribute-binding.html" class="">Attribute binding</a></li> <li><a href="../vue/form-input-binding.html" class="">Form input binding</a></li> <li><a href="../vue/computed-properties.html" class="">Computed properties</a></li> <li><a href="../vue/watchers.html" class="">Watchers</a></li> <li><a href="../vue/lifecycle-hooks.html" class="">Lifecycle hooks</a></li></ul></li><li class="level-0">Vue.js components
+
+    <ul><li><a href="../vue/components.html" class="">Components</a></li> <li><a href="../vue/components-props.html" class="">Props</a></li> <li><a href="../vue/components-events.html" class="">Events</a></li> <li><a href="../vue/components-slots.html" class="">Slots</a></li> <li><a href="../vue/single-file-components.html" class="">Single file components</a></li></ul></li><li class="level-0">Build systems
+
+    <ul><li><a href="../vue/build-systems.html" class="">Introduction</a></li> <li><a href="../vue/package-management.html" class="">Package management (NPM)</a></li> <li><a href="../vue/build-integrated-local.html" class="">Integrated build - Local</a></li> <li><a href="../vue/build-integrated-production.html" class="">Integrated build - Production</a></li> <li><a href="../vue/build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li></ul></li><li class="level-0">Applications
+
+    <ul><li><a href="../vue/applications-intro.html" class="">Introduction</a></li> <li><a href="../vue/zipfoods-start.html" class="">Building ZipFoods</a></li> <li><a href="../vue/diy-spa.html" class="">DIY SPA</a></li> <li><a href="../vue/vue-router.html" class="">Vue Router</a></li> <li><a href="../vue/vue-router-production.html" class="">Vue Router on production</a></li> <li><a href="../vue/apis.html" class="">Server APIs</a></li> <li><a href="../vue/e28-api.html" class="">e28-api</a></li> <li><a href="../vue/ajax.html" class="">Ajax - Client/Server communication</a></li> <li><a href="../vue/local-storage.html" class="">Local storage</a></li> <li><a href="../vue/add-to-cart.html" class="">Add to cart</a></li> <li><a href="../vue/vuex.html" class="">State management w/ Vuex</a></li> <li><a href="../vue/auth-intro.html" class="">Auth: Intro &amp; config</a></li> <li><a href="../vue/auth-usage.html" class="">Auth: Usage</a></li> <li><a href="../vue/auth-prod.html" class="">Auth: Production</a></li> <li><a href="../vue/testing.html" class="">Testing: Introduction</a></li> <li><a href="../vue/testing-e2e.html" class="">Testing: E2E</a></li> <li><a href="../vue/validation.html" class="">Validation</a></li> <li><a href="../vue/composition-api.html" class="">Composition API</a></li></ul></li><li class="level-0">Appendix
+
+    <ul><li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li></ul></li></ul></menu> <div id="main"><div id="centerInMain"><div id="notesComponent"><div id="notes"><h1 id="jump-learning-philosophies"><span id="learning-philosophies" class="heading-anchor"></span><a href="#learning-philosophies" class="heading-link"><i class="fa fa-link"></i> </a> Learning philosophies</h1>
+<p>Programming, especially web programming, is a rapidly evolving industry. Because of this, our biggest value as programmers is not what particular languages/technologies we know, but how quickly we can adapt to changes and learn new concepts.</p>
+<p>With this in mind, the following are some key points I keep in mind when learning something new, and in my day to day work as a programmer.</p>
+<h2 id="jump-make-your-own-notes"><span id="make-your-own-notes" class="heading-anchor"></span><a href="#make-your-own-notes" class="heading-link"><i class="fa fa-link"></i> </a> Make your own notes</h2>
+<p>With so many great resources online, it can be tempting to skip the step of taking your own notes. However, the process of formulating your own notes is a key part of the learning process that will help concepts stick and give you something to refer back to.</p>
+<h2 id="jump-application-is-key"><span id="application-is-key" class="heading-anchor"></span><a href="#application-is-key" class="heading-link"><i class="fa fa-link"></i> </a> Application is key</h2>
+<p>You can read 10 books on a topic and learn a lot, but you won’t really start to learn the language/skill until you start creating something with it and applying the information you’ve collected.</p>
+<h2 id="jump-it-can-take-multiple-passes"><span id="it-can-take-multiple-passes" class="heading-anchor"></span><a href="#it-can-take-multiple-passes" class="heading-link"><i class="fa fa-link"></i> </a> It can take multiple passes</h2>
+<p>If all I need is a broad understanding of a topic, I can take in a video/text in a single pass to get the general idea. But if I really want to <em>learn</em> the concepts, I often have to take in the material twice, or even three times, frequently pausing to take notes or practice the principles I’m learning.</p>
+<h2 id="jump-hit-a-wall-ask-for-help-and-step-away"><span id="hit-a-wall-ask-for-help-and-step-away" class="heading-anchor"></span><a href="#hit-a-wall-ask-for-help-and-step-away" class="heading-link"><i class="fa fa-link"></i> </a> Hit a wall: Ask for help and step away</h2>
+<p>Programming requires a lot of problem solving and troubleshooting. This process can sometimes be slow, but as long as you’re making forward progress, it’s worth it to stick to the task.</p>
+<p>Occasionally, though, you’ll hit a wall. You may have been working on one particular problem for an hour, you’ve paged through dozens of search results looking for a solution, and nothing you’re trying is resolving the issue.</p>
+<p>When this happens, the best thing you can do is document the problem explaining:</p>
+<ul>
+<li>What are you trying to accomplish</li>
+<li>What is happening and how is it different from what you’re expecting</li>
+<li>What have you tried so far</li>
+<li>What supporting details do you have (error logs/messages, software versions, etc.)</li>
+</ul>
+<p>Form this information into a question and post it on a forum. In the context of this course, that can be the course Issues Forum. Beyond the course, it can be an industry forum like StackOverflow.</p>
+<p><strong>Then step away from the problem.</strong> This can be the hardest part, but it’s the most productive thing you can do. In my experience, while I let the problem sit, the following happens:</p>
+<ul>
+<li>Taking a break gives my brain a chance to reset. In getting fresh air, taking a walk, or making a meal, I find I often come up with a fresh perspective on the issue.</li>
+<li>I’ll often get a reply to the question I posted that either a) solves the problem directly or b) gives me additional information to work with.</li>
+</ul>
+<p>More often than not, when I return to a problem that I had spent hours banging my head against, I find I can get to the bottom of it in 15-20 minutes.</p>
+<p>Of course, the above strategy only works when you have the time to step away from the issue. Because of this, do your best to avoid putting work off to the last minute.</p>
+<h2 id="jump-the-majority-of-the-time-the-problem-is-of-our-own-making"><span id="the-majority-of-the-time-the-problem-is-of-our-own-making" class="heading-anchor"></span><a href="#the-majority-of-the-time-the-problem-is-of-our-own-making" class="heading-link"><i class="fa fa-link"></i> </a> The majority of the time, the problem is of our own making</h2>
+<p>In my early days of learning to code, when I ran into issues I often found myself trying to place the blame outwards...</p>
+<ul>
+<li>I’d assume it’s because the instructions I was following were incorrect.</li>
+<li>Or the plugin I was working with wasn't functioning as it should.</li>
+<li>Or the framework I was using was poorly written.</li>
+</ul>
+<p>Surely the problem had to be beyond my code, because I had double and triple checked my work.</p>
+<p>Spoiler alert: the majority of the time, the error was in my work, I just hadn’t spotted it yet.</p>
+<p>Because of this, I’ve learned to not waste time blaming outside sources - blame never fixes a problem. Blame shuts you down to solutions. Instead, I’m always open to the possibility that the error is in my code (because it often is).</p>
+<p>This isn’t to say the problem is <em>never</em> because of some outside source - that happens too - it’s just saying you shouldn't start there and get stuck there. If you do think the problem is because of an outside source, take time to investigate that source and understand what it’s doing/why. In the process, you’ll probably learn something, you may spot a bug, or you just may come to an understanding of why your code isn’t functioning as you’ve written it.</p>
+<h2 id="jump-change-is-hard"><span id="change-is-hard" class="heading-anchor"></span><a href="#change-is-hard" class="heading-link"><i class="fa fa-link"></i> </a> Change is hard</h2>
+<p>I can think of several key turning points in my career where I had to make a shift in what technologies I was working with,  and how I felt at that shift: disgruntled.</p>
+<p>My frustrations came because how I did things prior seemed to be working fine, and most importantly, I was comfortable with the techniques I already knew.</p>
+<p>When I started working with the new technology, it felt slow and cumbersome. As a result, I blamed the technology, thinking it wasn’t as good as what I was used to, or its design was too complex, or the documentation was too confusing.</p>
+<p>With time, I slowly became more fluent at the new technology, and started to appreciate its benefits and how it was more sophisticated/evolved than my prior approaches. Eventually, it got to the point where it was hard to imagine not using that new technology.</p>
+<p>Because of these experiences, whenever I'm tackling something new and find myself with that disgruntled feeling, I remind myself it’s all part of the process of learning.</p>
+</div></div></div></div></div>
+
+    
+
+<script type="text/javascript">
+  document.write=function() {};
+  document.writeln=function() {};
+</script>
+
+<script>
+        // Make data available to Vue
+        var course = {"key":"e28","path":"\/e28","listing":"DGMD E-28","name":"Single-Page Applications \u0026 Interfaces with Vue.js","header":"DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js","lectureDay":"Tuesday","lectureTime":"8pm Eastern","startDay":"Tue Sep 1","shortName":"","quickLinks":1,"youtubePlaylist":"","projects":{"p1":{"published":true,"id":"p1","title":"Project 1: Fundamentals","week":7,"due":"Tue Oct 20 @ 11:59pm Eastern","readme":"https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6"},"p2":{"published":true,"id":"p2","title":"Project 2: SPA, SFCs, server interaction","week":11,"due":"Tue Nov 17 @ 11:59pm Eastern","readme":"https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38"},"p3":{"published":true,"id":"p3","title":"Project 3: Vuex, authentication, validation, testing","week":14,"due":"Tue Dec 15 @ 11:59pm Eastern","readme":"https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe"}},"links":{"forum":"https:\/\/github.com\/susanBuck\/e28-fall20\/issues","canvas":"https:\/\/canvas.harvard.edu\/courses\/79543","canvasAssignments":"https:\/\/canvas.harvard.edu\/courses\/79543\/assignments"},"nav":{"COURSE INFO":{"\/e28\/":"Home","\/e28\/prereq":"Prerequisites","\/e28\/policies":"Policies","\/e28\/work":"Work \u0026 Grading","\/e28\/software":"Software","\/e28\/forum-about":"Forum"},"Fall 2020":{"\/e28\/schedule":"Schedule\/Topics","\/e28\/projects":"Projects"}}};
+        var user = null;
+
+    </script>
+    <script src="../../../js/notes.js"></script>
+
+
+
+</body></html>

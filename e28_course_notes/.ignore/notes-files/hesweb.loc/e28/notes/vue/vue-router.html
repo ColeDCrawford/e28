@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/vue-router</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="router-link-exact-active router-link-active">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h2 id="jump-what-is-routing"><span id="what-is-routing" class="heading-anchor"></span><a
+                 href="#what-is-routing" class="heading-link"><i class="fa fa-link"></i> </a> What is routing?</h2>
+            <p>In a very basic web site, there’s a correlation between a URL and directories/files on a server.</p>
+            <p>For example, if we visit a URL like <code v-pre>http://example.com/apply/project-manager</code> the path
+              <code v-pre>/apply/project-manager</code> would imply there’s a file being loaded from
+              <code v-pre>/apply/project-manager/index.html</code>.
+            </p>
+            <p>Robust web applications - regardless of whether they’re server or client-side focussed - rarely rely on
+              this model anymore.</p>
+            <p>Instead, they use a <strong>routing system</strong>, where paths on the URL do not correlate to
+              directories/files; instead they correlate to <strong>instructions or actions that the application responds
+                to</strong>.</p>
+            <p>So a URL <code v-pre>http://example.com/apply/project-manager</code> could, generally speaking, be
+              translated
+              to a set of instructions/procedures such as <em>Show job listing for project manager</em>.</p>
+            <p>In a routing system, all traffic is typically processed through an <strong>entry-point file</strong> that
+              reads the given request, dissects the path, and invokes the application to return the appropriate response
+              based on the requested path.</p>
+            <p>In our client-side focussed applications, that entry-point file is <code v-pre>index.html</code>.</p>
+            <p>In order for this to work, servers must be configured to override their default behavior of mapping paths
+              to directories/files. Instead, the server is configured to treat every request as a request to
+              <code v-pre>index.html</code>.
+            </p>
+            <h2 id="jump-install-vue-router"><span id="install-vue-router" class="heading-anchor"></span><a
+                 href="#install-vue-router" class="heading-link"><i class="fa fa-link"></i> </a> Install Vue Router</h2>
+            <p>Now that we understand the general idea of how a routing system works, let’s get one set up in our
+              ZipFoods application.</p>
+            <p>To do this, we’ll utilize <a href="https://router.vuejs.org"><strong>Vue Router</strong></a>, the
+              official routing library for Vue.js, which offers the following features:</p>
+            <ul>
+              <li>Dynamic URLs (HTML5 history mode or hash mode, with auto-fallback in IE9)</li>
+              <li>Modular, component-based router configuration</li>
+              <li>Route params, query, wildcards</li>
+              <li>View transition effects powered by Vue.js' transition system</li>
+              <li>Links with automatic active CSS classes</li>
+              <li>Nested route/view mapping</li>
+              <li>Customizable scroll behavior</li>
+            </ul>
+            <p>Begin by installing <code v-pre>vue-router</code> in the zipfoods directory:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install vue-router 
+</code></pre>
+            <p>This will download <code v-pre>vue-router</code> to your <code v-pre>node_modules</code> directory and
+              update your
+              <code v-pre>package.json</code> file, listing vue-router as a new dependency.
+            </p>
+            <h2 id="jump-set-up-vue-router"><span id="set-up-vue-router" class="heading-anchor"></span><a
+                 href="#set-up-vue-router" class="heading-link"><i class="fa fa-link"></i> </a> Set up Vue Router</h2>
+            <p>In <code v-pre>/src/main.js</code> import and register the VueRouter:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// src/main.js</span>
+<span class="hljs-keyword">import</span> VueRouter <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-router'</span>;
+Vue.use(VueRouter);
+</code></pre>
+            <p>Next, create a new <code v-pre>VueRouter</code> instance, passing in an option <code
+                    v-code>routes</code> that is set
+              to an array of routes, each containing a <em>path</em> and a corresponding <em>component</em> to load when
+              that path is triggered. Additionally, add an option <code v-pre>mode</code> that is set to <code
+                    v-code>history</code>.
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// src/main.js</span>
+<span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter({
+    <span class="hljs-attr">routes</span>: [
+        { <span class="hljs-attr">path</span>: <span class="hljs-string">'/'</span>, <span class="hljs-attr">component</span>: HomePage },
+        { <span class="hljs-attr">path</span>: <span class="hljs-string">'/products'</span>, <span class="hljs-attr">component</span>: ProductsPage },
+        { <span class="hljs-attr">path</span>: <span class="hljs-string">'/categories'</span>, <span class="hljs-attr">component</span>: CategoriesPage },
+    ],
+    <span class="hljs-attr">mode</span>: <span class="hljs-string">'history'</span>,
+})
+</code></pre>
+            <p>You’ll now need to import your components into <code v-pre>main.js</code>:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// src/main.js</span>
+<span class="hljs-keyword">import</span> HomePage <span class="hljs-keyword">from</span> <span class="hljs-string">'@/components/pages/HomePage.vue'</span>;
+<span class="hljs-keyword">import</span> ProductsPage <span class="hljs-keyword">from</span> <span class="hljs-string">'@/components/pages/ProductsPage.vue'</span>;
+<span class="hljs-keyword">import</span> CategoriesPage <span class="hljs-keyword">from</span> <span class="hljs-string">'@/components/pages/CategoriesPage.vue'</span>;
+</code></pre>
+            <p>Finally, in the code that creates your root Vue instance, add a <code v-pre>router</code> option that is
+              set to
+              the <code v-pre>router</code> instance you just defined:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// src/main.js</span>
+<span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">router</span>: router, <span class="hljs-comment">// &lt;-- NEW</span>
+    <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> h(App),
+}).$mount(<span class="hljs-string">'#app'</span>)
+</code></pre>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>The process for setting up Vue router in Vue 3 is a little different; see <a
+                   href="vue3.html#vue-router">Vue 3: Vue router</a> for more details</p>
+            </div>
+            <h2 id="jump-utilize-vue-router"><span id="utilize-vue-router" class="heading-anchor"></span><a
+                 href="#utilize-vue-router" class="heading-link"><i class="fa fa-link"></i> </a> Utilize Vue Router</h2>
+            <p>With our router set up in <em>main.js</em>, we next want to modify our App component
+              (<code v-pre>/src/components/App.vue</code>) to utilize the routing system.</p>
+            <p>To do this, first swap out your old nav from our “DIY SPA” examples with this new nav that uses Vue
+              Router's <a href="https://router.vuejs.org/api/#router-link-props"><em>&lt;router-link&gt;</em></a>
+              component to generate each link:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">router-link</span>
+                <span class="hljs-attr">v-for</span>=<span class="hljs-string">"link in links"</span>
+                <span class="hljs-attr">v-bind:key</span>=<span class="hljs-string">"link"</span>
+                <span class="hljs-attr">v-bind:to</span>=<span class="hljs-string">"paths[link]"</span>
+                <span class="hljs-attr">exact</span>
+                &gt;</span>{{ link }}<span class="hljs-tag">&lt;/<span class="hljs-name">router-link</span>
+            &gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+</code></pre>
+            <p>Then, below this nav and in place of our dynamic component from our “DIY SPA” examples, we’ll add Vue
+              Router’s <a href="https://router.vuejs.org/api/#router-view"><em>&lt;router-view&gt;</em></a> component,
+              which is where Vue router will inject our components when they’re requested:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">router-view</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span>
+</code></pre>
+            <p>Finally, we’ll set up the following data properties which are used to define our links in the template:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">/* Store links in an array to maintain order */</span>
+<span class="hljs-attr">links</span>: [<span class="hljs-string">'home'</span>, <span class="hljs-string">'products'</span>, <span class="hljs-string">'categories'</span>],
+
+<span class="hljs-comment">/* Map links to the appropriate component */</span>
+<span class="hljs-attr">paths</span>: {
+    <span class="hljs-attr">home</span>: <span class="hljs-string">'/'</span>,
+    <span class="hljs-attr">products</span>: <span class="hljs-string">'/products'</span>,
+    <span class="hljs-attr">categories</span>: <span class="hljs-string">'/categories'</span>,
+},
+</code></pre>
+            <h2 id="jump-test-it"><span id="test-it" class="heading-anchor"></span><a href="#test-it"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Test it...</h2>
+            <p>With the above code in place, access your site and click each link in the navigation. As you do this,
+              observe the following:</p>
+            <ol>
+              <li>
+                <p>Each link triggers the loading of a new component</p>
+              </li>
+              <li>
+                <p>There is no page refresh happening as links are clicked</p>
+              </li>
+              <li>
+                <p>The “active” link has a class <code v-pre>router-link-active</code> automatically applied to it
+                  (this class
+                  is pre-styled in the provided <code v-pre>zipfoods.scss</code>)
+                  ]
+                  In lecture I will demonstrate/explain what happens when we experiment with the following changes:</p>
+              </li>
+              <li>
+                <p>Using a regular hyperlink instead of <em>&lt;router-link&gt;</em></p>
+              </li>
+              <li>
+                <p>Removing the <code v-pre>exact</code> attribute from the <em>&lt;router-link&gt;</em></p>
+              </li>
+              <li>
+                <p>Removing the <code v-pre>mode : 'history'</code> option from our Vue router configuration</p>
+              </li>
+            </ol>
+            <h2 id="jump-dynamic-route-matching"><span id="dynamic-route-matching" class="heading-anchor"></span><a
+                 href="#dynamic-route-matching" class="heading-link"><i class="fa fa-link"></i> </a> Dynamic route
+              matching</h2>
+            <p>All of the paths we’ve defined so far have been very specific, e.g. <code v-pre>/products</code>,
+              <code v-pre>/categories</code>.
+            </p>
+            <p>Often times, though, it’s useful to have paths that can accept dynamic segments, allowing us to pass
+              information as part of the path.</p>
+            <p>As an example, let’s build a “page” to show the details for an individual product that uses a dynamic
+              path segment to indicate which product (by id) should be known.</p>
+            <p>In other words, we want to be able to invoke <code v-pre>/products/x</code> where x is the id of the
+              product we
+              wish to load.</p>
+            <p>To begin, define a new route which will invoke a <code v-pre>ProductPage</code> component:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">const</span> routes = [
+    <span class="hljs-comment">// [...]</span>
+    { <span class="hljs-attr">path</span>: <span class="hljs-string">'/products/:id'</span>, <span class="hljs-attr">component</span>: ProductPage, <span class="hljs-attr">props</span>: <span class="hljs-literal">true</span> },
+]
+</code></pre>
+            <p>Note the following two things about this route that make it unique from the previous routes we set up:
+            </p>
+            <ol>
+              <li>The use of <code v-pre>:id</code> in the path; the <code v-pre>:</code> indicates it’s a
+                <strong>dynamic
+                  segment</strong>, and it could match any value.
+              </li>
+              <li>The addition of <code v-pre>props: true</code> which will make it so the values from our dynamic
+                segments
+                will be available as props within our component.</li>
+            </ol>
+            <p>To accommodate this route, create a new component, <code
+                    v-code>/src/components/pages/ProductPage.vue</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'product-page'</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Product {{ id }}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-attr">props</span>: [<span class="hljs-string">'id'</span>], <span class="hljs-comment">// comes from our dynamic segment</span>
+    data() {
+        <span class="hljs-keyword">return</span> {
+        };
+    }
+};
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <p>After completing the above, you should be able to visit a route like <code v-pre>/products/1</code> and
+              see the
+              following, demonstrating how we're able to successfully get data from the URL and use it in the component:
+            </p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-product-page-start@2x.png"
+                 style="max-width:830px;" alt="">
+            <h2 id="jump-exercise"><span id="exercise" class="heading-anchor"></span><a href="#exercise"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Exercise</h2>
+            <p>Building on what we’ve done so far, I’d like you to continue to update ZipFoods, accomplishing the
+              following:</p>
+            <ol>
+              <li>Make it so ProductPage loads the details for the individually requested product, showing the product
+                name, image, description, and price.</li>
+              <li>If an id is requested for a product that does not exist (e.g. 999), display a message <em>Product [id]
+                  not found</em> followed by a link to go back to the <em>Products</em> page.</li>
+              <li>Streamline the ProductsPage so it shows just the products title and image (no description or price).
+              </li>
+              <li>Make it so that each product shown on the ProductsPage links to individual page for that product.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+  document.write=function() {};
+  document.writeln=function() {};
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

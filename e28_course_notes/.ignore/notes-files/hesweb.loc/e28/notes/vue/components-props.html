@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/components-props</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="router-link-exact-active router-link-active">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-component-props"><span id="component-props" class="heading-anchor"></span><a
+                 href="#component-props" class="heading-link"><i class="fa fa-link"></i> </a> Component Props</h1>
+            <p>An option you can add to components are <em>props</em>, which provide a way to <strong>pass data to child
+                components</strong>.</p>
+            <p>The following code defines two <em>props</em>, <code v-pre>number</code> and <code v-pre>winner</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Component Vue instance</span>
+Vue.component(<span class="hljs-string">'round-detail'</span>, {
+    <span class="hljs-comment">// [...]</span>
+    <span class="hljs-comment">// Define 2 props</span>
+    <span class="hljs-attr">props</span>: [<span class="hljs-string">'number'</span>, <span class="hljs-string">'winner'</span>],
+    <span class="hljs-comment">// [...]</span>
+});
+</code></pre>
+            <p>You can use the props in the component template just like you would a regular data property. In this
+              example we use text interpolation (<code v-pre>{{ }}</code>) to output the prop values:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/x-template'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'round-detail'</span>&gt;</span><span class="handlebars"><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">'!deleted'</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Round #: </span><span class="hljs-template-variable">{{ number }}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Winner: </span><span class="hljs-template-variable">{{ winner }}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">'deleteRound'</span>&gt;</span>Delete round<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <p>Then, we set the prop values via custom HTML attributes on the component. To start, we’ll hard-code some
+              example values:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'app'</span> <span class="hljs-attr">v-cloak</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> <span class="hljs-attr">number</span>=<span class="hljs-string">1</span> <span class="hljs-attr">winner</span>=<span class="hljs-string">'Player'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">round-detail</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> <span class="hljs-attr">number</span>=<span class="hljs-string">2</span> <span class="hljs-attr">winner</span>=<span class="hljs-string">'Player'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">round-detail</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> <span class="hljs-attr">number</span>=<span class="hljs-string">3</span> <span class="hljs-attr">winner</span>=<span class="hljs-string">'Computer'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">round-detail</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-component-prop-results@2x.png"
+                 style="max-width:659px;" alt="">
+            <h2 id="jump-prop-case-conventions"><span id="prop-case-conventions" class="heading-anchor"></span><a
+                 href="#prop-case-conventions" class="heading-link"><i class="fa fa-link"></i> </a> Prop case
+              conventions</h2>
+            <p>If your prop names require multiple words, they can be defined in your JavaScript using camelCase casing,
+              but they should be written in the HTML as kebab-case.</p>
+            <p>For example, let’s imagine our prop <code v-pre>winner</code> (1 word) was instead named <code
+                    v-code>who-won</code>
+              (2 words).</p>
+            <p>When defining the prop, we could reference it as <code v-pre>whoWon</code> (camelCase):</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Component Vue instance</span>
+Vue.component(<span class="hljs-string">'round-detail'</span>, {
+    <span class="hljs-comment">// [...]</span>
+    <span class="hljs-comment">// Define 2 props</span>
+    <span class="hljs-attr">props</span>: [<span class="hljs-string">'number'</span>, <span class="hljs-string">'whoWon'</span>],
+    <span class="hljs-comment">// [...]</span>
+});
+</code></pre>
+            <p>But when using it in the HTML, we have to write it as <code v-pre>who-won</code> (kebab-case):</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> <span class="hljs-attr">number</span>=<span class="hljs-string">1</span> <span class="hljs-attr">who-won</span>=<span class="hljs-string">'Player'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">round-detail</span>&gt;</span>
+</code></pre>
+            <p>This is necessary because HTML attributes are always translated to lowercase, so if we were to use the
+              camelCase style as it was defined, <code v-pre>whoWon</code>, it would actually render as <code
+                    v-code>whowon</code> in
+              the HTML. This would produce the following warning in the console:</p>
+            <pre v-pre><code v-pre class="language-xml hljs">[Vue tip]: Prop "whowon" is passed to component <span class="hljs-tag">&lt;<span class="hljs-name">Anonymous</span>&gt;</span>, but the declared prop name is "whoWon". 
+Note that HTML attributes are case-insensitive and camelCased props need to use their kebab-case equivalents when using in-DOM templates. 
+You should probably use "who-won" instead of "whoWon".
+</code></pre>
+            <p>Vue uses automatic translation on props, so when you define it as <code v-pre>whoWon</code>, it can be
+              used as
+              <code v-pre>who-won</code>.
+            </p>
+            <h2 id="jump-dynamic-props"><span id="dynamic-props" class="heading-anchor"></span><a href="#dynamic-props"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Dynamic props</h2>
+            <p>When the values for your props are <strong>static</strong>, like in the above examples, you can define
+              them using regular HTML custom attributes.</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> <span class="hljs-attr">number</span>=<span class="hljs-string">1</span> <span class="hljs-attr">winner</span>=<span class="hljs-string">'Player'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">round-detail</span>&gt;</span>
+</code></pre>
+            <p>If the values are dynamic, however, you should use <code v-pre>v-bind</code>.</p>
+            <p>For example, imagine we had a data prop in our root Vue instance that contained the details about all the
+              rounds:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// root Vue instance</span>
+<span class="hljs-keyword">let</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">rounds</span>: [
+            { <span class="hljs-attr">number</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">winner</span>: <span class="hljs-string">'Player'</span> },
+            { <span class="hljs-attr">number</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">winner</span>: <span class="hljs-string">'Player'</span> },
+            { <span class="hljs-attr">number</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">winner</span>: <span class="hljs-string">'Computer'</span> },
+        ]
+    }
+});
+</code></pre>
+            <p>When we iterate through this data, invoking a <code v-pre>round-detail</code> component for each piece,
+              we
+              could pass in the appropriate props (<code v-pre>number</code> and <code v-pre>winner</code>) using
+              <code v-pre>v-bind</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'app'</span> <span class="hljs-attr">v-cloak</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> 
+        <span class="hljs-attr">v-for</span>=<span class="hljs-string">'round in rounds'</span> 
+        <span class="hljs-attr">v-bind:number</span>=<span class="hljs-string">'round.number'</span> 
+        <span class="hljs-attr">v-bind:winner</span>=<span class="hljs-string">'round.winner'</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">round-detail</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-keys"><span id="keys" class="heading-anchor"></span><a href="#keys" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Keys</h2>
+            <p>The above code technically works, but it will produce a warning:</p>
+            <pre v-pre><code v-pre class="language-xml hljs">[Vue tip]: <span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"round in rounds"</span>&gt;</span>: component lists rendered 
+with v-for should have explicit keys. 
+See https://vuejs.org/guide/list.html#key for more info.
+</code></pre>
+            <p>As the warning notes, it’s expected that when you render lists of components, each component should have
+              an <strong>explicit</strong> key, which is some unique value to represent that component. These keys are
+              used to help Vue most efficiently re-order data (should the data need to be re-ordered).</p>
+            <p>For this example, knowing the round numbers should be unique, we can use that as our key to make the
+              warning go away:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'app'</span> <span class="hljs-attr">v-cloak</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">round-detail</span> 
+            <span class="hljs-attr">v-for</span>=<span class="hljs-string">'round in rounds'</span> 
+            <span class="hljs-attr">v-bind:key</span>=<span class="hljs-string">'round.number'</span> 
+            <span class="hljs-attr">v-bind:number</span>=<span class="hljs-string">'round.number'</span> 
+            <span class="hljs-attr">v-bind:winner</span>=<span class="hljs-string">'round.winner'</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">round-detail</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <p>For a more detailed explanation of why the key is necessary, here’s a paragraph from the <a
+                 href="https://vuejs.org/v2/api/#key">Vue API on keys</a>:</p>
+            <blockquote>
+              <blockquote>
+                <p>The key special attribute is primarily used as a hint for Vue’s virtual DOM algorithm to identify
+                  VNodes when diffing the new list of nodes against the old list. Without keys, Vue uses an algorithm
+                  that minimizes element movement and tries to patch/reuse elements of the same type in-place as much as
+                  possible. With keys, it will reorder elements based on the order change of keys, and elements with
+                  keys that are no longer present will always be removed/destroyed.</p>
+              </blockquote>
+            </blockquote>
+            <h2 id="jump-prop-types-and-default-values"><span id="prop-types-and-default-values"
+                    class="heading-anchor"></span><a href="#prop-types-and-default-values" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Prop types and default values</h2>
+            <p>So far our props have been simple strings:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">props: [<span class="hljs-string">'number'</span>, <span class="hljs-string">'winner'</span>],
+</code></pre>
+            <p>We can expand on this using objects that allow us to specify the expected <strong>data type</strong> for
+              each prop and/or a <strong>default value</strong>:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">props: {
+    <span class="hljs-comment">// `number` has an expected data type of Number, and it defaults to 0</span>
+    <span class="hljs-attr">number</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-built_in">Number</span>,
+        <span class="hljs-attr">default</span>: <span class="hljs-number">0</span>
+    },
+    <span class="hljs-comment">// `winner` has an expected data type of String, with no default set</span>
+    <span class="hljs-attr">winner</span>: <span class="hljs-built_in">String</span>,
+},
+</code></pre>
+            <p>If a prop value contradicts it’s expected data type, Vue will show a warning in the console.</p>
+            <!-- Useful for components that are shared with others; indicates how you expect the component to be used -->
+            <p>When specifying data types, the following options exist:</p>
+            <ul>
+              <li>
+                <code v-pre>null</code> - Will pass any type validation; equivalent to not setting a type
+              </li>
+              <li>
+                <code v-pre>String</code>
+              </li>
+              <li>
+                <code v-pre>Number</code>
+              </li>
+              <li>
+                <code v-pre>Boolean</code>
+              </li>
+              <li>
+                <code v-pre>Array</code>
+              </li>
+              <li>
+                <code v-pre>Object</code>
+              </li>
+              <li>
+                <code v-pre>Date</code>
+              </li>
+              <li>
+                <code v-pre>Function</code>
+              </li>
+              <li>
+                <code v-pre>Symbol</code>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

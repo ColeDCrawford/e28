@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/lifecycle-hooks</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="router-link-exact-active router-link-active">Lifecycle hooks</a>
+            </li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-lifecycle-hooks"><span id="lifecycle-hooks" class="heading-anchor"></span><a
+                 href="#lifecycle-hooks" class="heading-link"><i class="fa fa-link"></i> </a> Lifecycle hooks</h1>
+            <p>When you create a new Vue instance, a series of initialization steps are taken:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-lifecycle@2x.png" style="max-width:350px;"
+                 alt="">
+            <p>We don’t have to worry too much right now about the details of these steps - but it is helpful to know
+              that you can use a <strong>lifecycle hook</strong> to trigger your own code at any of these steps.</p>
+            <p>The most common event to add a lifecycle hook to is <strong>mounted</strong>, because at that step Vue’s
+              reactivity system has been initialized and the Virtual DOM has been created. In short, all the things
+              you’ll probably want to work with will be available.</p>
+            <p>Lifecycle hooks are added as options to your Vue instance:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">mounted</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        alert(<span class="hljs-string">'The app has been mounted!'</span>);
+    }
+})
+</code></pre>
+            <p>Use the <code v-pre>mounted</code> lifecycle hook to perform any actions you want to occur immediately
+              once the
+              application has loaded.</p>
+            <h2 id="jump-use-case-load-user-data-via-ajax-on-page-load"><span
+                    id="use-case-load-user-data-via-ajax-on-page-load" class="heading-anchor"></span><a
+                 href="#use-case-load-user-data-via-ajax-on-page-load" class="heading-link"><i class="fa fa-link"></i>
+              </a> Use case: Load user data via Ajax on page load</h2>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">user</span> : {}
+    },
+    <span class="hljs-attr">methods</span>: {
+        loadUserData() {
+            $data = {} <span class="hljs-comment">// ... code here to send a request to the server for user data ...</span>
+            <span class="hljs-keyword">return</span> $data;
+        }
+    }
+    mounted() {
+        <span class="hljs-keyword">this</span>.user = <span class="hljs-keyword">this</span>.loadUserData();
+    }
+})
+</code></pre>
+            <h2 id="jump-use-cade-set-a-data-property-to-the-result-of-a-method-invocation"><span
+                    id="use-cade-set-a-data-property-to-the-result-of-a-method-invocation"
+                    class="heading-anchor"></span><a
+                 href="#use-cade-set-a-data-property-to-the-result-of-a-method-invocation" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Use cade: Set a data property to the result of a method invocation</h2>
+            <p>It is not possible to initialize a data property to be the result of a method invocation, as methods are
+              initialized <em>after</em> data properties are initialized in the Vue lifecycle. For example, this would
+              fail:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">randomNumber</span> : <span class="hljs-keyword">this</span>.getRandomNumber(); <span class="hljs-comment">// Fail!</span>
+    },
+    <span class="hljs-attr">methods</span>: {
+        getRandomNumber() {
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor((<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">10</span>) + <span class="hljs-number">1</span>);
+        },
+    }
+})
+</code></pre>
+            <p>Because of this, if you want to set a data property to be the result of a method, you have to update it
+              as part of the mounted lifecycle hook. Example:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">randomNumber</span> : <span class="hljs-literal">null</span>, <span class="hljs-comment">// Initialize as null; we'll update it in the mounted hook below</span>
+    },
+    <span class="hljs-attr">methods</span>: {
+        getRandomNumber() {
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor((<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">10</span>) + <span class="hljs-number">1</span>);
+        },
+    },
+    mounted {
+        <span class="hljs-comment">// Now we can invoke the getRandomNumber method:</span>
+        <span class="hljs-keyword">this</span>.randomNumber = <span class="hljs-keyword">this</span>.getRandomNumber();
+    }
+})
+</code></pre>
+            <h2 id="jump-lifecycle-hooks-reference"><span id="lifecycle-hooks-reference"
+                    class="heading-anchor"></span><a href="#lifecycle-hooks-reference" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Lifecycle hooks reference</h2>
+            <p>Source: <a
+                 href="https://vuejs.org/v2/api/#Options-Lifecycle-Hooks">https://vuejs.org/v2/api/#Options-Lifecycle-Hooks</a>
+            </p>
+            <h3 id="jump-beforecreate"><span id="beforecreate" class="heading-anchor"></span><a href="#beforecreate"
+                 class="heading-link"><i class="fa fa-link"></i> </a> beforeCreate</h3>
+            <p>Called synchronously immediately after the instance has been initialized, before data observation and
+              event/watcher setup.</p>
+            <h3 id="jump-created"><span id="created" class="heading-anchor"></span><a href="#created"
+                 class="heading-link"><i class="fa fa-link"></i> </a> created</h3>
+            <p>Called synchronously after the instance is created. At this stage, the instance has finished processing
+              the options which means the following have been set up: data observation, computed properties, methods,
+              watch/event callbacks. However, the mounting phase has not been started, and the <code v-pre>$el</code>
+              property
+              will not be available yet.</p>
+            <h3 id="jump-beforemount"><span id="beforemount" class="heading-anchor"></span><a href="#beforemount"
+                 class="heading-link"><i class="fa fa-link"></i> </a> beforeMount</h3>
+            <p>Called right before the mounting begins: the render function is about to be called for the first time.
+            </p>
+            <h3 id="jump-mounted"><span id="mounted" class="heading-anchor"></span><a href="#mounted"
+                 class="heading-link"><i class="fa fa-link"></i> </a> mounted</h3>
+            <p>Called after the instance has been mounted, where el is replaced by the newly created
+              <code v-pre>vm.$el</code>. If the root instance is mounted to an in-document element, <code
+                    v-code>vm.$el</code> will
+              also be in-document when mounted is called.
+            </p>
+            <h3 id="jump-beforeupdate"><span id="beforeupdate" class="heading-anchor"></span><a href="#beforeupdate"
+                 class="heading-link"><i class="fa fa-link"></i> </a> beforeUpdate</h3>
+            <p>Called when data changes, before the DOM is patched. This is a good place to access the existing DOM
+              before an update, e.g. to remove manually added event listeners.</p>
+            <h3 id="jump-updated"><span id="updated" class="heading-anchor"></span><a href="#updated"
+                 class="heading-link"><i class="fa fa-link"></i> </a> updated</h3>
+            <p>Called after a data change causes the virtual DOM to be re-rendered and patched. The component’s DOM will
+              have been updated when this hook is called, so you can perform DOM-dependent operations here. However, in
+              most cases you should avoid changing state inside the hook. To react to state changes, it’s usually better
+              to use a computed property or watcher instead.</p>
+            <h3 id="jump-activated"><span id="activated" class="heading-anchor"></span><a href="#activated"
+                 class="heading-link"><i class="fa fa-link"></i> </a> activated</h3>
+            <p>Called when a kept-alive component is activated.</p>
+            <h3 id="jump-deactivated"><span id="deactivated" class="heading-anchor"></span><a href="#deactivated"
+                 class="heading-link"><i class="fa fa-link"></i> </a> deactivated</h3>
+            <p>Called when a kept-alive component is deactivated.</p>
+            <h3 id="jump-beforedestroy"><span id="beforedestroy" class="heading-anchor"></span><a href="#beforedestroy"
+                 class="heading-link"><i class="fa fa-link"></i> </a> beforeDestroy</h3>
+            <p>Called right before a Vue instance is destroyed. At this stage the instance is still fully functional.
+            </p>
+            <h3 id="jump-destroyed"><span id="destroyed" class="heading-anchor"></span><a href="#destroyed"
+                 class="heading-link"><i class="fa fa-link"></i> </a> destroyed</h3>
+            <p>Called after a Vue instance has been destroyed. When this hook is called, all directives of the Vue
+              instance have been unbound, all event listeners have been removed, and all child Vue instances have also
+              been destroyed.</p>
+            <h3 id="jump-errorcaptured"><span id="errorcaptured" class="heading-anchor"></span><a href="#errorcaptured"
+                 class="heading-link"><i class="fa fa-link"></i> </a> errorCaptured</h3>
+            <p>Called when an error from any descendent component is captured. The hook receives three arguments: the
+              error, the component instance that triggered the error, and a string containing information on where the
+              error was captured. The hook can return false to stop the error from propagating further.</p>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>There were a couple minor changes to lifecycle hooks in Vue v3; <a
+                   href="vue3.html#lifecycle-changes">read more here...</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

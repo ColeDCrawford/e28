@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/zipfoods-start</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="router-link-exact-active router-link-active">Building ZipFoods</a>
+            </li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-building-zipfoods"><span id="building-zipfoods" class="heading-anchor"></span><a
+                 href="#building-zipfoods" class="heading-link"><i class="fa fa-link"></i> </a> Building ZipFoods</h1>
+            <p>To demonstrate building an application with Vue.js, we’re going to work on a hypothetical project called
+              ZipFoods:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/zipfoods-logo@2x.png" style="max-width:300px;"
+                 alt="">
+            <blockquote>
+              <p>“ZipFoods is your one-stop-shop for convenient online grocery shopping in the greater Boston area.”</p>
+            </blockquote>
+            <p>Because this app will be built from the ground up, we’ll use the “comprehensive” approach and initialize
+              the project with Vue CLI.</p>
+            <p>To begin, we’ll warm-up by setting up some features to review concepts we’ve already covered. Then, we’ll
+              begin to improve on these features and pull in more advanced concepts.</p>
+            <h2 id="jump-setup"><span id="setup" class="heading-anchor"></span><a href="#setup" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Setup</h2>
+            <pre v-pre><code v-pre class="language-bash hljs">$ vue create zipfoods
+</code></pre>
+            <p>Once the application is created:</p>
+            <ul>
+              <li>Skim through the file structure, noting the following key files/locations:
+                <ul>
+                  <li>
+                    <code v-pre>/public/index.html</code> Main HTML file that contains the <code v-pre>#app</code> div
+                    to which the
+                    root component will be mounted
+                  </li>
+                  <li>
+                    <code v-pre>/src/main.js</code> Main JS file that will mount the root component, <code
+                          v-code>App.vue</code>
+                  </li>
+                  <li>
+                    <code v-pre>/src/components</code> Where component files will go
+                  </li>
+                  <li>
+                    <code v-pre>/src/components/App.vue</code> Root component
+                  </li>
+                </ul>
+              </li>
+              <li>Update the <code v-pre>&lt;title&gt;</code> element in <code v-pre>/public/index.html</code> to read
+                <code v-pre>ZipFoods</code>
+              </li>
+              <li>Download <a
+                   href="../../../../codeload.github.com/susanBuck/zipfoods-assets/zip/zipfoods-assets-master.zip">zipfoods-assets.zip</a>.
+                From this download...
+                <ul>
+                  <li>Put <code v-pre>images</code> in <code v-pre>/src/images/</code>
+                  </li>
+                  <li>Put <code v-pre>favicon.ico</code> in <code v-pre>/public/</code>
+                  </li>
+                  <li>Put <code v-pre>styles/zipfoods.scss</code> in <code v-pre>/src/assets/scss/</code>
+                  </li>
+                </ul>
+              </li>
+              <li>Update the root component (<code v-pre>App.vue</code>):
+                <ul>
+                  <li>Remove the <code v-pre>HelloWorld</code> component</li>
+                  <li>Clear the default styles</li>
+                  <li>Update the logo to display the ZipFoods logo (<code
+                          v-code>@/assets/images/zipfoods-logo.png</code>) with
+                    an id of <code v-pre>logo</code>.</li>
+                  <li>Below the logo, display this paragraph of text:
+                    <code
+                          v-code>ZipFoods is your one-stop-shop for convenient online grocery shopping in the greater Boston area.</code>
+                  </li>
+                </ul>
+              </li>
+              <li>Run <code v-pre>npm install -D sass-loader sass</code> to install the webpack sass-loader (<a
+                   href="https://cli.vuejs.org/guide/css.html#pre-processors">ref</a>)</li>
+              <li>In <code v-pre>App.vue</code> import the provided <code v-pre>zipfoods.scss</code> file:</li>
+            </ul>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">'scss'</span>&gt;</span><span class="css">
+<span class="hljs-keyword">@import</span> <span class="hljs-string">'@/assets/scss/zipfoods.scss'</span>;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+</code></pre>
+            <p>Once you’ve completed the above steps, your application should look like this:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-zipfoods-spa-start@2x.png"
+                 style="max-width:903px;" alt="">
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>In the work done above, we made reference to two paths:</p>
+              <ol>
+                <li>The logo at <code v-pre>@/assets/images/zipfoods-logo.png</code>
+                </li>
+                <li>The .scss file at <code v-pre>'@/assets/scss/zipfoods.scss'</code>
+                </li>
+              </ol>
+              <p>In both these examples, we referenced the path using an <code v-pre>@</code> sign, which is an alias
+                Vue CLI
+                configures with webpack that points to your <code v-pre>src/</code> directory.</p>
+            </div>
+            <h2 id="jump-showproduct-component"><span id="showproduct-component" class="heading-anchor"></span><a
+                 href="#showproduct-component" class="heading-link"><i class="fa fa-link"></i> </a> ShowProduct
+              component</h2>
+            <p>Our first goal with this application is to <strong>display a list of products on the home page</strong>.
+            </p>
+            <p>To accomplish this, first create a <code v-pre>ShowProduct</code> (singular) single file component that
+              will:
+            </p>
+            <ul>
+              <li>accept a <code v-pre>prop</code> called <code v-pre>product</code>
+              </li>
+              <li>display an individual product</li>
+            </ul>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>Revisit the <a href="single-file-components.html">Single File Component</a> note set for a refresher on
+                the structure of your SFCs.</p>
+            </div>
+            <p>Here’s a template you can use:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-comment">&lt;!-- src/components/ShowProduct.vue --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"product"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"product-name"</span>&gt;</span>{{ product.name }}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">img</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">"product-thumb"</span>
+            <span class="hljs-attr">:src</span>=<span class="hljs-string">"require('@/assets/images/products/1.jpg')"</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"product-description"</span>&gt;</span>{{ product.description }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"product-price"</span>&gt;</span>${{ product.price }}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+</code></pre>
+            <p>Note that the image src is set using Vue loader’s <em>require</em> method, which forces the asset to be
+              loaded via a webpack module request, ensuring that our images will end up in our built <code
+                    v-code>dist/</code>
+              folder.</p>
+            <p><strong>Ref: <a href="https://vue-loader.vuejs.org/guide/asset-url.html#asset-url-handling">Vue Loader:
+                  Asset URL Handling</a></strong></p>
+            <h2 id="jump-showproducts-component"><span id="showproducts-component" class="heading-anchor"></span><a
+                 href="#showproducts-component" class="heading-link"><i class="fa fa-link"></i> </a> ShowProducts
+              component</h2>
+            <p>Next, create a <code v-pre>ShowProducts</code> (plural) component that will:</p>
+            <ul>
+              <li>display a list of products using the above-created <code v-pre>ShowProduct</code> component</li>
+              <li>have a data property called <code v-pre>products</code> that is set to the array of data you’ll find
+                in the
+                <code v-pre>products.txt</code> file in the <code v-pre>zipfood-assets</code> download.
+              </li>
+            </ul>
+            <p>Here’s a template you can use:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-comment">&lt;!-- src/components/ShowProducts.vue --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"products"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Products<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">show-product</span>
+            <span class="hljs-attr">v-for</span>=<span class="hljs-string">"product in products"</span>
+            <span class="hljs-attr">:key</span>=<span class="hljs-string">"product.id"</span>
+            <span class="hljs-attr">:product</span>=<span class="hljs-string">"product"</span>
+        &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">show-product</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+</code></pre>
+            <p>Once you’ve completed the above steps, load the <code v-pre>ShowProducts</code> component in the root
+              App
+              component so that your application looks like this:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-zipfoods-spa-products@2x.png"
+                 style="max-width:882px;" alt="">
+            <h2 id="jump-showfeatured-component"><span id="showfeatured-component" class="heading-anchor"></span><a
+                 href="#showfeatured-component" class="heading-link"><i class="fa fa-link"></i> </a> ShowFeatured
+              component</h2>
+            <p>Next, we want to <strong>display a list of products within the predefined category of
+                <code v-pre>snacks</code></strong>.</p>
+            <p>Steps:</p>
+            <ul>
+              <li>Create a <code v-pre>ShowFeatured</code> component that will display a <code v-pre>h2</code> that
+                says
+                <code v-pre>Featured Products</code>, followed by a list of products that are categorized as
+                <code v-pre>snacks</code>.
+              </li>
+              <li>Define a <code v-pre>products</code> data property, just like you did in <code
+                      v-code>ShowProducts</code> (If you
+                think this feels redundant, you are correct! We’ll optimize it in the next step)</li>
+              <li>Set up a component prop <code v-pre>category</code> that will be used to decide which category of
+                products
+                should be featured.</li>
+              <li>Define a computed property <code v-pre>featuredProducts</code> that filters the products based on the
+                <code v-pre>category</code> prop:
+              </li>
+            </ul>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Computed property in src/components/ShowFeatured.vue</span>
+featuredProducts() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.products.filter(<span class="hljs-function">(<span class="hljs-params">product</span>) =&gt;</span> {
+        <span class="hljs-keyword">return</span> product.categories.includes(<span class="hljs-keyword">this</span>.category);
+    }, <span class="hljs-keyword">this</span>.category);
+},
+</code></pre>
+            <p>Here’s a template you can use for this component:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-comment">&lt;!-- src/components/ShowFeatured.vue --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"featured"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Featured Products<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"cleanList"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"product in featuredProducts"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"product.id"</span>&gt;</span>
+                {{ product.name }}
+            <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+</code></pre>
+            <p>And here’s an example of how this component could be invoked:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-comment">&lt;!-- src/App.vue --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">show-featured</span> <span class="hljs-attr">:category</span>=<span class="hljs-string">'"snacks"'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">show-featured</span>&gt;</span>
+</code></pre>
+            <p>Once you’ve completed the above steps, your application should look like this:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-zipfoods-spa-featured@2x.png"
+                 style="max-width:882px;" alt="">
+            <h2 id="jump-address-redundant-data-with-props"><span id="address-redundant-data-with-props"
+                    class="heading-anchor"></span><a href="#address-redundant-data-with-props" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Address redundant data with props</h2>
+            <p>Right now the products data is hard-coded in both the <code v-pre>ShowProduct</code> and
+              <code v-pre>ShowFeatured</code> components.
+            </p>
+            <p>Refactor this so that the data is defined in the root <code v-pre>App.vue</code> component and passed as
+              a prop
+              to each component.</p>
+            <p>The application should look the same after you’ve completed this step.</p>
+            <h2 id="jump-address-redundant-data-with-a-single-source-of-truth"><span
+                    id="address-redundant-data-with-a-single-source-of-truth" class="heading-anchor"></span><a
+                 href="#address-redundant-data-with-a-single-source-of-truth" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Address redundant data with a “single source of truth”</h2>
+            <p>The above <code v-pre>props</code> approach worked, but because so many components in this application
+              will
+              rely on our products data, we should think of a better way of sharing this data.</p>
+            <p>First, let’s extract the data into its own file, <code v-pre>/src/products.js</code>, where we’ll define
+              it as
+              a constant:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// src/products.js</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> products = [ ...products go here ... ]
+</code></pre>
+            <p>Typically our data comes from some external/compartmentalized source, such as a database or a data API,
+              so this feels like a good step in that direction.</p>
+            <p>Next, any component that needs access to the data can import it:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> { products } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/products.js'</span>;
+</code></pre>
+            <p>And define it as one of its data properties:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">data() {
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-attr">products</span>: products
+        };
+    },
+</code></pre>
+            <p>We won’t be programming any of our components to alter our products data, but if we did, this setup would
+              be ideal because any changes to our products would be reactive across all components because the data was
+              coming from one ”single source of truth”.</p>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>As applications grow in complexity, it’s worth checking out <a href="https://vuex.vuejs.org/">Vuex</a>,
+                a state-management library for Vue. Vuex is overkill for where we’re at right now, though, but we’ll
+                take a look at it in a future lecture.</p>
+            </div>
+            <h2 id="jump-recap"><span id="recap" class="heading-anchor"></span><a href="#recap" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Recap</h2>
+            <p>This was our warmup. We set up a simple interface, a few components, and introduced some data.
+              We also introduced assets such as images and CSS into our application. Along the way, we reviewed some of
+              the Vue.js concepts we’ve been studying this semester.</p>
+            <p>Next up, <a href="diy-spa.html">let’s evolve this application to a SPA...</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

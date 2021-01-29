@@ -13,7 +13,12 @@ describe('Weekend Warrior', () => {
 
   it('Shows all MP routes', ()=> {
     cy.visit('/routes')
-    cy.contains('.card-title', route.name);
-    cy.get('.card').should('have.length', 2243);
+    cy.get('.card').should('have.length', 2243); // all the MP routes loaded
+    cy.contains('.card-title', route.name); // specific route loaded
+    
+  })
+
+  it('Individual Route route works', () => {
+
   })
 })

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Heads or Tails?</title>
+    <script src='script.js' defer></script>
+
+    <style>
+        .message,
+        #results {
+            display: none;
+        }
+
+        div {
+            padding: 10px 0;
+        }
+
+        #winMessage {
+            color: green;
+        }
+
+        #loseMessage {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Heads or Tails?</h1>
+
+    <div>
+        <label><input type='radio' value='heads' name='choice' checked> heads</label>
+        <label><input type='radio' value='tails' name='choice'> tails</label>
+    </div>
+
+    <button id='flipBtn'>Flip!</button>
+
+    <div id='results'>
+        The coin landed on <span id='flipMessage'></span>.
+        <div id='winMessage' class='message'>You won the toss! :-)</div>
+        <div id='loseMessage' class='message'>You lost the toss :-(</div>
+    </div>
+
+</body>
+
+</html>

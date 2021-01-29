@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/intro</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="router-link-exact-active router-link-active">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-vuejs-introduction"><span id="vuejs-introduction" class="heading-anchor"></span><a
+                 href="#vuejs-introduction" class="heading-link"><i class="fa fa-link"></i> </a> Vue.js Introduction
+            </h1>
+            <blockquote>
+              <p>Vue is a <strong>progressive framework</strong> for building user interfaces. Unlike other monolithic
+                frameworks, Vue is designed from the ground up to be <strong>incrementally adoptable</strong>. The core
+                library is focused on the view layer only, and is <strong>easy to pick up and integrate with other
+                  libraries or existing projects</strong>. On the other hand, Vue is also perfectly capable of powering
+                sophisticated Single-Page Applications when used in combination with modern tooling and supporting
+                libraries. <a href="https://vuejs.org/v2/guide/">-ref</a></p>
+            </blockquote>
+            <h2 id="jump-versions"><span id="versions" class="heading-anchor"></span><a href="#versions"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Versions</h2>
+            <ul>
+              <li>Vue.js is currently at version 2, but v3 is <a
+                   href="https://madewithvuejs.com/blog/vue-3-roundup">close to being released</a>.</li>
+              <li>v3 adds new features, some new ways of doing things, and an optimized infrastructure for how Vue works
+                behind the scenes.</li>
+              <li>The v2 way of doing things will continue to work in v3; v3 is “additive”.</li>
+              <li>Since v3 is not yet released, we’ll start this semester with v2 and discuss v3 differences at some
+                point in the semester. Reasoning:
+                <ul>
+                  <li>Even when v3 is released, it will take some time for Vue related tools and dependencies to update
+                    to work with v3.</li>
+                  <li>v2 code in existing projects, tutorials, etc. will continue to be around for a while, so it’ll be
+                    useful to understand how it works.</li>
+                </ul>
+              </li>
+            </ul>
+            <h2 id="jump-documentation"><span id="documentation" class="heading-anchor"></span><a href="#documentation"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Documentation</h2>
+            <ul>
+              <li>
+                <a href="https://vuejs.org">https://vuejs.org</a>
+              </li>
+              <li>
+                <a href="https://vuejs.org/v2/guide">https://vuejs.org/v2/guide</a>
+              </li>
+              <li>
+                <a href="https://vuejs.org/v2/api">https://vuejs.org/v2/api</a>
+              </li>
+            </ul>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>Vue docs for v3 beta can be viewed at <a href="https://v3.vuejs.org">https://v3.vuejs.org</a></p>
+            </div>
+            <h2 id="jump-example-setup"><span id="example-setup" class="heading-anchor"></span><a href="#example-setup"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Example setup</h2>
+            <pre v-pre><code v-pre class="language-xml hljs">e28/intro
+    index.html
+    script.js
+</code></pre>
+            <p>Starting template for <code v-pre>index.html</code>:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">'en'</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Week 3 - Vue.js Intro<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">'utf-8'</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-importing-the-framework"><span id="importing-the-framework" class="heading-anchor"></span><a
+                 href="#importing-the-framework" class="heading-link"><i class="fa fa-link"></i> </a> Importing the
+              framework</h2>
+            <p>In the head of your <code v-pre>index.html</code> page:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'</span> <span class="hljs-attr">defer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <ul>
+              <li>We’re using the development version - full warnings, debug mode, non-minified</li>
+              <li>Loading from an external source; <em>CDN - Content Delivery Network</em>
+              </li>
+              <li>Later in the semester, we’ll look at using <em>NPM (Node Package Management)</em> to import, and we’ll
+                address using the production version (no warnings, minified)</li>
+              <li>Including the <code v-pre>vue.js</code> script will register the global variable <code
+                      v-code>Vue</code>
+              </li>
+            </ul>
+            <h2 id="jump-new-vue-instance"><span id="new-vue-instance" class="heading-anchor"></span><a
+                 href="#new-vue-instance" class="heading-link"><i class="fa fa-link"></i> </a> New Vue instance</h2>
+            <p>In <code v-pre>script.js</code>, create a new Vue instance using the <code v-pre>Vue</code> function;
+              this function
+              will receive an object of options.</p>
+            <p>Options are how we’ll configure the properties and behaviors of our application.</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// The Vue instance</span>
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Vue({
+  <span class="hljs-comment">// Options</span>
+})
+</code></pre>
+            <h2 id="jump-emelem-option"><span id="emelem-option" class="heading-anchor"></span><a href="#emelem-option"
+                 class="heading-link"><i class="fa fa-link"></i> </a> <em>el</em> Option</h2>
+            <p>First option: <a href="https://vuejs.org/v2/api/#el"><code v-pre>el</code></a></p>
+            <p>Specifies what DOM element in our HTML that Vue will “mount” on.</p>
+            <p>To use it, we first need a DOM element to mount to, so add the following div to the body of your page:
+            </p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'app'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <p>Then add the <code v-pre>el</code> option and configure it to <code v-pre>#app</code> (the id of the
+              div):</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>
+});
+</code></pre>
+            <p><strong>Test it</strong></p>
+            <ul>
+              <li>Note the <em>Vue in development mode</em> message in the console</li>
+              <li>Note the <em>Vue</em> tab in your web inspector is active (assuming you’ve installed <a
+                   href="https://github.com/vuejs/vue-devtools">Vue dev tools</a>)</li>
+              <li>Note how you can access the Vue instance from the console
+                <ul>
+                  <li>Accessible via the <code v-pre>app</code> variable you created</li>
+                  <li>Instance properties are prefixed with a dollar sign, e.g. <code v-pre>app.$el</code>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <h2 id="jump-emdataem-option"><span id="emdataem-option" class="heading-anchor"></span><a
+                 href="#emdataem-option" class="heading-link"><i class="fa fa-link"></i> </a> <em>data</em> Option</h2>
+            <p>Next option: <a href="https://vuejs.org/v2/api/#data"><code v-pre>data</code></a></p>
+            <p>The <em>data</em> option lets us pass an object of user-defined data to the Vue instance, e.g.:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">var</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">playerName</span>: <span class="hljs-string">'Susan'</span>
+    }
+});
+</code></pre>
+            <h2 id="jump-text-interpolation"><span id="text-interpolation" class="heading-anchor"></span><a
+                 href="#text-interpolation" class="heading-link"><i class="fa fa-link"></i> </a> Text interpolation</h2>
+            <p>Now that we have some data, we want to start to bind it to the page.</p>
+            <p>One way to due this is via <a href="https://vuejs.org/v2/guide/syntax.html#Text"><strong>text
+                  interpolation</strong></a> using the double curly bracket aka “mustache syntax”:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'app'</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Player: {{ playerName }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-reactive-data"><span id="reactive-data" class="heading-anchor"></span><a href="#reactive-data"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Reactive data</h2>
+            <p>Data in our Vue app is all <strong>reactive</strong> - meaning if it changes in one place, that change
+              will propagate wherever else that data is being used.</p>
+            <p>To demonstrate this, we can update <em>playerName</em> via the console and see the change reflected where
+              it’s printed on the page:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">app.$data.playerName = <span class="hljs-string">'Joe'</span>
+</code></pre>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>All user-defined data is aliased, so you can also use the shorthand <code v-pre>app.playerName</code>
+                when
+                accessing it via the console.</p>
+            </div>
+            <p>You can also update <code v-pre>playerName</code> directly from Vue dev tools:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-edit-data-from-dev-tools@2x.png"
+                 style="max-width:2044px;" alt="">
+            <h2 id="jump-directives-v-model"><span id="directives-v-model" class="heading-anchor"></span><a
+                 href="#directives-v-model" class="heading-link"><i class="fa fa-link"></i> </a> Directives / v-model
+            </h2>
+            <p>So far, our player’s name was hardcoded. It would be more useful if the visitor could type in their name.
+            </p>
+            <p>To accomplish this, we’ll look at another approach to binding, this time using something called
+              <code v-pre>v-model</code>.
+            </p>
+            <p>As an example, add an HTML text input with the attribute <code v-pre>v-model='playerName'</code>:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'app'</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>What’s your name? <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text'</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">'playerName'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Player: {{ playerName }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <p><code v-pre>v-model</code> is our first example of a Vue <a
+                 href="https://vuejs.org/v2/guide/syntax.html#Directives">directive</a>.</p>
+            <p><strong>Vue directives...</strong></p>
+            <ul>
+              <li>are attributes you add to your HTML elements</li>
+              <li>are always prefixed with <code v-pre>v-</code>
+              </li>
+              <li>provide a way to reactively apply side effects to the DOM</li>
+            </ul>
+            <p><strong>The <a href="https://vuejs.org/v2/api/#v-model"><code v-pre>v-model</code></a>
+                directive...</strong>
+            </p>
+            <ul>
+              <li>creates a two-way binding between a data property and a form input</li>
+              <li>two-way binding:
+                <ul>
+                  <li>if the data property <code v-pre>playerName</code> changes, so will the value of the text input
+                  </li>
+                  <li>if the value of the text input changes, so will the <code v-pre>playerName</code> data property
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <p>To observe the reactive binding, try any of the following:</p>
+            <ul>
+              <li>Type something into the text input</li>
+              <li>Alter <code v-pre>app.playerName</code> via the console</li>
+              <li>Alter <code v-pre>app.playerName</code> via Vue dev tools</li>
+            </ul>
+            <h2 id="jump-conditional-rendering-with-codev-ifcode"><span id="conditional-rendering-with-codev-ifcode"
+                    class="heading-anchor"></span><a href="#conditional-rendering-with-codev-ifcode"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Conditional rendering with <code
+                    v-code>v-if</code></h2>
+            <p>Another useful directive is <a
+                 href="https://vuejs.org/v2/guide/conditional.html#v-if"><code v-pre>v-if</code></a> which allows you
+              to
+              conditionally toggle the presence of an element on the page.</p>
+            <p>The <code v-pre>v-if</code> directive accepts a boolean expression; if that expression returns true, the
+              corresponding element will be visible.</p>
+            <p>As an example, lets make it so that the player name output only displays once we have a player name:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">'playerName != null'</span>&gt;</span>
+    Player: {{ playerName }}
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <p>In order for the above example to work, update your <code v-pre>playerName</code> data property so it’s
+              null on
+              page load:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">playerName</span>: <span class="hljs-literal">null</span>
+    }
+});
+</code></pre>
+            <p>Other conditional-related directives include <code v-pre>v-else</code>, <code v-pre>v-else-if</code>,
+              and
+              <code v-pre>v-show</code>, which we’ll dig into more detail later.
+            </p>
+            <h2 id="jump-directive-arguments-event-listening-with-codev-oncode"><span
+                    id="directive-arguments-event-listening-with-codev-oncode" class="heading-anchor"></span><a
+                 href="#directive-arguments-event-listening-with-codev-oncode" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Directive arguments / Event listening with <code v-pre>v-on</code></h2>
+            <p>Some directives can take arguments which are added following a colon after the directive name.</p>
+            <p>Here’s an example with the <code v-pre>v-on</code> directive, which is accepting the argument
+              <code v-pre>click</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-on:click</span>=<span class="hljs-string">'doSomething'</span>&gt;</span>Do Something<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+</code></pre>
+            <p>Other acceptable arguments for <code v-pre>v-on</code> include any native browser event as: <code
+                    v-code>click</code>,
+              <code v-pre>change</code>, <code v-pre>mouseover</code>, <code v-pre>mouseout</code>, <code
+                    v-code>keydown</code>, etc.
+            </p>
+            <p>For an example, imagine our game needed the user to make guesses, and we want to keep track of those
+              guesses.</p>
+            <p>To accomplish this, we’ll add two data properties: <code v-pre>guess</code> and <code
+                    v-code>guesses</code>...</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-string">'playerName'</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">guess</span>: <span class="hljs-literal">null</span>, <span class="hljs-comment">// New</span>
+        <span class="hljs-string">'guesses'</span>: [] <span class="hljs-comment">// New</span>
+    }
+});
+</code></pre>
+            <p>...and set up a text input to receive a guess, plus a button to record the guess:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Guess the number <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text'</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">'guess'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-on:click</span>=<span class="hljs-string">'guesses.push(guess)'</span>&gt;</span>Guess<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+</code></pre>
+            <p>We can also use a <a href="https://vuejs.org/v2/api/#v-for"><code v-pre>v-for</code></a> directive to
+              loop
+              through and output each guess:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">'thisGuess in guesses'</span>&gt;</span>{{ thisGuess }}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-cloaking"><span id="cloaking" class="heading-anchor"></span><a href="#cloaking"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Cloaking</h2>
+            <p>You may observe that when your page is first loaded, any text interpolations show up in their raw form.
+              For example, if we had this HTML:</p>
+            <pre v-pre><code class="hljs django"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'app'</span>&gt;</span>
+    </span><span class="hljs-template-variable">{{ playerName }}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</span></code></pre>
+            <p>You’d see the following on initial page load, very briefly:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-pre-cloaking@2x.png" style="max-width:627px;"
+                 alt="">
+            <p>Once the JavaScript is loaded and the Vue instance is created and bound to the DOM, though, the content
+              of the page is rendered as expected.</p>
+            <p>That momentary “blip” of un-rendered content, though, looks odd to the user.</p>
+            <p>To avoid it, Vue uses a “cloaking” technique to hide the app before it’s ready.</p>
+            <p>To do this, add the <a href="https://vuejs.org/v2/api/#v-cloak"><em>v-cloak</em></a> directive to your
+              app:</p>
+            <pre v-pre><code class="hljs gml">&lt;<span class="hljs-keyword">div</span> <span class="hljs-symbol">id</span>=<span class="hljs-string">'app'</span> v-cloak&gt;
+    [...]
+&lt;/<span class="hljs-keyword">div</span>&gt;
+</code></pre>
+            <p>Then, style this directive in your CSS so it’s invisible:</p>
+            <pre v-pre><code v-pre class="language-css hljs"><span class="hljs-selector-attr">[v-cloak]</span> {
+    <span class="hljs-attribute">display</span>: none
+}
+</code></pre>
+            <p>Once the Vue instance is compiled, the <code v-pre>v-cloak</code> directive will be removed, so the app
+              will
+              become visible.</p>
+            <h2 id="jump-summary"><span id="summary" class="heading-anchor"></span><a href="#summary"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Summary</h2>
+            <ul>
+              <li>When we initialize a Vue instance it’s <strong>mounted</strong> to an element on the page</li>
+              <li>The Vue instance is configured via <strong>options</strong> such as <code v-pre>el</code> and
+                <code v-pre>data</code>
+              </li>
+              <li>One way data can be bound to the page is by using <strong>text interpolation</strong> using the
+                mustache syntax <code v-pre>{{ }}</code>
+              </li>
+              <li>Vue <strong>directives</strong> appear in the form of a prefixed HTML attribute (<code
+                      v-code>v-</code>);
+                they’re used to apply side effects to elements.</li>
+              <li>Example directives include: <code v-pre>v-model</code>, <code v-pre>v-if</code>, <code
+                      v-code>v-on</code>,
+                <code v-pre>v-for</code>
+              </li>
+              <li>Some Vue directives accept <strong>arguments</strong> (e.g. <code v-pre>v-on:click</code>)</li>
+              <li>The directive <code v-pre>v-cloak</code> can be used to hide unrendered Vue content seen on initial
+                page
+                load.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+  document.write=function() {};
+  document.writeln=function() {};
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/auth-usage</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="router-link-exact-active router-link-active">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-authentication-usage"><span id="authentication-usage" class="heading-anchor"></span><a
+                 href="#authentication-usage" class="heading-link"><i class="fa fa-link"></i> </a> Authentication: Usage
+            </h1>
+            <p>To demonstrate authentication, we’ll create an <em>Account</em> page with the following functionality:
+            </p>
+            <ul>
+              <li>Prompt for login if user is not authenticated</li>
+              <li>If user is authenticated, show their favorite products and the option to log out</li>
+            </ul>
+            <p>Below is the code for this page (<em>AccountPage.vue</em>), which you can trigger by adding a
+              <em>Account</em> route and navigation link to your application.
+            </p>
+            <p><code v-pre>/components/pages/AccountPage.vue</code>:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"account-page"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"user"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Hi, {{ user.name }}!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"favorites"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>Your Favorites<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"favorites &amp;&amp; favorites.length == 0"</span>&gt;</span>
+                    No favorites yet.
+                <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"(favorite, key) in favorites"</span> <span class="hljs-attr">v-bind:key</span>=<span class="hljs-string">"key"</span>&gt;</span>
+                    {{ favorite.name }}
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"logout"</span>&gt;</span>Logout<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-else</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"loginForm"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">small</span>
+                &gt;</span>(Form is prefilled for demonstration purposes; remove in final
+                application)<span class="hljs-tag">&lt;/<span class="hljs-name">small</span>
+            &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Email: <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"data.email"</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>
+                    &gt;</span>Password: <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"data.password"</span>
+                /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"login"</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"errors"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"error"</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"(error, index) in errors"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"index"</span>&gt;</span>
+                    {{ error }}
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">import</span> { axios } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/common/app.js'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    data() {
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-comment">// Form is prefilled for demonstration purposes; remove in final application</span>
+            <span class="hljs-attr">data</span>: {
+                <span class="hljs-attr">email</span>: <span class="hljs-string">'jill@harvard.edu'</span>,
+                <span class="hljs-attr">password</span>: <span class="hljs-string">'asdfasdf'</span>,
+            },
+            <span class="hljs-attr">errors</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">favorites</span>: <span class="hljs-literal">null</span>,
+        };
+    },
+    <span class="hljs-attr">computed</span>: {
+        user() {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.state.user;
+        },
+        products() {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.state.products;
+        },
+    },
+    <span class="hljs-attr">methods</span>: {
+        login() {
+            axios.post(<span class="hljs-string">'login'</span>, <span class="hljs-keyword">this</span>.data).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+                <span class="hljs-keyword">if</span> (response.data.authenticated) {
+                    <span class="hljs-keyword">this</span>.$store.commit(<span class="hljs-string">'setUser'</span>, response.data.user);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">this</span>.errors = response.data.errors;
+                }
+            });
+        },
+        logout() {
+            axios.post(<span class="hljs-string">'logout'</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+                <span class="hljs-keyword">if</span> (response.data.success) {
+                    <span class="hljs-keyword">this</span>.$store.commit(<span class="hljs-string">'setUser'</span>, <span class="hljs-literal">null</span>);
+                }
+            });
+        },
+    },
+    <span class="hljs-attr">watch</span>: {
+        <span class="hljs-comment">// When user changes, update favorites</span>
+        user() {
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.user) {
+                <span class="hljs-keyword">this</span>.favorites = [];
+
+                axios
+                    .get(<span class="hljs-string">'favorite/query'</span>, {
+                        <span class="hljs-attr">params</span>: { <span class="hljs-attr">user_id</span>: <span class="hljs-keyword">this</span>.user.id },
+                    })
+                    .then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+                        <span class="hljs-comment">// Iterate through the favorites (response.data.results), loading the product information for each favorite</span>
+                        <span class="hljs-keyword">this</span>.favorites = response.data.results.map(
+                            <span class="hljs-function">(<span class="hljs-params">favorite</span>) =&gt;</span> {
+                                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.getters.getProductById(
+                                    favorite.product_id
+                                );
+                            }
+                        );
+                    });
+            }
+        },
+    }
+};
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>The final version of the <em>AccountPage.vue</em> is a little different then the code shared above.</p>
+              <p>See the final version here: <a
+                   href="https://github.com/susanBuck/e28/blob/master/zipfoods/src/components/pages/AccountPage.vue">zipfoods/src/components/pages/AccountPage.vue</a>
+              </p>
+              <p>I have not updated the code shared above because I want it to be consistent with the code you see in
+                the lecture video. However, be sure to skim through the final version and note the following
+                differences:</p>
+              <ol>
+                <li>
+                  <strong>How favorites are retrieved from the API</strong>
+                  <ul>
+                    <li>
+                      <strong>Original</strong>: Loads favorites using using the <em>query</em> API route
+                      (<code v-pre>/favorite/query</code>), searching where field <code v-pre>user_id</code> matches
+                      the id of the
+                      authenticated user.
+                    </li>
+                    <li>
+                      <strong>Current:</strong> Loads favorites using the <em>index</em> API route
+                      (<code v-pre>/favorite</code>) since we know this will return just the favorites for the
+                      currently
+                      auth'd user by default.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>When/how favorites are loaded</strong>
+                  <ul>
+                    <li>
+                      <strong>Original</strong>: Has a bug where the favorites are only loaded once the user logs in.
+                      This means if you're logged in and come back to the account page, you won't see your favorites.
+                    </li>
+                    <li>
+                      <strong>Current:</strong> This bug is fixed by loading favorites both when the user changes, and
+                      when mounted.
+                    </li>
+                  </ul>
+                </li>
+              </ol>
+            </div>
+            <h2 id="jump-user-state-in-vuex"><span id="user-state-in-vuex" class="heading-anchor"></span><a
+                 href="#user-state-in-vuex" class="heading-link"><i class="fa fa-link"></i> </a> User state in Vuex</h2>
+            <p>As you can see in the <em>login</em> and <em>logout</em> method in the above code, we’ll be storing the
+              <em>user</em> information in our Vuex store.
+            </p>
+            <p>To accommodate this add the following <em>state</em> property in your <code
+                    v-code>/common/store.js</code> file:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">state: {
+    <span class="hljs-comment">// [...existing state...]</span>
+    <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>
+}
+</code></pre>
+            <p>As well as the following <em>mutation</em>:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">mutations: {
+    <span class="hljs-comment">// [...existing mutations...]</span>
+    setUser(state, payload) {
+        state.user = payload;
+    },
+}
+</code></pre>
+            <p>And the following <em>action</em>:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">actions: {
+    <span class="hljs-comment">// [...existing actions...]</span>
+    authUser(context) {
+        axios.post(<span class="hljs-string">'auth'</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+            <span class="hljs-keyword">if</span> (response.data.authenticated) {
+                context.commit(<span class="hljs-string">'setUser'</span>, response.data.user);
+            }
+        });
+    },
+}
+</code></pre>
+            <p>Finally, within a <code v-pre>mounted</code> lifecycle hook in <code v-pre>/App.vue</code>, dispatch
+              the
+              <em>authUser</em> action to set our user state whenever the application is loaded:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">mounted() {   
+    <span class="hljs-keyword">this</span>.$store.dispatch(<span class="hljs-string">'authUser'</span>);
+}
+</code></pre>
+            <h2 id="jump-with-credentials"><span id="with-credentials" class="heading-anchor"></span><a
+                 href="#with-credentials" class="heading-link"><i class="fa fa-link"></i> </a> With credentials</h2>
+            <p>In <code v-pre>/common/app.js</code> update your axios config so the attribute <em>withCredentials</em>
+              is set
+              to <em>true</em>:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> axios = <span class="hljs-built_in">require</span>(<span class="hljs-string">'axios'</span>).create({
+    <span class="hljs-comment">// [...]</span>
+    <span class="hljs-attr">withCredentials</span>: <span class="hljs-literal">true</span>
+});
+</code></pre>
+            <p>This will make it so that our http cookies (set by a successful login response) are included as part of
+              our ajax requests to our server API (ref: <a
+                 href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials">XMLHttpRequest.withCredentials</a>).
+            </p>
+            <h2 id="jump-test-it"><span id="test-it" class="heading-anchor"></span><a href="#test-it"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Test it</h2>
+            <ul>
+              <li>Upon visiting <em>/account</em> you should see a login form.</li>
+              <li>If login is unsuccessful, error feedback should be shown.</li>
+              <li>If login is successful it should identify you by name and show you a list of your favorites.</li>
+              <li>Logged in users should see an option to logout.</li>
+              <li>Once logged in, if you refresh the page (or leave and come back), you should still be logged in.</li>
+            </ul>
+            <p>If the application fails to maintain your login state, it’s likely because the authorization cookie was
+              not set. This can happen if there is a mismatch/incorrect value set as part of your server API
+              configurations discussed in the <a href="auth-intro.html#checklist">Authorization configuration notes</a>.
+              Revisit those notes and double check your work.</p>
+            <h2 id="jump-restricting-routes"><span id="restricting-routes" class="heading-anchor"></span><a
+                 href="#restricting-routes" class="heading-link"><i class="fa fa-link"></i> </a> Restricting routes</h2>
+            <p>Next, let’s see how we can restrict certain routes based on whether the visitor is logged in or not. To
+              accomplish this, we’ll explore <a
+                 href="https://router.vuejs.org/guide/advanced/navigation-guards.html#global-before-guards">Vue Router
+                Navigation Guards</a> and set it up so that only logged-in users can access the <em>Add a Product</em>
+              page.</p>
+            <p>If a user is not logged in and they attempt to visit the <em>Add a Product</em> page they should be
+              redirected to a <code v-pre>/denied</code> route that loads the following <em>AccessDeniedPage.vue</em>
+              SFC:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Access Denied<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+</code></pre>
+            <p>Implementing this will require a fair amount of new routing code, so it’d make sense to export our
+              routing logic to its own file at <code v-pre>common/router.js</code> and then import it into
+              <code v-pre>main.js</code>.
+            </p>
+            <p>Below is the code we can use in this new router file. This code is commented with explanations, and will
+              be reviewed during lecture.</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> VueRouter <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-router'</span>;
+<span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">'@/common/store'</span>;
+
+<span class="hljs-comment">// Define all the routes of our application</span>
+<span class="hljs-keyword">const</span> routes = [
+    {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/'</span>,
+        <span class="hljs-comment">// Rather than having to have separate import statements at the top of this page for each component</span>
+        <span class="hljs-comment">// Here's a simple way we can directly make our components available</span>
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/HomePage.vue'</span>),
+    },
+    {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/products'</span>,
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/ProductsPage.vue'</span>),
+    },
+    {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/categories'</span>,
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/CategoriesPage.vue'</span>),
+    },
+    {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/products/new'</span>,
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/ProductCreatePage.vue'</span>),
+        <span class="hljs-comment">// Note the addition of this meta attribute:</span>
+        <span class="hljs-attr">meta</span>: {
+            <span class="hljs-attr">requiresAuth</span>: <span class="hljs-literal">true</span>
+        }
+    },
+    {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/products/:id'</span>,
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/ProductPage.vue'</span>),
+        <span class="hljs-attr">props</span>: <span class="hljs-literal">true</span>,
+    },
+    {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/account'</span>,
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/AccountPage.vue'</span>),
+    },
+    {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/cart'</span>,
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/CartPage.vue'</span>),
+    },
+    {
+        <span class="hljs-comment">// This is a route we can direct the user to if they try to access a part of the site they don't have privileges for</span>
+        <span class="hljs-attr">path</span>: <span class="hljs-string">'/denied'</span>,
+        <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'@/components/pages/AccessDeniedPage.vue'</span>),
+    },
+
+];
+
+<span class="hljs-comment">// Initialize our router</span>
+<span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter({
+    routes,
+    <span class="hljs-attr">mode</span>: <span class="hljs-string">'history'</span>
+})
+
+<span class="hljs-comment">// beforeEach provides a way to execute some code before a route is resolved</span>
+<span class="hljs-comment">// Ref: https://router.vuejs.org/guide/advanced/navigation-guards.html</span>
+router.beforeEach(<span class="hljs-keyword">async</span> (to, <span class="hljs-keyword">from</span>, next) =&gt; {
+
+    <span class="hljs-comment">// Exact the meta information from our routes</span>
+    <span class="hljs-comment">// Ref: https://router.vuejs.org/guide/advanced/meta.html#route-meta-fields</span>
+    <span class="hljs-keyword">const</span> requiresAuth = to.matched.some(<span class="hljs-function"><span class="hljs-params">record</span> =&gt;</span> record.meta.requiresAuth);
+
+    <span class="hljs-keyword">if</span> (requiresAuth &amp;&amp; !store.state.user) {
+        <span class="hljs-comment">// If they’re trying to access a requiresAuth route and they're not logged in, they get sent to "Access Denied" page</span>
+        next(<span class="hljs-string">'/denied'</span>);
+    }
+    <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// In all other circumstances, send them to the route they requested</span>
+        next();
+    }
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> router;
+</code></pre>
+            <p>With the above updates to our routing system, you should confirm the following:</p>
+            <ul>
+              <li>When logged in, you can view the <em>Add a Product</em> page</li>
+              <li>When not logged in, you see the <em>Access Denied</em> page when attempting to visit the <em>Add a
+                  Product</em> page</li>
+            </ul>
+            <h2 id="jump-practice"><span id="practice" class="heading-anchor"></span><a href="#practice"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Practice</h2>
+            <ul>
+              <li>Add registration functionality</li>
+              <li>On the individual product page, set up a <em>Add to favorites</em> feature
+                <ul>
+                  <li>This feature should only be visible if the visitor is logged in</li>
+                  <li>If the product is already one of the user’s favorite, there should be a button that says
+                    <em>Remove from favorites</em>
+                  </li>
+                  <li>If the product is not one of the user’s favorites, there should be a button that says <em>Add to
+                      favorites</em>
+                  </li>
+                  <li>Use the <em>Store a new favorite</em> and <em>Delete an existing favorite</em> API functionality
+                    to accomplish the above tasks</li>
+                </ul>
+              </li>
+            </ul>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-favorite-api-functionality@2x.png"
+                 style="max-width:980px;" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

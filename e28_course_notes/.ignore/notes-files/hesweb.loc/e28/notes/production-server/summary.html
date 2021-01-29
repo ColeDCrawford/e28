@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: production-server/summary</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="production-domains.html" class="">Production domains</a></li>
+            <li><a href="deploying.html" class="">Deploying</a></li>
+            <li><a href="summary.html" class="router-link-exact-active router-link-active">Summary</a></li>
+            <li><a href="https.html" class="">HTTPS</a></li>
+            <li><a href="static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="../vue/intro.html" class="">Introduction</a></li>
+            <li><a href="../vue/behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="../vue/vue3.html" class="">Vue 3</a></li>
+            <li><a href="../vue/conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="../vue/list-rendering.html" class="">List rendering</a></li>
+            <li><a href="../vue/event-handling.html" class="">Event handling</a></li>
+            <li><a href="../vue/attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="../vue/form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="../vue/computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="../vue/watchers.html" class="">Watchers</a></li>
+            <li><a href="../vue/lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="../vue/components.html" class="">Components</a></li>
+            <li><a href="../vue/components-props.html" class="">Props</a></li>
+            <li><a href="../vue/components-events.html" class="">Events</a></li>
+            <li><a href="../vue/components-slots.html" class="">Slots</a></li>
+            <li><a href="../vue/single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="../vue/build-systems.html" class="">Introduction</a></li>
+            <li><a href="../vue/package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="../vue/build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="../vue/build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="../vue/build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="../vue/applications-intro.html" class="">Introduction</a></li>
+            <li><a href="../vue/zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="../vue/diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="../vue/vue-router.html" class="">Vue Router</a></li>
+            <li><a href="../vue/vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="../vue/apis.html" class="">Server APIs</a></li>
+            <li><a href="../vue/e28-api.html" class="">e28-api</a></li>
+            <li><a href="../vue/ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="../vue/local-storage.html" class="">Local storage</a></li>
+            <li><a href="../vue/add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="../vue/vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="../vue/auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="../vue/auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="../vue/auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="../vue/testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="../vue/testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="../vue/validation.html" class="">Validation</a></li>
+            <li><a href="../vue/composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-summary"><span id="summary" class="heading-anchor"></span><a href="#summary"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Summary</h1>
+            <p>By the time you get to this note set, you will have accomplished a lot, including several “big picture”
+              setup steps:</p>
+            <ul>
+              <li>Downloading and setting up your XAMPP local server</li>
+              <li>Installing/configuring git</li>
+              <li>Setting up a SSH connection between your computer and Github.com</li>
+              <li>Creating a new git repository (<code v-pre>e28</code>) on Github.com and cloning it to your computer
+              </li>
+              <li>Creating a new DigitalOcean server with a SSH key connection to your computer, as well as a new key
+                pair to connect to Github.com</li>
+              <li>Cloning your <code v-pre>e28</code> repository from Github.com to your production server</li>
+              <li>Configuring a real-world domain to access your production server</li>
+            </ul>
+            <p>Assuming nothing goes awry - these latter steps should not have to be completed again this semester.</p>
+            <p>The steps you will reproduce, though, are the ones necessary to set up a new application. To help with
+              this, below is a summary of those steps.</p>
+            <h2 id="jump-new-app-summary"><span id="new-app-summary" class="heading-anchor"></span><a
+                 href="#new-app-summary" class="heading-link"><i class="fa fa-link"></i> </a> New app summary</h2>
+            <h3 id="jump-step-1-create-the-application-directory"><span id="step-1-create-the-application-directory"
+                    class="heading-anchor"></span><a href="#step-1-create-the-application-directory"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Step 1. Create the application directory</h3>
+            <p>Locally, within your e28 repository, create a new directory that will contain the new application.</p>
+            <p>Add a <code v-pre>README.md</code> and index file to this directory.</p>
+            <h3 id="jump-step-2a-local-domain-virtualhost"><span id="step-2a-local-domain-virtualhost"
+                    class="heading-anchor"></span><a href="#step-2a-local-domain-virtualhost" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Step 2a. Local domain - VirtualHost</h3>
+            <p>Add a new VirtualHost block to your local server’s Apache config file.</p>
+            <p>Mac:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ nano /Applications/XAMPP/etc/extra/httpd-vhosts.conf
+</code></pre>
+            <p>Windows:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ nano c:\xampp\apache\conf\extra\httpd-vhosts.conf
+</code></pre>
+            <p>Example VirtualHost template:</p>
+            <pre v-pre><code class="hljs apache"><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> appname.loc
+    <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /path/to/htdocs/e28/appname
+    <span class="hljs-section">&lt;Directory /path/tohtdocs/e28/appname&gt;</span>
+        <span class="hljs-attribute">AllowOverride</span> <span class="hljs-literal">All</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> -Indexes
+        <span class="hljs-attribute">Require</span> <span class="hljs-literal">all</span> granted
+    <span class="hljs-section">&lt;/Directory&gt;</span>
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</code></pre>
+            <p>Stop and restart your local server for these changes to take effect.</p>
+            <h3 id="jump-step-2b-local-domain-hosts-routing"><span id="step-2b-local-domain-hosts-routing"
+                    class="heading-anchor"></span><a href="#step-2b-local-domain-hosts-routing" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Step 2b. Local domain - hosts routing</h3>
+            <p>Edit your computer’s <em>hosts</em> file to register this new domain.</p>
+            <p>Mac:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">sudo nano /private/etc/hosts
+</code></pre>
+            <p>Windows:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">elevate nano c:\Windows\System32\drivers\etc\hosts
+</code></pre>
+            <p>Example line to add:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">127.0.0.1 appname.loc
+</code></pre>
+            <h3 id="jump-step-3-synchronize-with-githubcom"><span id="step-3-synchronize-with-githubcom"
+                    class="heading-anchor"></span><a href="#step-3-synchronize-with-githubcom" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Step 3. Synchronize with Github.com</h3>
+            <p>Locally - Stage, commit, and push the files for your new application to your e28 repository on
+              Github.com.</p>
+            <p>From within your <code v-pre>/htdocs/e28</code> directory:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ git add --all
+$ git commit -m <span class="hljs-string">"New application"</span>
+$ git push
+</code></pre>
+            <h3 id="jump-step-4-synchronize-with-your-digitalocean-server"><span
+                    id="step-4-synchronize-with-your-digitalocean-server" class="heading-anchor"></span><a
+                 href="#step-4-synchronize-with-your-digitalocean-server" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Step 4. Synchronize with your DigitalOcean server</h3>
+            <p>SSH into your DigitalOcean droplet:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ ssh root@your.do.ip.address
+</code></pre>
+            <p>Navigate to your e28 repository:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ <span class="hljs-built_in">cd</span> /var/www/html/e28
+</code></pre>
+            <p>Pull the latest changes from Github.com:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ git pull
+</code></pre>
+            <h3 id="jump-step-5-production-domain-virtualhost"><span id="step-5-production-domain-virtualhost"
+                    class="heading-anchor"></span><a href="#step-5-production-domain-virtualhost"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Step 5. Production domain - VirtualHost</h3>
+            <p>On your production server, add a new VirtualHost block to your Apache config file:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ nano /etc/apache2/sites-enabled/000-default.conf
+</code></pre>
+            <p>Example VirtualHost template:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">&lt;VirtualHost *:80&gt;
+    ServerName appname.yourdomain.com
+    DocumentRoot <span class="hljs-string">"/var/www/html/e2/appname"</span>
+    &lt;Directory <span class="hljs-string">"/var/www/html/e2/appname"</span>&gt;
+        AllowOverride All
+        Options -Indexes
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</code></pre>
+            <p>Save your changes and restart Apache:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ service apache2 restart
+</code></pre>
+            <h2 id="jump-development-workflow"><span id="development-workflow" class="heading-anchor"></span><a
+                 href="#development-workflow" class="heading-link"><i class="fa fa-link"></i> </a> Development workflow
+            </h2>
+            <p>Once an application is set up, your development workflow can be summarized as follows:</p>
+            <ul>
+              <li>
+                <strong>Develop</strong>
+                <ul>
+                  <li>Make changes to your application's codebase locally</li>
+                  <li>Test/tweak those changes until you're happy with them</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Track</strong>
+                <ul>
+                  <li>Stage all the files you wish to "go live" with (<code v-pre>git add</code>)</li>
+                  <li>Create a commit of all staged files (<code v-pre>git commit -m "Commit message goes here"</code>)
+                  </li>
+                  <li>Push your commit to Github.com (<code v-pre>git push</code>)</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Deploy</strong>
+                <ul>
+                  <li>SSH into your DigitalOcean server</li>
+                  <li>Navigate to your e28 repository (e.g. <code v-pre>cd /var/www/html/e28</code>)</li>
+                  <li>Pull recent commits from Github.com (<code v-pre>git pull</code>)</li>
+                  <li>View app in browser via production URL, confirming everything is working as expected</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

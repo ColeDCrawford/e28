@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/vuex</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="router-link-exact-active router-link-active">State management w/ Vuex</a>
+            </li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-state-management-w-vuex"><span id="state-management-w-vuex" class="heading-anchor"></span><a
+                 href="#state-management-w-vuex" class="heading-link"><i class="fa fa-link"></i> </a> State management
+              w/ Vuex</h1>
+            <p>Broadly speaking, <strong>state</strong> refers to the data of our applications. For example, in
+              ZipFoods, part of our state is our <strong>products data</strong> and our <strong>cart data</strong>.</p>
+            <p>Local state can be managed via a component’s <strong>data property</strong>. And when you need to
+              <strong>share state amongst components</strong>, you can communicate state via <strong>events</strong> and
+              <strong>props</strong>.
+            </p>
+            <p>As you start to deal with many components sharing the same data, however, managing state flow via events
+              and props can start to become cumbersome.</p>
+            <p>To address this, we want to introduce a system for <strong>state management</strong>. In the previous
+              noteset (<a href="add-to-cart.html">Add to Cart</a>), we saw a rudimentary state management pattern that
+              set us on the right path, but it lacked a key aspect of a good state management design which is
+              <strong>discipline</strong>. The way we designed things, any component could make changes to our store and
+              there was no way to track where these changes were coming from. As our application grows into hundreds of
+              components, this can create a debugging nightmare.
+            </p>
+            <p>To address this, we’re going to turn our attention now to a state management library built for Vue called
+              <a href="https://vuex.vuejs.org">Vuex</a>. Not only will Vuex provide our application with a centralized,
+              single source of truth, it will also provide us with disciplined ways of interacting with the data.
+            </p>
+            <p>For a great explanation of Vuex and state management watch the <em>“Vuex Explained Visually”</em> video
+              on the top of the <a href="https://vuex.vuejs.org">Vuex docs homepage</a>.</p>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>A couple notes:</p>
+              <ul>
+                <li>When talking about state management we’re thinking about the ephemeral state/memory of the
+                  application in the instance in which it is running. Think of it as the RAM memory of your application.
+                  Longer-term storage, which is more similar to the “hard drive” memory of your application, is stored
+                  via mechanisms like local storage (semi-permanent) or a database API (permanent).</li>
+                <li>For the scale of the projects we build in this course, Vuex is arguably overkill. However, in the
+                  interest of understanding how to use Vuex in more complex applications, it’s an important part of our
+                  studies.</li>
+              </ul>
+            </div>
+            <h2 id="jump-summary-core-concepts"><span id="summary-core-concepts" class="heading-anchor"></span><a
+                 href="#summary-core-concepts" class="heading-link"><i class="fa fa-link"></i> </a> Summary: Core
+              concepts</h2>
+            <p>By the end of this introduction to Vuex, we will understand the following concepts:</p>
+            <ul>
+              <li>
+                <strong>State</strong> - Single source of truth; object where all data is stored.
+              </li>
+              <li>
+                <strong>Getters</strong> - Methods used to retrieve and perform some operation on data in the store.
+              </li>
+              <li>
+                <strong>Mutations</strong> - Methods used to update data in the store.
+              </li>
+              <li>
+                <strong>Actions</strong> - Methods used to asynchronously change the store, committing the changes via
+                mutations.
+              </li>
+            </ul>
+            <h2 id="jump-goals"><span id="goals" class="heading-anchor"></span><a href="#goals" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Goals</h2>
+            <ul>
+              <li>Update our cart count to be managed via the Vuex store</li>
+              <li>Update the following components so <code v-pre>products</code> is managed via the Vuex store
+                <ul>
+                  <li>
+                    <em>ProductsPage</em>
+                  </li>
+                  <li>
+                    <em>ProductPage</em> (via <code v-pre>getProductById</code> getter)
+                  </li>
+                  <li>
+                    <em>ShowFeatured</em>
+                  </li>
+                  <li>
+                    <em>CategoriesPage</em>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <h2 id="jump-install"><span id="install" class="heading-anchor"></span><a href="#install"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Install</h2>
+            <p>Vuex, like Vue router, is an official Vue plugin. It can be installed in your project via NPM:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install vuex
+</code></pre>
+            <h2 id="jump-setup"><span id="setup" class="heading-anchor"></span><a href="#setup" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Setup</h2>
+            <p>Vuex uses a <strong>single state tree</strong>, meaning all state of the application is contained in a
+              single object. To set things up, create a new file <code v-pre>/src/common/store.js</code> that will
+              contain
+              your store object.</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">import</span> Vuex <span class="hljs-keyword">from</span> <span class="hljs-string">'vuex'</span>
+
+Vue.use(Vuex)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">new</span> Vuex.Store({
+    <span class="hljs-attr">state</span>: {
+        <span class="hljs-attr">cartCount</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">products</span>: [],
+    }
+})
+</code></pre>
+            <p>The first property we set in our Vuex Store instance is <a
+                 href="https://vuex.vuejs.org/api/#state"><em>state</em></a>, which will represent the data entities of
+              our application. Here we have two states: <code v-pre>cartCount</code> and <code v-pre>products</code>.
+            </p>
+            <p>Next, we want to make our store available to our application, so add the following import to
+              <code v-pre>/src/main.js</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">'@/common/store'</span>
+</code></pre>
+            <p>Finally, update your root Vue instance adding a <code v-pre>store</code> property that is set to the
+              <code v-pre>store</code> you just imported.
+            </p>
+            <p>This will inject the store instance to all child components in your app, making it accessible via
+              <code v-pre>this.$store</code>.
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">store</span>: store, <span class="hljs-comment">// &lt;-- NEW</span>
+    <span class="hljs-attr">router</span>: router,
+    <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> h(App),
+}).$mount(<span class="hljs-string">'#app'</span>)
+</code></pre>
+            <h2 id="jump-change-cart-count-via-emmutationsem"><span id="change-cart-count-via-emmutationsem"
+                    class="heading-anchor"></span><a href="#change-cart-count-via-emmutationsem" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Change cart count via <em>mutations</em></h2>
+            <p>State can not be directly changed; instead, it must be updated via a Vuex <strong>mutation</strong> so
+              that any changes can be tracked.</p>
+            <p>As an example, amend your Vuex store instance, adding a <code v-pre>mutations</code> property with a
+              <code v-pre>setCartCount</code> mutation function:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">new</span> Vuex.Store({
+    <span class="hljs-attr">state</span>: {
+        <span class="hljs-attr">cartCount</span>: <span class="hljs-number">0</span>
+        <span class="hljs-attr">products</span>: [],
+    },
+    <span class="hljs-attr">mutations</span>: {
+        setCartCount(state, payload) {
+            state.cartCount = payload;
+        }
+    }
+}
+</code></pre>
+            <p>Observations:</p>
+            <ul>
+              <li>All mutations receive the <code v-pre>state</code> as the first argument.</li>
+              <li>Optionally, they can receive a second argument called the <code v-pre>payload</code> which can be
+                used to
+                influence how the state is updated.</li>
+            </ul>
+            <p>While mutations are methods, they can’t be invoked directly. Instead, you must <a
+                 href="https://vuex.vuejs.org/api/#commit"><strong>commit</strong></a> them.</p>
+            <p>As an example, we can use the following line...</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Invoke the `setCartCount` mutation, passing the cart count as the payload</span>
+<span class="hljs-keyword">this</span>.$store.commit(<span class="hljs-string">'setCartCount'</span>, cart.count());
+</code></pre>
+            <p>...to alter the cart count state in the following locations:</p>
+            <ul>
+              <li>In the <em>mounted</em> method of <em>App</em>
+              </li>
+              <li>In the <em>addToCart</em> method of <em>ProductPage</em>
+              </li>
+              <li>In the <em>removeFromCart</em> method of <em>CartPage</em>
+              </li>
+            </ul>
+            <p>As part of the above changes, you should remove the previous code that was storing the cart count in our
+              “single source of truth” store set up vua <em>app.js</em>.</p>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>In Vue dev tools you can track the state of your application via the Vuex tab. Because of how the
+                mutation/commit system works, you can even “time travel”, reverting your application to previous points
+                in time as the state evolves.</p>
+              <img src="../../../../s3.amazonaws.com/making-the-internet/vue-track-vuex-state-changes@2x.png"
+                   style="max-width:1103px;" alt="">
+            </div>
+            <h2 id="jump-retrieve-state"><span id="retrieve-state" class="heading-anchor"></span><a
+                 href="#retrieve-state" class="heading-link"><i class="fa fa-link"></i> </a> Retrieve state</h2>
+            <p><strong>State is retrieved in components via computed properties.</strong></p>
+            <p>For example, the following computed property can be used to expose the cart count value for use in the
+              navigation bar:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">computed: {
+    cartCount() {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.state.cartCount;
+    }
+}
+</code></pre>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"link == 'cart'"</span>&gt;</span>({{ cartCount }})<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+</code></pre>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>If your application has a lot of state, check out the <a
+                   href="https://vuex.vuejs.org/guide/state.html#the-mapstate-helper">mapState helper</a> which can be
+                used to generate the computed getter functions for you.</p>
+            </div>
+            <h2 id="jump-products-emactionsem"><span id="products-emactionsem" class="heading-anchor"></span><a
+                 href="#products-emactionsem" class="heading-link"><i class="fa fa-link"></i> </a> Products
+              (<em>actions</em>)</h2>
+            <p>Next, let’s refactor our products data to come from the Vuex store.</p>
+            <p>To begin, create a mutation in your Vuex store to set the <code v-pre>products</code> state:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">setProducts(state, payload) {
+    state.products = payload;
+}
+</code></pre>
+            <p>Next, we need to find a place to make an initial call to the server API to get our product data.</p>
+            <p>We can not encode this call in the <em>setProducts</em> mutation, because <a
+                 href="https://vuex.vuejs.org/guide/mutations.html#mutations-must-be-synchronous">mutations must be
+                synchronous</a>.</p>
+            <p>Instead, we’ll employ <strong>actions</strong>, which are similar to mutations except they a) can be
+              asynchronous and b) they can't directly mutate the state; instead they commit mutations in order to effect
+              change on the state.</p>
+            <p>Create an <code v-pre>actions</code> property in your Vuex instance and define an action called
+              <code v-pre>fetchProducts</code> like so:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">actions: {
+    fetchProducts(context) {
+        axios.get(<span class="hljs-string">'product'</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+            context.commit(<span class="hljs-string">'setProducts'</span>, response.data.product);
+        });
+    }
+}
+</code></pre>
+            <p>Observations:</p>
+            <ul>
+              <li>actions receive a <code v-pre>context</code> object which exposes the methods/properties of the store
+                instance (e.g. <code v-pre>context.commit</code>, <code v-pre>context.state</code>, <code
+                      v-code>context.getters</code>).
+              </li>
+              <li>
+                <code v-pre>context.commit('setProducts', response.data);</code> is used to mutate our products data
+                with the
+                results of the API call.
+              </li>
+            </ul>
+            <p>Actions are triggered via the store <code v-pre>dispatch</code> method.</p>
+            <p>Because we want our products to be loaded when the app is loaded, we should dispatch our
+              <code v-pre>setProducts</code> mutation in the <code v-pre>mounted</code> property of <code
+                    v-code>App.vue</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">this</span>.$store.dispatch(<span class="hljs-string">'fetchProducts'</span>);
+</code></pre>
+            <p>With the above steps complete, you can update any component (<em>ProductsPage</em>,
+              <em>CategoriesPage</em>, <em>ShowFeatured</em>, <em>CartPage</em>) that relies on products data to
+              retrieve that data from the store:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">computed: {
+    products() {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.state.products;
+    }
+}
+</code></pre>
+            <h2 id="jump-product-emgettersem"><span id="product-emgettersem" class="heading-anchor"></span><a
+                 href="#product-emgettersem" class="heading-link"><i class="fa fa-link"></i> </a> Product
+              (<em>getters</em>)</h2>
+            <p>Next, let’s refactor our <code v-pre>ProductPage</code> component so that it’s extracting the individual
+              product data out of the store.</p>
+            <p>To do this, we can create a Vuex <em>getter</em> which will manipulate the <code v-pre>products</code>
+              data,
+              returning just the product we need to display.</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">getters: {
+    getProductById(state) {
+        <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id</span>) </span>{
+            <span class="hljs-keyword">return</span> state.products.filter(<span class="hljs-function">(<span class="hljs-params">product</span>) =&gt;</span> {
+                <span class="hljs-keyword">return</span> product.id == id;
+            }, <span class="hljs-keyword">this</span>.id)[<span class="hljs-number">0</span>];
+        }
+    }
+}
+</code></pre>
+            <p>Observations:</p>
+            <ul>
+              <li>
+                <em>getters</em> receive <code v-pre>state</code> as their first argument
+              </li>
+              <li>In order to pass an argument to the getter (id), we have to return a function from our getter. <a
+                   href="https://vuex.vuejs.org/guide/getters.html#method-style-access">You can read more about this
+                  here...</a>
+              </li>
+            </ul>
+            <p>Getters are used when we want to compute derived state based on store state; they’re essentially the
+              <strong>computed properties of our Vuex store</strong>.
+            </p>
+            <p>We can invoke our <code v-pre>getProductById</code> getter in our ProductPage via
+              <code v-pre>this.$store.getters.getProductById()</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">computed: {
+    product() {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.getters.getProductById(<span class="hljs-keyword">this</span>.id);
+    }
+}
+</code></pre>
+            <h2 id="jump-misc"><span id="misc" class="heading-anchor"></span><a href="#misc" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Misc</h2>
+            <ul>
+              <li>Not all data has to be added to your store; you should continue to use local data in your components
+                when your data is relevant only to that component.</li>
+              <li>Combining all the mutations, getters, and actions for our state into a single file/object can get
+                unwieldy as our application grows. To address this, you can break your store into <a
+                   href="https://vuex.vuejs.org/guide/modules.html"><strong>modules</strong></a> (modules are optional
+                in Project 3).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+  document.write=function() {};
+  document.writeln=function() {};
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

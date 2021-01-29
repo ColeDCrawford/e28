@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/vue3</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="router-link-exact-active router-link-active">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-vue-3"><span id="vue-3" class="heading-anchor"></span><a href="#vue-3" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Vue 3</h1>
+            <p>The following is a list of general notes about Vue 3 as it applies to our studies.</p>
+            <h2 id="jump-reference"><span id="reference" class="heading-anchor"></span><a href="#reference"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Reference</h2>
+            <ul>
+              <li>
+                <a href="https://github.com/vuejs/vue-next/releases/tag/v3.0.0">v3.0.0 Release notes</a>
+              </li>
+              <li>
+                <a href="https://v3.vuejs.org/guide/migration/introduction.html">Migration guide</a>
+              </li>
+              <li>Docs: <a href="https://v3.vuejs.org">https://v3.vuejs.org</a>
+              </li>
+            </ul>
+            <h2 id="jump-migration-build"><span id="migration-build" class="heading-anchor"></span><a
+                 href="#migration-build" class="heading-link"><i class="fa fa-link"></i> </a> Migration build</h2>
+            <p>A migration build of Vue 3 is expected in Q4 2020 - it will be compatible with Vue 2 with runtime
+              warnings of incompatible usage.</p>
+            <h2 id="jump-import-from-a-cdn"><span id="import-from-a-cdn" class="heading-anchor"></span><a
+                 href="#import-from-a-cdn" class="heading-link"><i class="fa fa-link"></i> </a> Import from a CDN</h2>
+            <p>Vue 2:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'</span> <span class="hljs-attr">defer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <p>Vue 3:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">'https://unpkg.com/vue@next'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-create-a-new-vue-instance-no-build-system"><span id="create-a-new-vue-instance-no-build-system"
+                    class="heading-anchor"></span><a href="#create-a-new-vue-instance-no-build-system"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Create a new Vue instance (No build system)</h2>
+            <h3 id="jump-vue-2"><span id="vue-2" class="heading-anchor"></span><a href="#vue-2" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Vue 2:</h3>
+            <ul>
+              <li>Create app by initializing a new Vue instance</li>
+              <li>Mount via the <code v-pre>el</code> option</li>
+            </ul>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Create a root Vue instance</span>
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+})
+</code></pre>
+            <h3 id="jump-vue-3"><span id="vue-3" class="heading-anchor"></span><a href="#vue-3" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Vue 3:</h3>
+            <ul>
+              <li>Create app using the <code v-pre>createApp</code> function</li>
+              <li>Mount via the <code v-pre>mount</code> method</li>
+            </ul>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Create a unique app instance</span>
+<span class="hljs-keyword">const</span> app = Vue.createApp().mount(<span class="hljs-string">'#app'</span>);
+</code></pre>
+            <h3 id="jump-why-the-change"><span id="why-the-change" class="heading-anchor"></span><a
+                 href="#why-the-change" class="heading-link"><i class="fa fa-link"></i> </a> Why the change?</h3>
+            <p>In Vue 2, every root instance created via <code v-pre>new Vue</code> shared the same global
+              configuration.</p>
+            <p>For example, let’s say you created 3 Vue instances using <code v-pre>new Vue</code> and then invoked the
+              global
+              API <code v-pre>use</code> method to add a plugin. The result is this plugin would be invoked for all 3
+              app
+              instances:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Vue 2 way</span>
+<span class="hljs-keyword">const</span> app1 = <span class="hljs-keyword">new</span> Vue();
+<span class="hljs-keyword">const</span> app2 = <span class="hljs-keyword">new</span> Vue();
+<span class="hljs-keyword">const</span> app3 = <span class="hljs-keyword">new</span> Vue();
+
+Vue.use(plugin); <span class="hljs-comment">// Plugin would apply to app1, app2, app3 </span>
+</code></pre>
+            <p>This lack of isolation was problematic in certain situations (e.g. testing).</p>
+            <p>In Vue 3, we have the ability to invoke global API methods on unique instances:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">const</span> app1 = Vue.createApp();
+<span class="hljs-keyword">const</span> app2 = Vue.createApp();
+<span class="hljs-keyword">const</span> app3 = Vue.createApp();
+
+app1.use(plugin); <span class="hljs-comment">// Plugin would only to app1</span>
+</code></pre>
+            <p><strong>Ref: <a
+                   href="https://v3.vuejs.org/guide/migration/global-api.html#a-new-global-api-createapp">Migration
+                  guide: A New Global API: createApp</a></strong></p>
+            <h2 id="jump-create-a-new-vue-instance-with-a-build-system"><span
+                    id="create-a-new-vue-instance-with-a-build-system" class="heading-anchor"></span><a
+                 href="#create-a-new-vue-instance-with-a-build-system" class="heading-link"><i class="fa fa-link"></i>
+              </a> Create a new Vue instance (with a build system)</h2>
+            <p>If you create a new Vue 2 app using the Vue CLI, your <code v-pre>main.js</code> file will look
+              something like
+              this:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">'./App.vue'</span>
+
+Vue.config.productionTip = <span class="hljs-literal">false</span>
+
+<span class="hljs-keyword">new</span> Vue({
+  <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> h(App),
+}).$mount(<span class="hljs-string">'#app'</span>)
+</code></pre>
+            <p>Using Vue 3, it will look like this:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> { createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">'./App.vue'</span>
+
+createApp(App).mount(<span class="hljs-string">'#app'</span>)
+</code></pre>
+            <p>Note how in v3 we don’t import the whole Vue library, but just the method (<em>createApp</em>) we need.
+            </p>
+            <p>This is because Vue 3 was restructured with <a
+                 href="https://en.wikipedia.org/wiki/Tree_shaking">tree-shaking</a> in mind, allowing our build systems
+              to only import the code we actually need from external libraries.</p>
+            <p><strong>Ref: <a
+                   href="https://v3.vuejs.org/guide/migration/global-api-treeshaking.html#_2-x-syntax">Migration guide:
+                  Global API Treeshaking</a></strong></p>
+            <p>Another difference you’ll note in the Vue 3 version is the absence of this line:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">Vue.config.productionTip = <span class="hljs-literal">false</span>
+</code></pre>
+            <p>The production tip refers to a message that can show in the console warning us when we’re running Vue in
+              development mode:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-production-tip@2x.png"
+                 style="max-width:561px;" alt="">
+            <p>In Vue 3, we no longer have access to a global <code v-pre>Vue.config</code> API method; instead we can
+              use
+              <code v-pre>app.config</code>.
+            </p>
+            <p>That being said, the way our Vue CLI build system is set up, it's no longer necessary to toggle the
+              production tip off, as it will not display based on our environment settings when building our application
+              in development.</p>
+            <p><strong>Ref: <a
+                   href="https://v3.vuejs.org/guide/migration/global-api.html#config-productiontip-removed">Migration
+                  guide: config.productionTip Removed</a></strong></p>
+            <h2 id="jump-data-option"><span id="data-option" class="heading-anchor"></span><a href="#data-option"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Data option</h2>
+            <h3 id="jump-vue-2"><span id="vue-2" class="heading-anchor"></span><a href="#vue-2" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Vue 2</h3>
+            <p>The <code v-pre>data</code> option could accept a plain JavaScript object:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">item</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">items</span>: [],
+    },
+});
+</code></pre>
+            <h3 id="jump-vue-3"><span id="vue-3" class="heading-anchor"></span><a href="#vue-3" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Vue 3</h3>
+            <p>The <code v-pre>data</code> option expects a function declaration that returns a JavaScript option:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">const</span> app = Vue.createApp({
+    data() {
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-attr">item</span>: <span class="hljs-string">''</span>,
+            <span class="hljs-attr">items</span>: [],
+        }
+    }
+}).mount(<span class="hljs-string">'#app'</span>);
+</code></pre>
+            <p>This allows each app instance to have its own isolated data, and matches the pattern we’ll use when
+              making components (later in the semester).</p>
+            <p><strong>Ref: <a href="https://v3.vuejs.org/guide/migration/data-option.html#frontmatter-title">Migration
+                  guide: Data option</a></strong></p>
+            <h2 id="jump-keys"><span id="keys" class="heading-anchor"></span><a href="#keys" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Keys</h2>
+            <p>In our notes on <a href="conditional-rendering.html">conditional rendering</a>, we learned how keys can
+              be used in conditional branches to prevent the re-use of elements.</p>
+            <p>This is no longer necessary in Vue 3 since Vue now automatically generates unique keys.</p>
+            <p><strong>Ref: <a href="https://v3.vuejs.org/guide/migration/key-attribute.html#key-attribute">Migration
+                  guide: Key attribute</a></strong></p>
+            <h2 id="jump-precedence-of-v-for-and-v-if-in-the-same-element"><span
+                    id="precedence-of-v-for-and-v-if-in-the-same-element" class="heading-anchor"></span><a
+                 href="#precedence-of-v-for-and-v-if-in-the-same-element" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Precedence of v-for and v-if in the same element</h2>
+            <p>In v2, when <em>v-for</em> and <em>v-if</em> are used on the same element, <em>v-for</em> takes
+              precedence.</p>
+            <p>As we learned in the notes on <a href="conditional-rendering.html">conditional rendering</a>, this
+              created rendering inefficiencies that made using <em>v-for</em> and <em>v-if</em> on the same element a
+              bad idea.</p>
+            <p>In v3, this switched so that <em>v-if</em> takes precedence, meaning combining the two is no longer
+              inefficient.</p>
+            <p>However, because of syntax ambiguity it’s still recommended to avoid this practice and instead use
+              computed properties.</p>
+            <p><strong>Ref: <a href="https://v3.vuejs.org/guide/migration/v-if-v-for.html#frontmatter-title">Migration
+                  guide: v-if vs. v-for Precedence</a></strong></p>
+            <h2 id="jump-lifecycle-changes"><span id="lifecycle-changes" class="heading-anchor"></span><a
+                 href="#lifecycle-changes" class="heading-link"><i class="fa fa-link"></i> </a> Lifecycle changes</h2>
+            <p>In v3, the following lifecycle events were renamed:</p>
+            <ul>
+              <li>
+                <code v-pre>destroyed</code> =&gt; <code v-pre>unmounted</code>
+              </li>
+              <li>
+                <code v-pre>beforeDestroy</code> =&gt; <code v-pre>beforeUnmount</code>
+              </li>
+            </ul>
+            <p>For reference:</p>
+            <ul>
+              <li>
+                <a href="../../../../vuejs.org/images/lifecycle.png">v2 lifecycle diagram</a>
+              </li>
+              <li>
+                <a href="../../../../v3.vuejs.org/images/lifecycle.png.html">v3 lifecycle diagram</a>
+              </li>
+            </ul>
+            <p>(The differences include how the app is created, and the renaming of the above-mentioned events)</p>
+            <h2 id="jump-components"><span id="components" class="heading-anchor"></span><a href="#components"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Components</h2>
+            <h3 id="jump-initialization"><span id="initialization" class="heading-anchor"></span><a
+                 href="#initialization" class="heading-link"><i class="fa fa-link"></i> </a> Initialization</h3>
+            <p>In v2, we could globally initialize components:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Initialize a component that will be globally available</span>
+Vue.component(<span class="hljs-string">'my-component'</span>, {
+    <span class="hljs-comment">// Options... </span>
+});
+
+<span class="hljs-comment">// Initialize the root Vue instance which would have</span>
+<span class="hljs-comment">// the ability to utilize the above component</span>
+<span class="hljs-keyword">let</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-comment">// Options... </span>
+});
+</code></pre>
+            <p>In v3, the above code would be refactored to:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Initialize the root Vue instance</span>
+<span class="hljs-keyword">const</span> app = Vue.createApp({
+    <span class="hljs-comment">// Options... </span>
+});
+
+<span class="hljs-keyword">const</span> myComponentOptions = {
+    <span class="hljs-comment">// Options...</span>
+};
+
+<span class="hljs-comment">// Initialize a component locally within the root Vue instance</span>
+app.component(<span class="hljs-string">'my-component'</span>, myComponentOptions);
+</code></pre>
+            <p>This change was introduced for efficiency purposes, ensuring that any component that is initialized is
+              actually used.</p>
+            <h3 id="jump-single-parent-element-rule"><span id="single-parent-element-rule"
+                    class="heading-anchor"></span><a href="#single-parent-element-rule" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Single parent element rule</h3>
+            <p>A component’s template no longer has to have a single parent element.</p>
+            <p>In v3, this template is valid:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Foo<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Bar<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+</code></pre>
+            <p>In v2, it would produce an error because there is no single parent element. Instead, it would need to
+              look something like this:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Foo<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Bar<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-vue-router"><span id="vue-router" class="heading-anchor"></span><a href="#vue-router"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Vue router</h2>
+            <p>Installing in a Vue 2 project:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install vue-router
+</code></pre>
+            <p>Installing in a Vue 3 project:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install vue-router@next
+</code></pre>
+            <p>Setting up in Vue 2 project:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Import the VueRouter module</span>
+<span class="hljs-keyword">import</span> VueRouter <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-router'</span>
+
+<span class="hljs-comment">// Make it available globally in Vue</span>
+Vue.use(VueRouter);
+
+<span class="hljs-comment">// Set up router by creating a new instance of `VueRouter`</span>
+<span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter({
+    <span class="hljs-attr">routes</span>: [...routes here...]
+})
+
+<span class="hljs-comment">// The router is made available to the root Vue instance</span>
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">router</span>: router,
+}).$mount(<span class="hljs-string">'#app'</span>)
+</code></pre>
+            <p><strong>Ref: <a
+                   href="https://router.vuejs.org/guide/#javascript">https://router.vuejs.org/guide/#javascript</a></strong>
+            </p>
+            <p>Setting up Vue in a Vue 3 project:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">// Import just the methods we need from the VurRouter module</span>
+<span class="hljs-keyword">import</span> { createRouter } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-router'</span>;
+
+<span class="hljs-comment">// Set up router by invoking `VueRouter.createRouter`</span>
+<span class="hljs-keyword">const</span> router = VueRouter.createRouter({
+    <span class="hljs-attr">routes</span>: [...routes here...],
+})
+
+<span class="hljs-comment">// Root vue instance</span>
+<span class="hljs-keyword">const</span> app = Vue.createApp({})
+
+<span class="hljs-comment">// The router is made available to the root Vue instance using the `use` method</span>
+app.use(router)
+</code></pre>
+            <p><strong>Ref: <a
+                   href="https://next.router.vuejs.org/guide/#javascript">https://next.router.vuejs.org/guide/#javascript</a></strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

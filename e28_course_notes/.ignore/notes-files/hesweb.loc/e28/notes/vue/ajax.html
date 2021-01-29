@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/ajax</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="router-link-exact-active router-link-active">Ajax - Client/Server
+                communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-ajax-clientserver-communication"><span id="ajax-clientserver-communication"
+                    class="heading-anchor"></span><a href="#ajax-clientserver-communication" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Ajax - Client/Server communication</h1>
+            <blockquote>
+              <p>Ajax (short for "Asynchronous JavaScript and XML") is a set of web development techniques using many
+                web technologies on the client side to create asynchronous web applications. With Ajax, web applications
+                can send and retrieve data from a server asynchronously (in the background) without interfering with the
+                display and behavior of the existing page. By decoupling the data interchange layer from the
+                presentation layer, Ajax allows web pages and, by extension, web applications, to change content
+                dynamically without the need to reload the entire page. In practice, modern implementations commonly
+                utilize JSON instead of XML. -<a href="https://en.wikipedia.org/wiki/Ajax_(programming)">ref</a></p>
+            </blockquote>
+            <h1 id="jump-axios"><span id="axios" class="heading-anchor"></span><a href="#axios" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Axios</h1>
+            <p>To make ajax calls from our Vue apps, we’ll use a library called <a
+                 href="https://github.com/axios/axios">Axios</a> which provides an interface for the browser API <a
+                 href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XMLHttpRequest (XHR)</a>.</p>
+            <h2 id="jump-setup"><span id="setup" class="heading-anchor"></span><a href="#setup" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Setup</h2>
+            <p>In order to use axios in a project, you first need to install it as a dependency:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install axios
+</code></pre>
+            <p>Next, create a new file in your project, <code v-pre>/src/app.js</code>, that contains an initialization
+              of
+              axios:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> axios = <span class="hljs-built_in">require</span>(<span class="hljs-string">'axios'</span>).create({
+    <span class="hljs-attr">baseURL</span>: <span class="hljs-string">'http://e28-api.loc'</span>,
+    <span class="hljs-attr">responseType</span>: <span class="hljs-string">'json'</span>
+})
+</code></pre>
+            <p>Then, in which ever components you need to use axios, import it:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> { axios } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/app.js'</span>;
+</code></pre>
+            <p>(As needed, we can add additional “shared functionality” to this same <em>/src/app.js</em> file.)</p>
+            <h2 id="jump-read-examples"><span id="read-examples" class="heading-anchor"></span><a href="#read-examples"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Read examples</h2>
+            <p>With axios set up, you can send a GET request to your API. Here’s an example how how we could use axios
+              to retrieve product data:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">axios.get(<span class="hljs-string">'product'</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+    <span class="hljs-keyword">this</span>.products = response.data.product;
+});
+</code></pre>
+            <p>In lecture, I will demonstrate how to use this to accomplish the following:</p>
+            <ul>
+              <li>Load product data in a mounted function within App.vue</li>
+              <li>Provide the product data as a <a href="components-props.html">prop</a> to the components that need it
+                (<em>ProductsPage</em>, <em>ProductPage</em>, <em>CategoriesPage</em>)</li>
+            </ul>
+            <p>Aside from the axios call, most of this work is a repeat of concepts we’ve already seen, so I’m not fully
+              expounding on the details here. Refer to the lecture video and final source code (<a
+                 href="https://github.com/susanBuck/e28/tree/master/zipfoods">e28/zipfoods</a>) as needed.</p>
+            <h2 id="jump-create-example"><span id="create-example" class="heading-anchor"></span><a
+                 href="#create-example" class="heading-link"><i class="fa fa-link"></i> </a> Create example</h2>
+            <p>Here are a summary of the steps I’ll cover in lecture for setting up an <em>Add a product</em> page:</p>
+            <ul>
+              <li>Create <em>/src/components/pages/ProductCreatePage.vue</em>
+                <ul>
+                  <li>
+                    <a
+                       href="https://github.com/susanBuck/e28/blob/86a02b822c79651f4b634a0481bb3aec94fb5f63/zipfoods/src/components/pages/ProductCreatePage.vue">Starting
+                      point...</a>
+                  </li>
+                  <li>
+                    <a
+                       href="https://github.com/susanBuck/e28/blob/master/zipfoods/src/components/pages/ProductCreatePage.vue">Final
+                      product...</a>
+                  </li>
+                </ul>
+              </li>
+              <li>New route:
+                <ul>
+                  <li>
+                    <code v-pre>{ path: '/products/new', component: ProductCreatePage },</code>
+                  </li>
+                  <li>Make sure this comes before the <code v-pre>product/{id}</code> route</li>
+                </ul>
+              </li>
+            </ul>
+            <p>Underlying axios code to do the post request:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">axios.post(<span class="hljs-string">'/product'</span>, <span class="hljs-keyword">this</span>.product).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (response.data.errors) {
+        <span class="hljs-keyword">this</span>.errors = response.data.errors;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// Code here on what to do upon succesfully adding a product</span>
+    }
+});
+</code></pre>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>FYI: I have added additional styles to <code v-pre>foobooks.scss</code> relevant to form styling. If
+                you want
+                to use my same styles, update your <code v-pre>foobooks.scss</code> copy with the <a
+                   href="https://github.com/susanBuck/e28/blob/master/zipfoods/src/assets/scss/zipfoods.scss">latest
+                  code from my copy...</a></p>
+            </div>
+            <h2 id="jump-client-side-vs-server-side-validation"><span id="client-side-vs-server-side-validation"
+                    class="heading-anchor"></span><a href="#client-side-vs-server-side-validation"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Client-side vs. server-side validation</h2>
+            <p>Note that I set up the above <em>Add a product</em> feature to rely on the server to give us feedback on
+              data validation problems.</p>
+            <p>Typically, you want a form to have both server-side validation <em>and</em> client-side validation.</p>
+            <ul>
+              <li>Client-side validation is first used to give the visitor instant feedback on their data, and to avoid
+                making an unnecessary trip to the server with bad data that will only get rejected.</li>
+              <li>Assuming client-side validation passes, data is then posted to the server where it does server-side
+                validation to confirm the data is as expected. This ensures that there’s no “funny business” by the
+                visitor in terms of overriding your JavaScript validation in the client.</li>
+            </ul>
+            <p><strong>In an upcoming lecture, we’ll look closer at doing client-side validation in Vue/JS, but for now,
+                we’ll rely on the server to check out data and provide feedback when there’s a problem.</strong></p>
+            <h2 id="jump-axios-config-on-production-environment-variables"><span
+                    id="axios-config-on-production-environment-variables" class="heading-anchor"></span><a
+                 href="#axios-config-on-production-environment-variables" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Axios config on production - environment variables</h2>
+            <p>In <code v-pre>/src/app.js</code> above, we hard-coded the <em>baseURL</em> for our API requests as
+              <em>http://e28-api.loc</em>:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> axios = <span class="hljs-built_in">require</span>(<span class="hljs-string">'axios'</span>).create({
+    <span class="hljs-attr">baseURL</span>: <span class="hljs-string">'http://e28-api.loc'</span>,
+    <span class="hljs-attr">responseType</span>: <span class="hljs-string">'json'</span>
+})
+</code></pre>
+            <p>This will work when running our application locally, but will fail on production for visitors since they
+              will not have access to our local server.</p>
+            <p>Given this, we need to configure our application such that when it’s run on production, it communicates
+              with a production version of our API (e.g. <em>http://e28-api.yourdomain.com</em>).</p>
+            <p>To address this, we need to introduce the idea of <strong>environment-specific variables</strong> so we
+              can set the <em>baseURL</em> to one value to be used on our local servers, and a different value to be
+              used on our production servers.</p>
+            <p><strong>To accomplish this, we can utilize <a
+                   href="https://cli.vuejs.org/guide/mode-and-env.html"><strong>Vue CLI Modes and Environment
+                    Variables</strong></a>.</strong></p>
+            <p>Applying what is covered in the above-linked documentation, create an environment file at
+              <code v-pre>/.env.production</code> in the root of your project folder with the following setting (swap
+              in your
+              production domain name):
+            </p>
+            <pre v-pre><code class="hljs groovy">VUE_APP_API_URL=<span class="hljs-string">http:</span><span class="hljs-comment">//e28-api.yourdomain.com</span>
+</code></pre>
+            <p>This environment file will be processed when we run <code v-pre>npm run build</code> as that runs our
+              application in the <em>production</em> mode. The result of this will be that our application will have
+              access to a variable <code v-pre>process.env.VUE_APP_API_URL</code>.</p>
+            <p>To utilize this variable, update <code v-pre>/src/app.js</code> so the <em>baseURL</em> will
+              conditionally be
+              set to <code v-pre>process.env.VUE_APP_API_URL</code> if it exists, otherwise it defaults to
+              <code v-pre>'http://e28-api.loc'</code>:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> axios = <span class="hljs-built_in">require</span>(<span class="hljs-string">'axios'</span>).create({
+    <span class="hljs-attr">baseURL</span>: process.env.VUE_APP_API_URL ?? <span class="hljs-string">'http://e28-api.loc'</span>,
+    <span class="hljs-attr">responseType</span>: <span class="hljs-string">'json'</span>
+})
+</code></pre>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>If you’re unfamiliar with the null coalescing operator (<code v-pre>??</code>) syntax used in the
+                above code,
+                <a href="https://javascript.info/nullish-coalescing-operator">learn more here...</a>.
+              </p>
+            </div>
+            <p>In summary:</p>
+            <ul>
+              <li>When running our application locally via <code v-pre>npm run serve</code> (mode
+                <em>development</em>), the
+                API url should be <em>http://e28-api.loc</em>
+              </li>
+              <li>When running our application on production (served from from the resulting <code v-pre>/dist</code>
+                folder
+                created by <code v-pre>npm run build</code> which sets our app up in mode <em>production</em>), the API
+                url
+                should be <em>http://e28-api.yourdomain.com</em>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

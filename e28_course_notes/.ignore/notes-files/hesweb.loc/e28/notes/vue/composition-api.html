@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/composition-api</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="router-link-exact-active router-link-active">Composition API</a>
+            </li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-composition-api"><span id="composition-api" class="heading-anchor"></span><a
+                 href="#composition-api" class="heading-link"><i class="fa fa-link"></i> </a> Composition API</h1>
+            <p>One of the most notable additions to the Vue framework with the release of v3 is the <a
+                 href="https://v3.vuejs.org/guide/composition-api-introduction.html"><strong>Composition
+                  API</strong></a>, which provides a new way of organizing components.</p>
+            <p>This change is purely additive; nothing from Vue 2 is deprecated - you can (and in many cases should)
+              still continue to use the <strong>Options API</strong> we’ve been working with all semester. You can even
+              use both API types within the same project.</p>
+            <p>Here are the key differences between these two APIs:</p>
+            <ul>
+              <li>
+                <strong>Options API:</strong> Components are organized by Vue <strong>options</strong> - e.g.
+                <em>state</em>, <em>methods</em>, <em>computed properties</em>, etc.
+              </li>
+              <li>
+                <strong>Composition API:</strong> Components are organized by your application’s
+                <strong>feature</strong> - e.g. <em>search</em>, <em>cart</em>, <em>add to products</em>.
+              </li>
+            </ul>
+            <p><em>Exercise:</em> <em>Look through some of the component’s we’ve written this semester and note how code
+                for one specific feature may be fragmented in a component amongst state, methods, computed properties,
+                etc.</em></p>
+            <p>As you can imagine, organizing by <em>feature</em> rather than <em>options</em> can provide for more
+              intuitive and organized components.</p>
+            <p>Now that we understand <em>why</em> you might want to use the Composition API, let’s jump into the
+              <em>how</em>...
+            </p>
+            <h2 id="jump-using-the-composition-api"><span id="using-the-composition-api"
+                    class="heading-anchor"></span><a href="#using-the-composition-api" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Using the Composition API</h2>
+            <p>If you create a new Vue project using v3, you can use the Composition API by default.</p>
+            <p>If you’re working with a Vue v2 project, you can add the composition API as a plugin.</p>
+            <p>To do this, first install it as a dependency:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install --save @vue/composition-api
+</code></pre>
+            <p>Then in <code v-pre>main.js</code> make it globally available to all your components:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> VueCompositionApi <span class="hljs-keyword">from</span> <span class="hljs-string">'@vue/composition-api'</span>;
+
+Vue.use(VueCompositionApi);
+</code></pre>
+            <h2 id="jump-coding-with-the-composition-api"><span id="coding-with-the-composition-api"
+                    class="heading-anchor"></span><a href="#coding-with-the-composition-api" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Coding with the Composition API</h2>
+            <p>The key idea of the Composition API is that rather than defining a component’s functionality (e.g.
+              <em>state</em>, <em>methods</em>, <em>computed properties</em>, etc.) as object properties, <strong>we
+                define them as JavaScript variables that get returned from a new <em>setup</em> function</strong>.
+            </p>
+            <p>For example, think back to some our very early game examples, where we started with a <strong>data
+                option</strong> within which we defined a property <code v-pre>playerName</code>.</p>
+            <p>Using the Options API, it would look like this:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">&lt;template&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        {{ playerName }}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-comment">// All the properties returned by our data object are made reactive</span>
+    data() {
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-attr">playerName</span>: <span class="hljs-string">'Bob'</span>,
+        };
+    }
+};
+</span></span></code></pre>
+            <p>Here’s what that would look like using the Composition API:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">&lt;template&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- In the template, we can access a reactive reference's value directly; no need to use the value property --&gt;</span>
+        {{ playerName }}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-comment">// We have to import the composition-api methods we’ll use</span>
+<span class="hljs-keyword">import</span> { ref } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vue/composition-api'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-comment">// We may still have options such as `data`, `computed`, `mounted,` etc...</span>
+    data() {
+        <span class="hljs-keyword">return</span> {};
+    },
+    <span class="hljs-comment">// NEW: The setup method is where we write all of our “Composition API” code</span>
+    setup() {
+        <span class="hljs-comment">// The _ref_ method is used to define a _reactive reference_ to some value</span>
+        <span class="hljs-keyword">const</span> playerName = ref(<span class="hljs-string">'Bob'</span>);
+
+        <span class="hljs-comment">// In setup, we can access (or update) our reference via its `value` property</span>
+        <span class="hljs-built_in">console</span>.log(playerName.value);
+
+        <span class="hljs-comment">// Any variables or functions we wish to use in the component needs to be explicitly returned via an object</span>
+        <span class="hljs-keyword">return</span> { playerName };
+    },
+};
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+            <p><a href="https://v3.vuejs.org/guide/composition-api-introduction.html#reactive-variables-with-ref">Take a
+                moment to read through the docs on <strong>reactive references</strong>...</a></p>
+            <p>In the above code, we learn about the Composition API <em>setup</em> method. Here are additional key
+              details to understand about this method:</p>
+            <ul>
+              <li>The setup method is executed before the component object is created, and thus, before options such as
+                <code v-pre>data</code>, <code v-pre>props</code>, <code v-pre>methods</code>, <code
+                      v-code>computed</code>, etc. are executed.
+              </li>
+              <li>Because of the above point, the object <code v-pre>this</code> that refers to the component itself is
+                not
+                available within the <em>setup</em> method.</li>
+              <li>The setup method has two optional arguments:
+                <ul>
+                  <li>
+                    <code v-pre>props</code> - For access to any props passed to the component
+                  </li>
+                  <li>
+                    <code v-pre>context</code> - For access to potentially useful data, e.g. <code
+                          v-code>context.attrs</code>,
+                    <code v-pre>context.slots</code>, <code v-pre>context.parent</code>, etc.
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <h2 id="jump-computed-properties"><span id="computed-properties" class="heading-anchor"></span><a
+                 href="#computed-properties" class="heading-link"><i class="fa fa-link"></i> </a> Computed properties
+            </h2>
+            <p>Next, here’s an example of how computed properties are defined with the Composition API:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">&lt;template&gt;
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    {{ greeting }}
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">import</span> { ref, computed } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vue/composition-api'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    setup() {
+
+        <span class="hljs-keyword">const</span> playerName = ref(<span class="hljs-string">'Bob'</span>);
+        
+        <span class="hljs-comment">// The `computed` method is used to define a “computed property” function</span>
+        <span class="hljs-keyword">const</span> greeting = computed(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello '</span> + playerName.value;
+        })
+
+        <span class="hljs-keyword">return</span> { playerName, greeting }
+    }
+};
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+            <h2 id="jump-lifecycle-hooks"><span id="lifecycle-hooks" class="heading-anchor"></span><a
+                 href="#lifecycle-hooks" class="heading-link"><i class="fa fa-link"></i> </a> Lifecycle hooks</h2>
+            <p>In the Options API, we had access to lifecycle hooks such as <code v-pre>mounted</code> to execute code
+              when a
+              component in mounted.</p>
+            <p>The equivalent in the Composition API is to use a new <code v-pre>onMounted</code> method inside
+              <em>setup</em>:
+            </p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">&lt;script&gt;
+<span class="hljs-comment">// Don't forget to import any Composition API method you're using</span>
+<span class="hljs-keyword">import</span> { ref, computed, onMounted } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vue/composition-api'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    setup() {
+        <span class="hljs-keyword">const</span> playerName = ref(<span class="hljs-string">'Bob'</span>);
+
+        <span class="hljs-keyword">const</span> greeting = computed(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello '</span> + playerName.value;
+        });
+
+        <span class="hljs-comment">// NEW: Invoke onMounted function</span>
+        onMounted(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'The component was mounted...'</span>);
+        });
+
+        <span class="hljs-keyword">return</span> { playerName, greeting };
+    },
+};
+<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+            <p><a href="https://v3.vuejs.org/guide/composition-api-lifecycle-hooks.html#lifecycle-hooks">Learn more
+                about the other lifecycle methods available in the Composition API here...</a></p>
+            <h2 id="jump-watchers"><span id="watchers" class="heading-anchor"></span><a href="#watchers"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Watchers</h2>
+            <p>Watchers are defined in the Composition API using a <em>watch</em> method:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">&lt;template&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Player name: <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"playerName"</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"playerName"</span>&gt;</span>{{ greeting }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-comment">// Don't forget to import any Composition API method you're using</span>
+<span class="hljs-keyword">import</span> { ref, computed, onMounted, watch } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vue/composition-api'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    setup() {
+        <span class="hljs-keyword">const</span> playerName = ref(<span class="hljs-string">''</span>);
+
+        <span class="hljs-keyword">const</span> greeting = computed(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello '</span> + playerName.value;
+        });
+
+        <span class="hljs-comment">// NEW</span>
+        watch(playerName, (newValue, oldValue) =&gt; {
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'The new playerName value is: '</span> + playerName.value);
+        });
+
+        onMounted(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'The component was mounted...'</span>);
+        });
+
+        <span class="hljs-keyword">return</span> { playerName, greeting };
+    },
+};
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+            <h2 id="jump-what-does-this-get-us"><span id="what-does-this-get-us" class="heading-anchor"></span><a
+                 href="#what-does-this-get-us" class="heading-link"><i class="fa fa-link"></i> </a> What does this get
+              us?</h2>
+            <p>We’ve now learned that all of the options (data, computed properties, lifecycle hooks, watchers, etc.) we
+              have available via the Options API are made available in the Composition API via methods.</p>
+            <p><strong>This frees us up to reorganize our components by feature instead of by option.</strong></p>
+            <p>For example, imagine we have a component with two features, we’ll call them <em>Search</em> and <em>Add
+                to Cart</em></p>
+            <p>Each feature requires, hypothetically, a mixture of data, computed properties, and watchers.</p>
+            <p>In the <strong>Options API</strong>, our resulting component would be organized by
+              <strong>options</strong> like this:
+            </p>
+            <ul>
+              <li>
+                <strong>Data</strong>
+                <ul>
+                  <li>
+                    <em>Feature Search</em> reactive data
+                  </li>
+                  <li>
+                    <em>Feature Add to cart</em> reactive data
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Computed</strong>
+                <ul>
+                  <li>
+                    <em>Feature Search</em> computed code
+                  </li>
+                  <li>
+                    <em>Feature Add to cart</em> computed code
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Watch</strong>
+                <ul>
+                  <li>
+                    <em>Feature Search</em> watcher code
+                  </li>
+                  <li>
+                    <em>Feature Add to cart</em> watcher code
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <p>With the <strong>Composition API</strong>, our resulting component would be organized by
+              <strong>features</strong> instead of option:
+            </p>
+            <ul>
+              <li>
+                <strong>Feature Search</strong>
+                <ul>
+                  <li>reactive data</li>
+                  <li>computed</li>
+                  <li>watch</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Feature Add to Cart</strong>
+                <ul>
+                  <li>reactive data</li>
+                  <li>computed</li>
+                  <li>watch</li>
+                </ul>
+              </li>
+            </ul>
+            <p>Much more logical, right?</p>
+            <p>What’s more, we can also start to extract/modularize our feature-specific logic into “composition
+              functions”, making it easier to re-use amongst different components.</p>
+            <h2 id="jump-composition-functions"><span id="composition-functions" class="heading-anchor"></span><a
+                 href="#composition-functions" class="heading-link"><i class="fa fa-link"></i> </a> Composition
+              functions</h2>
+            <p>Because the Composition API gives us access to Vue utilities (reactive data, computed properties, etc.)
+              outside the context of a component, we can now easily extract shared logic into their own functions that
+              can be imported and used within different components of our application.</p>
+            <p>To demonstrate this, let’s tackle a <em>Add to favorite</em> feature in ZipFoods via a new “composition
+              function”.</p>
+            <p>To set this up, create a new directory and file at <code v-pre>/src/features/useFavorite.js</code> with
+              the
+              following code:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> { ref } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vue/composition-api'</span>
+<span class="hljs-keyword">import</span> { axios } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/common/app.js'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">useFavorite</span>(<span class="hljs-params">productId</span>) </span>{
+
+    <span class="hljs-comment">// Reactive references</span>
+    <span class="hljs-keyword">let</span> isFavorite = ref(<span class="hljs-literal">false</span>);
+    <span class="hljs-keyword">let</span> favoriteId = ref(<span class="hljs-literal">null</span>);
+
+    <span class="hljs-comment">// Initially, we need to figure out if this product is a favorite</span>
+    <span class="hljs-comment">// We do this by pinging the `favorite` "query" route where the `product_id` field `productId`</span>
+    <span class="hljs-comment">// (Note that because the `favorite` resource is auth-restricted, it will automatically only</span>
+    <span class="hljs-comment">// return favorites belonging to this user, so we don't have to include that as part of the query)</span>
+    axios.get(<span class="hljs-string">'/favorite/query?product_id='</span> + productId).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span> (response.data.results.length &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-comment">// There should only ever be one unique match between a given user id and a given product id</span>
+            <span class="hljs-comment">// so we narrow the results down to [0]</span>
+            favoriteId.value = response.data.results[<span class="hljs-number">0</span>].id;
+            isFavorite.value = <span class="hljs-literal">true</span>;
+        }
+    });
+
+    <span class="hljs-keyword">const</span> addToFavorites = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        axios.post(<span class="hljs-string">'/favorite'</span>, {
+            <span class="hljs-attr">product_id</span>: productId
+            <span class="hljs-comment">// Note: don't have to specify user_id because it's implied with auth-restricted resources</span>
+        }).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+            <span class="hljs-keyword">if</span> (response.data.success) {
+                isFavorite.value = <span class="hljs-literal">true</span>;
+                favoriteId.value = response.data.favorite.id;
+            }
+        });
+    }
+
+    <span class="hljs-keyword">const</span> removeFromFavorites = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        axios.delete(<span class="hljs-string">'/favorite/'</span> + favoriteId.value).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+            <span class="hljs-keyword">if</span> (response.data.success) {
+                isFavorite.value = <span class="hljs-literal">false</span>;
+                favoriteId.value = <span class="hljs-literal">null</span>;
+            }
+        });
+    }
+
+    <span class="hljs-keyword">return</span> { isFavorite, addToFavorites, removeFromFavorites }
+}
+</code></pre>
+            <p>Observations:</p>
+            <ul>
+              <li>When creating composition functions, it’s a common convention to prefix the module name with
+                <code v-pre>use</code>, e.g. <code v-pre>useFavorite</code>, <code v-pre>useCart</code>, <code
+                      v-code>useSearch</code>, etc. to
+                signify it’s a composition function.
+              </li>
+              <li>Our <code v-pre>useFavorite</code> function exposes (via a return statement at the end) one reactive
+                reference <code v-pre>isFavorite</code>, and two methods <code v-pre>addToFavorites</code>,
+                <code v-pre>removeFromFavorites</code>.
+              </li>
+            </ul>
+            <h2 id="jump-using-emusefeatureem-composition-function"><span id="using-emusefeatureem-composition-function"
+                    class="heading-anchor"></span><a href="#using-emusefeatureem-composition-function"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Using <em>useFeature</em> composition function
+            </h2>
+            <p>To use our new <em>useFeature</em> composition function, import it into our <em>ProductPage</em>
+              component...</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> useFavorite <span class="hljs-keyword">from</span> <span class="hljs-string">'@/composables/useFavorite'</span>;
+</code></pre>
+            <p>...and add the following <em>setup</em> method:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">setup(props) {
+    <span class="hljs-comment">// Here we use JS's "destructuring assignment" to capture the returned variables from useFavorite</span>
+    <span class="hljs-keyword">const</span> { isFavorite, addToFavorites, removeFromFavorites } = useFavorite(props.id);
+
+    <span class="hljs-comment">// Don't forget to return any of the variables you want to use in the component</span>
+    <span class="hljs-keyword">return</span> { isFavorite, addToFavorites, removeFromFavorites };
+},
+</code></pre>
+            <p>Then, in the template, you can use the <em>isFavorite</em>, <em>addToFavorites</em>, and
+              <em>removeFromFavorites</em> data exposed from the <em>useFavorite</em> composition function:
+            </p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"user"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"isFavorite"</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"removeFromFavorites()"</span>&gt;</span>
+        Remove from favorites
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-else</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"addToFavorites()"</span>&gt;</span>
+        ❤ Add to favorites
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+            <p>Observations:</p>
+            <ul>
+              <li>All of the “<em>Add to favorites</em>” feature related code is neatly organized into its own function.
+              </li>
+              <li>This function is now easily re-usable in other components if needed.</li>
+              <li>Our ProductPage component is streamlined as the “<em>Add to favorites</em>” code is extracted away.
+              </li>
+            </ul>
+            <h2 id="jump-options-api-vs-composition-api"><span id="options-api-vs-composition-api"
+                    class="heading-anchor"></span><a href="#options-api-vs-composition-api" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Options API vs. Composition API</h2>
+            <p>To summarize, the Composition API has these benefits over the Options API:</p>
+            <ul>
+              <li>Better organization of large components</li>
+              <li>Easier re-usability of logic amongst components</li>
+              <li>Better compatibility with TypeScript (we didn’t discuss this, but it is an important pro of the Comp
+                API!)</li>
+            </ul>
+            <p>That being said, this does not necessarily mean you <em>must</em> switch over to the Composition API. On
+              smaller scale projects, the Options API can continue to be perfectly sufficient.</p>
+            <p>Where the Composition API shines/is suggested is on larger scale projects that employ many, many
+              different components with the need for a lot of shared logic.</p>
+            <h2 id="jump-read-more"><span id="read-more" class="heading-anchor"></span><a href="#read-more"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Read more...</h2>
+            <p>To supplement what we now know about the Composition API, check out the following articles. Not only do
+              they address some interesting topics, they will also give you more exposure to the Composition API
+              techniques described in this note set.</p>
+            <ul>
+              <li>
+                <a href="https://composition-api.vuejs.org/#summary">Composition API RFC</a>
+                <ul>
+                  <li>Provides details about how/why the Composition API came to be</li>
+                </ul>
+              </li>
+              <li>
+                <a href="https://vuejsdevelopers.com/2020/02/17/vue-composition-api-when-to-use/">When To Use The New
+                  Vue Composition API (And When Not To)</a>
+                <ul>
+                  <li>This article highlights the point I made above how the Composition API shines/is suggested on
+                    larger scale projects</li>
+                </ul>
+              </li>
+              <li>
+                <a href="https://css-tricks.com/how-the-vue-composition-api-replaces-vue-mixins/">How the Vue
+                  Composition API Replaces Vue Mixins</a>
+                <ul>
+                  <li>In Vue 2, <a href="https://vuejs.org/v2/guide/mixins.html">mixins</a> could be used to facilitate
+                    code re-usability amongst components. In this article, the author shows the downsides of mixins and
+                    how they’re addressed with the Composition API.</li>
+                </ul>
+              </li>
+              <li>
+                <a href="https://vuejsdevelopers.com/2020/10/05/composition-api-vuex/">Should You Use Composition API as
+                  a Replacement for Vuex?</a>
+                <ul>
+                  <li>This article explores how the Composition API could act as a substitute for Vuex (and whether
+                    that’s a good idea or not).</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

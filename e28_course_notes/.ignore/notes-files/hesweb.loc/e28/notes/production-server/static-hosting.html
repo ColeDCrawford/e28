@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: production-server/static-hosting</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="production-domains.html" class="">Production domains</a></li>
+            <li><a href="deploying.html" class="">Deploying</a></li>
+            <li><a href="summary.html" class="">Summary</a></li>
+            <li><a href="https.html" class="">HTTPS</a></li>
+            <li><a href="static-hosting.html" class="router-link-exact-active router-link-active">Static hosting</a>
+            </li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="../vue/intro.html" class="">Introduction</a></li>
+            <li><a href="../vue/behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="../vue/vue3.html" class="">Vue 3</a></li>
+            <li><a href="../vue/conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="../vue/list-rendering.html" class="">List rendering</a></li>
+            <li><a href="../vue/event-handling.html" class="">Event handling</a></li>
+            <li><a href="../vue/attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="../vue/form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="../vue/computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="../vue/watchers.html" class="">Watchers</a></li>
+            <li><a href="../vue/lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="../vue/components.html" class="">Components</a></li>
+            <li><a href="../vue/components-props.html" class="">Props</a></li>
+            <li><a href="../vue/components-events.html" class="">Events</a></li>
+            <li><a href="../vue/components-slots.html" class="">Slots</a></li>
+            <li><a href="../vue/single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="../vue/build-systems.html" class="">Introduction</a></li>
+            <li><a href="../vue/package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="../vue/build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="../vue/build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="../vue/build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="../vue/applications-intro.html" class="">Introduction</a></li>
+            <li><a href="../vue/zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="../vue/diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="../vue/vue-router.html" class="">Vue Router</a></li>
+            <li><a href="../vue/vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="../vue/apis.html" class="">Server APIs</a></li>
+            <li><a href="../vue/e28-api.html" class="">e28-api</a></li>
+            <li><a href="../vue/ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="../vue/local-storage.html" class="">Local storage</a></li>
+            <li><a href="../vue/add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="../vue/vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="../vue/auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="../vue/auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="../vue/auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="../vue/testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="../vue/testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="../vue/validation.html" class="">Validation</a></li>
+            <li><a href="../vue/composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-static-hosting"><span id="static-hosting" class="heading-anchor"></span><a
+                 href="#static-hosting" class="heading-link"><i class="fa fa-link"></i> </a> Static hosting</h1>
+            <p>So far, we’ve been running our Vue.js web applications on an Apache server, which is a common approach to
+              serving web applications.</p>
+            <p>This is an approach you will continue to use in many situations, especially when dealing with legacy
+              projects.</p>
+            <p>As we transition to applications that are increasingly powered by JavaScript, however, the role of the
+              server changes. We no longer need a server to <strong>process</strong> our content - instead, the server
+              just needs to <strong>deliver static files</strong> of HTML, CSS, and JavaScript, and the subsequent
+              processing is handled in the browser.</p>
+            <p>Of course, we still still need servers to do things like interacting with a database, but that work can
+              be delegated to an API that our static websites make requests to.</p>
+            <p>In response to this shift toward static websites, hosting companies like <a
+                 href="https://www.netlify.com">Netlify</a> have become very popular.</p>
+            <blockquote>
+              <blockquote>
+                <p><em>“Netlify is a web developer platform that multiplies productivity. By unifying the elements of
+                    the modern decoupled web, from local development to advanced edge logic, Netlify enables a 10x
+                    faster path to much more performant, secure, and scalable websites and apps. Our bet on the <a
+                       href="https://jamstack.org/">JAMstack</a> is quickly coming true. The web is rapidly changing
+                    away from monolithic to decoupled apps, and web developers are storming ahead with more power than
+                    ever. Netlify is built to cater to that movement, and in just a few years we’ve on-boarded more than
+                    half a million businesses and developers, and are building and serving millions of web projects
+                    daily around the globe.”</em></p>
+              </blockquote>
+            </blockquote>
+            <p><strong>Let’s look at deploying our ZipFoods project on Netlify so we can compare/contrast the experience
+                to developing on a traditional server.</strong></p>
+            <h2 id="jump-configuration-for-netlify-vue-router"><span id="configuration-for-netlify-vue-router"
+                    class="heading-anchor"></span><a href="#configuration-for-netlify-vue-router"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Configuration for Netlify + Vue Router</h2>
+            <p>Before we deploy to Netlify, we need to <a href="https://cli.vuejs.org/guide/deployment.html#netlify">set
+                up a config file that will be used by Netlify to work with our Vue Router system</a>.</p>
+            <p>To do this, create a new file in your project at <code v-pre>/public/_redirects</code> with the
+              following code:
+            </p>
+            <pre v-pre><code v-pre class="language-xml hljs"># Netlify settings for single-page application
+/*    /index.html   200
+</code></pre>
+            <p>This config file will make it so that all URLs/routes are processed via <code v-pre>index.html</code>,
+              and it’s
+              similar to the <a href="../vue/vue-router-production.html">.htaccess Apache config file we set up on
+                DigitalOcean</a>.</p>
+            <p>After making the above change, stage, commit, and push any changes to your project, then proceed to the
+              next steps to setup Netlify...</p>
+            <h2 id="jump-setup"><span id="setup" class="heading-anchor"></span><a href="#setup" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Setup</h2>
+            <p>To get started, sign up for a free Netlify account using your Github account at <a
+                 href="https://app.netlify.com/signup">https://app.netlify.com/signup</a>.</p>
+            <p>Once you’re in, find the option to create a <em>New site from Git</em>:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-netlify-new-site-from-git@2x.png"
+                 style="max-width:805px;" alt="">
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              The screenshots in this note set may look a little different then the current Netlify interface, but the
+              same basic idea applies.
+            </div>
+            <p>Then, choose Github:
+              <img src="../../../../s3.amazonaws.com/making-the-internet/vue-netlify-new-site-from-github@2x.png"
+                   style="max-width:757px;" alt="">
+            </p>
+            <p>Then, find your e28 repository:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-netlify-find-repo@2x.png"
+                 style="max-width:587px;" alt="">
+            <p>On the next page, <strong>Deploy settings</strong>, you can leave <strong>Build command</strong> blank as
+              we are building our projects locally before deploying.</p>
+            <p><em>If</em> you are building on production, you would want to add a build command such as:</p>
+            <pre v-pre><code class="hljs coffeescript">cd zipfoods &amp;&amp; <span class="hljs-built_in">npm</span> install &amp;&amp; <span class="hljs-built_in">npm</span> run build
+</code></pre>
+            <p>For <strong>Publish directory</strong> enter this path:</p>
+            <pre v-pre><code class="hljs processing">zipfoods/<span class="hljs-built_in">dist</span>
+</code></pre>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-netlify-build-settings@2x.png"
+                 style="max-width:766px;" alt="">
+            <p>Finally, click <strong>Deploy site</strong>.</p>
+            <p>Once your site is deployed, it should be accessible via a random subdomain assigned on the Netlify
+              servers, e.g. <code v-pre>https://infallible-albattani-216010.netlify.app/</code>.</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-netlify-site-deployed@2x.png"
+                 style="max-width:766px;" alt="">
+            <h2 id="jump-domains"><span id="domains" class="heading-anchor"></span><a href="#domains"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Domains</h2>
+            <p>Next, let’s make it so you can access your Netlify-hosted site via the domain you’ve been using for
+              projects in this course.</p>
+            <p>First, you’ll set the domain in Netlify:
+              <img src="../../../../s3.amazonaws.com/making-the-internet/vue-netlify-add-custom-domain@2x.png"
+                   style="max-width:1454px;" alt="">
+            </p>
+            <p>Then you’ll set up a new CNAME record with your DNS provider that points to your Netlify address:
+              <img src="../../../../s3.amazonaws.com/making-the-internet/vue-netlify-dns-settings@2x.png"
+                   style="max-width:956px;" alt="">
+            </p>
+            <p>After making the above changes, you should be able to access your site on Netlify via
+              <code v-pre>http://zipfoods.yourdomain.com</code>. If it doesn’t work right away, you may have to give it
+              some
+              time as the DNS changes propagate.
+            </p>
+            <h2 id="jump-auto-deployments"><span id="auto-deployments" class="heading-anchor"></span><a
+                 href="#auto-deployments" class="heading-link"><i class="fa fa-link"></i> </a> Auto-Deployments</h2>
+            <p>Moving forward, whenever you push changes to your e28 repository on Github, Netlify will be notified of
+              these changes and re-deploy your web application by pulling down the latest changes.</p>
+            <h2 id="jump-compare-amp-contrast"><span id="compare-amp-contrast" class="heading-anchor"></span><a
+                 href="#compare-amp-contrast" class="heading-link"><i class="fa fa-link"></i> </a> Compare &amp;
+              Contrast</h2>
+            <p><em>The following notes were adapted from this article: <a
+                   href="https://medium.com/memory-leak/the-jamstack-its-pretty-sweet-e0834e4e6bb7">The JAMstack: It’s
+                  Pretty Sweet</a></em></p>
+            <h3 id="jump-traditional-server-workflow"><span id="traditional-server-workflow"
+                    class="heading-anchor"></span><a href="#traditional-server-workflow" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Traditional server workflow</h3>
+            <ul>
+              <li>Coupled building and hosting</li>
+              <li>When a user requests a page, the file is processed and served after interactions between a database,
+                backend code, server, caching, and browser</li>
+            </ul>
+            <h3 id="jump-static-hosting-workflow"><span id="static-hosting-workflow" class="heading-anchor"></span><a
+                 href="#static-hosting-workflow" class="heading-link"><i class="fa fa-link"></i> </a> Static hosting
+              workflow</h3>
+            <ul>
+              <li>Decoupled building and hosting</li>
+              <li>When a user requests a page the file is already compiled and gets served to the browser from a CDN
+              </li>
+            </ul>
+            <h3 id="jump-benefits-of-a-static-hosting-workflow"><span id="benefits-of-a-static-hosting-workflow"
+                    class="heading-anchor"></span><a href="#benefits-of-a-static-hosting-workflow"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Benefits of a static hosting workflow:</h3>
+            <ul>
+              <li>
+                <strong>Improved scaling:</strong> Static content can be placed on a CDN making it easier to dynamically
+                scale.
+              </li>
+              <li>
+                <strong>Heightened security:</strong> The lack of databases, plugins, and dynamic software running on a
+                server decreases the potential for code injections and breaches. Additionally, since APIs handle dynamic
+                functions, the web developer can leverage third parties’ security expertise.
+              </li>
+              <li>
+                <strong>Accelerated load times:</strong> The JAMstack is faster because the browser processes
+                functionality that the back-end traditionally executed. Prebuilt HTML files can be served over a CDN
+                instead of rendering documents live on the server. Additionally, the JAMstack minimizes database
+                queries, accelerating content delivery. During an experiment Smashing Magazine found that using a static
+                version distributed via a CDN loaded the first byte six times faster than a dynamic website.
+              </li>
+              <li>
+                <strong>Better developer experience:</strong> Loose coupling and separation of controls allow for more
+                targeted development and debugging. The ability to leverage third party APIs means developers can focus
+                on value-added features. Additionally, using a Git repository allows the entire website to be centrally
+                hosted. In turn, developers can easily make changes by pushing a commit to the version-controlled
+                repository. The JAMstack applies CI/CD to expedite development.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

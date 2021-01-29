@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+    <title>Week 6 Examples</title>
+    <meta charset='utf-8'>
+    <link href=data:, rel=icon>
+
+    <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js'
+            defer></script>
+    <script src='script.js'
+            defer></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .winner {
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <script type='text/x-template'
+            id='round-detail'>
+        <div v-bind:class="{ winner : winner == 'Player'}">
+            <ul>
+                <li>Round #: {{ number }}</li>
+                <li>Winner: {{ winner }}</li>
+                <li><slot name='choice'></slot></li>
+                <li><slot name='coin'></slot></li>
+            </ul>
+            <button @click="$emit('delete-round', number)">Delete round</button>
+        </div>
+    </script>
+
+    <h1>Week 6 Examples</h1>
+
+    <div id='app'
+         v-cloak>
+        <div>
+            <label><input type='radio'
+                       value='heads'
+                       v-model='choice'> heads</label>
+            <label><input type='radio'
+                       value='tails'
+                       v-model='choice'> tails</label>
+        </div>
+
+        <button id='flipBtn'
+                @click='flip'>Flip!</button>
+
+        <round-detail v-for='round in rounds'
+                      @delete-round='deleteRound($event)'
+                      :number='round.number'
+                      :winner='round.winner'
+                      :key='round.number'>
+
+            <template #choice>You chose {{ round.choice }}</template>
+
+            <template #coin>The coin landed on {{ round.coin }}</template>
+
+        </round-detail>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/validation</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="router-link-exact-active router-link-active">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-validation"><span id="validation" class="heading-anchor"></span><a href="#validation"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Validation</h1>
+            <p>When first studying communicating with the server, we saw how the APIs we’re using may report back some
+              validation errors that can be communicated in our interface.</p>
+            <p>For example, if a user tried to add a new product without specifying a product name, the server API
+              request would return an error indicating the the name field was required.</p>
+            <p>We can describe this as <strong>sever-side validation</strong> since the validation is happening on the
+              server.</p>
+            <p>This sort of server-side validation is important, but it’s often advisable to use it in conjunction with
+              some pre-submission <strong>client-side validation</strong>.</p>
+            <p>In summary, your full validation process should look something like this:</p>
+            <ul>
+              <li>
+                <strong>Client-side validation</strong> is first used to give the visitor instant feedback on their
+                data, and to avoid making an unnecessary trip to the server with bad data that will only get rejected.
+              </li>
+              <li>Assuming client-side validation passes, data is then posted to the server where it does
+                <strong>server-side validation</strong> to confirm the data is as expected. This ensures that there’s no
+                “funny business” by the visitor in terms of overriding your JavaScript validation in the client.
+              </li>
+            </ul>
+            <p>With that in mind, let’s explore how we can implement client-side validation.</p>
+            <h2 id="jump-client-side-validation-techniques"><span id="client-side-validation-techniques"
+                    class="heading-anchor"></span><a href="#client-side-validation-techniques" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Client-side validation techniques</h2>
+            <p>A quick and easy way to validate form inputs client-side is to add HTML5 validation attributes to your
+              form inputs.</p>
+            <p>For example, you can add a <code v-pre>required</code> attribute to a text input:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'sku'</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">'product.sku'</span> <span class="hljs-attr">required</span>&gt;</span>
+</code></pre>
+            <p>This will prevent a form submission if the given field is empty, and it will alert the user that the
+              input needs the be completed:
+              <img src="../../../../s3.amazonaws.com/making-the-internet/vue-html5-validation-example@2x.png"
+                   style="max-width:900px;" alt="">
+            </p>
+            <p><small>(For more on HTML5 validation attributes, read the section *Using built-in form validation here:
+                <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation"><em>MDN: Form data
+                    validation</em></a>)</small></p>
+            <p>HTML5 validation works to a certain extent, but you may want more control with the ability to have
+              <strong>custom validation messages, behaviors, and rules</strong>.
+            </p>
+            <p>Because of this, you should consider some more robust validation approaches including...</p>
+            <ol>
+              <li>Write your own validation functionality from scratch (example: <a
+                   href="https://vuejs.org/v2/cookbook/form-validation.html">Vue.js cookbook: Form validation</a>)</li>
+              <li>Write your own validation functionality with the assistance of a generic JavaScript validation library
+                such as <a href="https://github.com/mikeerickson/validatorjs#readme">validatorjs</a>).</li>
+              <li>Use a Vue-specific validation library with many “bells and whistles” such as <a
+                   href="https://github.com/vuelidate/vuelidate">Vuelidate</a>.</li>
+            </ol>
+            <p>For our example, we’ll take the middle ground and explore option #2.</p>
+            <h2 id="jump-validatorjs"><span id="validatorjs" class="heading-anchor"></span><a href="#validatorjs"
+                 class="heading-link"><i class="fa fa-link"></i> </a> validatorjs</h2>
+            <p>The package <a href="https://github.com/mikeerickson/validatorjs">validatorjs</a> is a JavaScript
+              validation library that offers some basic validation logic and a library of validation rules.</p>
+            <p>To get started, install it in your project:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install --save validatorjs
+</code></pre>
+            <p>And import it in the component you want to add validation to:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> Validator <span class="hljs-keyword">from</span> <span class="hljs-string">'validatorjs'</span>
+</code></pre>
+            <p>For our example, we’ll add client-side validation to our <em>ProductCreatePage</em> component, so that’s
+              where you’ll want to import it.</p>
+            <p>Next, add a <code v-pre>validate</code> method with the following code:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">validate() {
+    <span class="hljs-keyword">let</span> validator = <span class="hljs-keyword">new</span> Validator(<span class="hljs-keyword">this</span>.product, {
+        <span class="hljs-attr">name</span>: <span class="hljs-string">'required|between:3,100'</span>,
+        <span class="hljs-attr">sku</span>: <span class="hljs-string">'required|between:3,100|alpha_dash'</span>,
+        <span class="hljs-attr">price</span>: <span class="hljs-string">'required|numeric'</span>,
+        <span class="hljs-attr">available</span>: <span class="hljs-string">'required|numeric'</span>,
+        <span class="hljs-attr">weight</span>: <span class="hljs-string">'required|numeric'</span>,
+        <span class="hljs-attr">description</span>: <span class="hljs-string">'required|min:100'</span>
+    });
+
+    <span class="hljs-keyword">if</span> (validator.fails()) {
+        <span class="hljs-keyword">this</span>.errors = validator.errors.all();
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">this</span>.errors = <span class="hljs-literal">null</span>;
+    }
+
+    <span class="hljs-keyword">return</span> validator.passes();
+},
+</code></pre>
+            <p>Observations:</p>
+            <ul>
+              <li>The Validator is instantiated by passing it an object to validate (in our case,
+                <code v-pre>this.product</code>) and an object of rules to validate against.
+              </li>
+              <li>In this example we see rules such as <em>required</em>, <em>between</em>, <em>numeric</em>,
+                <em>alpha_dash</em>, and <em>min</em>. See <a
+                   href="https://github.com/mikeerickson/validatorjs#available-rules">validatorjs#Available Rules</a>
+                for a full list of available rules.
+              </li>
+              <li>Multiple rules are separated by a pipe character (<code v-pre>|</code>)</li>
+              <li>Some rules require values, e.g. <code v-pre>between:3,100</code> and <code v-pre>min:100</code>
+              </li>
+              <li>We retrieve any errors from the validator via <code v-pre>validator.errors.all()</code>. These errors
+                are
+                stored in our existing <code v-pre>errors</code> data property, which means our interface can now
+                display
+                client-side validation errors <em>and</em> server-side validation errors.</li>
+            </ul>
+            <p>To use our new validate method add a <em>blur</em> event listener to each of the fields under validation.
+              E.g.:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+    <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span>
+    <span class="hljs-attr">v-model</span>=<span class="hljs-string">"product.name"</span>
+    <span class="hljs-attr">id</span>=<span class="hljs-string">"name"</span>
+    @<span class="hljs-attr">blur</span>=<span class="hljs-string">"validate()"</span>
+/&gt;</span>
+</code></pre>
+            <p>You can also update the existing <em>addProduct</em> method so it will only attempt to add a new product
+              on the server if client-side validation passes:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">addProduct() {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.validate()) {
+        <span class="hljs-comment">// code here to ping the server API with a "add a product" request</span>
+    }
+}
+</code></pre>
+            <h2 id="jump-test-it"><span id="test-it" class="heading-anchor"></span><a href="#test-it"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Test it</h2>
+            <ul>
+              <li>When leaving each of the fields, validation should be triggered and you should see immediate feedback
+                of issues.</li>
+              <li>If there are any errors, clicking the <em>Add Product</em> button should not do anything (you could
+                even write code to make the button inactive if there are errors)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+  document.write=function() {};
+  document.writeln=function() {};
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

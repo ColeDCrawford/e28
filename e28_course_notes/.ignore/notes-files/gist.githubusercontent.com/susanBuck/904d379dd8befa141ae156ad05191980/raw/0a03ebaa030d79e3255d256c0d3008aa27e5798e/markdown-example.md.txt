@@ -1,0 +1,27 @@
+Here is some text that demonstrates basic Markdown syntax.
+
+To italicize text, we surround it with one asterisk, *like so*.
+To make text bold, we surround it with two asterisks, **like so**.
+
+To create an unordered list, we prefix each list item with an asterisk:
+* Thing 1
+* Thing 2
+* Thing 3
+
+To create links, we put the link label in square brackets, followed by the link address in parenthesis. For example, here's a link to the [Wikipedia page about Markdown](https://en.wikipedia.org/wiki/Markdown).
+
+To write a block of code, we start with three backticks, followed by the file extension for the language we're using. For example, here's a block of JavaScript code:
+
+```js
+let x = 1;
+let y = 2;
+console.log(x + y);
+```
+
+We can also include smaller snippets of code inline with other text using single backticks. For example I might say that the line `let x = 1;` above sets the variable `x` to the value `1`.
+
+Finally, using the hash symbol we can create headings:
+
+# Heading 1
+## Heading 2
+### Heading 3

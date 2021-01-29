@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+    <title>Shopping List - Built with Vue v3</title>
+    <meta charset='utf-8'>
+    <link href=data:, rel=icon>
+
+    <!-- Vue 3 -->
+    <script src='https://unpkg.com/vue@next'></script>
+
+    <script src='script.js' defer></script>
+
+    <style>
+        [v-cloak] {
+            display: none
+        }
+
+        .no-items {
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        #qty {
+            width: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Component template -->
+    <script type='text/x-template' id='item-detail'>
+    <!-- Note how in v3, our component template does not have to have a single parent element -->
+    <span class='qty'>{{ item.qty }}</span> x
+    <span class='name'>{{ item.name }}</span>
+    </script>
+
+
+    <!-- Root Vue instance template -->
+    <div id='app' v-cloak>
+        <h1>Shopping List - Built with Vue v3</h1>
+
+        <label>
+            Qty: <input id='qty' type='text' v-model.number='qty'>
+            Item: <input type='text' v-model='item' v-on:keyup.enter='addItem'>
+        </label>
+
+        <button v-on:click='addItem'>Add</button>
+
+        <div class='no-items' v-if='items.length == 0'>
+            You have no items on your list.
+        </div>
+        <div v-else>
+            <p>
+                Item count: {{ itemsCount }}
+            </p>
+            <item-detail v-for='thisItem in items' v-bind:item='thisItem'></item-detail>
+        </div>
+    </div>
+
+</body>
+
+</html>

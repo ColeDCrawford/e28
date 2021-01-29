@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+    <title>Week 8 Examples</title>
+    <meta charset='utf-8'>
+    <link href=data:, rel=icon>
+
+    <script src='js/master.js'
+            defer></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Week 8 Examples</h1>
+
+    <div id='app'
+         v-cloak>
+        <div>
+            <label><input type='radio'
+                       value='heads'
+                       v-model='choice'> heads</label>
+            <label><input type='radio'
+                       value='tails'
+                       v-model='choice'> tails</label>
+        </div>
+
+        <button id='flipBtn'
+                @click='flip'>Flip!</button>
+
+        <round-detail v-for='round in rounds'
+                      @delete-round='deleteRound($event)'
+                      :number='round.number'
+                      :winner='round.winner'
+                      :key='round.number'>
+
+            <template #choice>You chose {{ round.choice }}</template>
+
+            <template #coin>The coin landed on {{ round.coin }}</template>
+
+        </round-detail>
+    </div>
+
+</body>
+
+</html>

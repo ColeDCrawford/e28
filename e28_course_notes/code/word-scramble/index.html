@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+
+    <title>Word Scramble</title>
+    <meta charset='utf-8'>
+
+    <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js' defer></script>
+    <script src='script.js' defer></script>
+
+    <style>
+        .mysteryWord {
+            font-family: consolas;
+            font-size: 25px;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .pass {
+            background-color: green;
+        }
+
+        .fail {
+            background-color: red;
+        }
+
+        .feedback {
+            display: inline-block;
+            padding: 5px;
+            margin: 10px 0;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Word Scramble</h1>
+    <div id='app' v-cloak>
+
+        <div v-if='gameMode == "start"'>
+            <label for='name'>Enter your player name:</label>
+            <input type='text' id='name' v-model='name' @keyup.enter='startGame'>
+            <button @click='startGame'>Let’s play!</button>
+        </div>
+
+        <div v-if='gameMode == "play"'>
+            <p>Game on, {{ name }}!</p>
+
+            <p>Your mystery word is: <span class='mysteryWord'>{{ displayWord }}</span></p>
+
+            <p>Hint: <em>{{ hint }}</em></p>
+
+            <label for='guess'>Your guess: </label>
+            <input type='text' id='guess' v-model.trim='guess'>
+            <button @click='submitGuess' @keyup.enter='submitGuess'>Submit guess</button>
+        </div>
+
+        <div v-if='feedback' class='feedback' :class="{ pass : correct, fail: !correct }">
+            <div v-if='correct'>You got it! Nice work. <button @click='loadGame'>Play again</button></div>
+            <div v-else>Sorry, that’s not correct. Please try again.</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

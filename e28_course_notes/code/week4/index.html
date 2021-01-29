@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+    <title>Week 4 Examples</title>
+    <meta charset='utf-8'>
+    <link href=data:, rel=icon>
+
+    <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js' defer></script>
+
+    <script src='script.js' defer></script>
+
+    <style>
+        [v-cloak] {
+            display: none
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='app' v-cloak>
+
+        <h1>Week 4 Examples</h1>
+
+        <div v-if='false'>
+            <!-- Demonstrating the difference between how v-if and v-show works -->
+            <p v-if='false'>Example A</p>
+            <p v-show='false'>Example B</p>
+
+            <!-- Demonstrating element re-use and the need for the key attribute in Vue 2 -->
+            <div v-if='gameType === "numeric"'>
+                <label>Enter a guess between 1 and 100</label>
+                <input type='text' placeholder='Your numeric guess'>
+            </div>
+            <div v-else>
+                <label>Enter a guess between A and Z</label>
+                <input type='text' placeholder='Your alphabetic guess'>
+            </div>
+            <button v-on:click='gameType = (gameType == "numeric") ? "alphabetic" : "numeric"'>Toggle game mode</button>
+
+            <!-- Demonstrating how for/if should not be used on the same element -->
+            High guesses:
+            <ul>
+                <li v-for='thisGuess in guesses' v-if='thisGuess > answer'>{{ thisGuess }}</li>
+            </ul>
+
+            <!-- Demonstrating iterating through an array -->
+            <ul>
+                <li v-for='(guess, index) in guesses'>{{ index }}: {{ guess }}</li>
+            </ul>
+
+            <!-- Demonstrating iterating through an object -->
+            <ul>
+                <li v-for='(value, key, index) in settings'>{{ index }} : {{ key }} : {{ value }}</li>
+            </ul>
+
+            <!-- Demonstrating iterating through an array of objects -->
+            <ul>
+                <li v-for='(guessDetailed, index) in guessesDetailed'>
+                    {{ index }}: Guess {{ guessDetailed.guess }} was {{ guessDetailed.result }}
+                </li>
+            </ul>
+
+            <!-- Demonstrating event modifiers -->
+            <label>Enter a guess between 1 and 10: <input type='text' v-model.number='guess'
+                       v-on:keyup.enter='submitGuess'></label>
+            <button @click='submitGuess'>Guess</button>
+        </div>
+
+    </div>
+</body>
+
+</html>

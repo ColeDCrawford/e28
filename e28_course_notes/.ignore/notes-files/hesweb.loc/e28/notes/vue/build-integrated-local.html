@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/build-integrated-local</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="router-link-exact-active router-link-active">Integrated
+                build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-integrated-build-local"><span id="integrated-build-local" class="heading-anchor"></span><a
+                 href="#integrated-build-local" class="heading-link"><i class="fa fa-link"></i> </a> Integrated build -
+              Local</h1>
+            <p>For our first example, we’ll look a <strong>integrating a Vue.js build system into an existing
+                project.</strong> As our “existing project” we‘ll use the app we created last lecture
+              (<code v-pre>week6</code>) as an example.</p>
+            <p>Goals:</p>
+            <ul>
+              <li>Use NPM to manage our external dependencies (e.g. Vue)</li>
+              <li>Ability to use SFC .vue files</li>
+              <li>Nicely bundled JS files</li>
+              <li>Hot module reloading</li>
+            </ul>
+            <p>To get started, make a copy of your <code v-pre>week6</code> directory and name it <code
+                    v-code>week8</code> - we’ll
+              use this as our starting point.</p>
+            <h2 id="jump-npm-setup"><span id="npm-setup" class="heading-anchor"></span><a href="#npm-setup"
+                 class="heading-link"><i class="fa fa-link"></i> </a> NPM setup</h2>
+            <p>To get NPM set up in this project, create a NPM config file called <code v-pre>package.json</code> in
+              the root
+              of your project with these contents:</p>
+            <!-- Ref: https://github.com/laravel/laravel/blob/master/package.json -->
+            <pre v-pre><code v-pre class="language-json hljs">{
+    <span class="hljs-attr">"private"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"scripts"</span>: {
+        <span class="hljs-attr">"dev"</span>: <span class="hljs-string">"cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"</span>,
+        <span class="hljs-attr">"watch"</span>: <span class="hljs-string">"npm run dev -- --watch"</span>,
+        <span class="hljs-attr">"hot"</span>: <span class="hljs-string">"cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js"</span>,
+        <span class="hljs-attr">"prod"</span>: <span class="hljs-string">"cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"</span>
+    },
+    <span class="hljs-attr">"devDependencies"</span>: {
+        <span class="hljs-attr">"cross-env"</span>: <span class="hljs-string">"^7.0"</span>,
+        <span class="hljs-attr">"laravel-mix"</span>: <span class="hljs-string">"^5.0.1"</span>,
+        <span class="hljs-attr">"vue-template-compiler"</span>: <span class="hljs-string">"^2.6.12"</span>
+    },
+    <span class="hljs-attr">"dependencies"</span>: {
+        <span class="hljs-attr">"vue"</span>: <span class="hljs-string">"^2.6.12"</span>
+    }
+}
+</code></pre>
+            <p>Here’s a breakdown of each section of the above config:</p>
+            <ul>
+              <li>
+                <strong>private</strong>: Indicates we don’t intend to publish this repository on the NPM registry.
+              </li>
+              <li>
+                <strong>scripts</strong>: A series of shortcuts for commands we’ll run to build our project. More
+                details on each command below.
+              </li>
+              <li>
+                <strong>devDependencies</strong>: Packages we only need locally in our development environment. All the
+                packages listed in the provided template are going to be used as part of our build process.
+              </li>
+              <li>
+                <strong>dependencies</strong>: Packages we need on both our development and production environment.
+              </li>
+            </ul>
+            <p>After you’ve added the above config file, run the following command:</p>
+            <pre v-pre><code v-pre class="language-bash hljs">$ npm install
+</code></pre>
+            <p>NPM will process your <code v-pre>package.json</code> file and download all your dependencies into a
+              directory
+              called <code v-pre>node_modules</code>. Additionally, it will record the specific version numbers that
+              were
+              downloaded in <code v-pre>package-lock.json</code>.</p>
+            <h2 id="jump-laravel-mix"><span id="laravel-mix" class="heading-anchor"></span><a href="#laravel-mix"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Laravel Mix</h2>
+            <p>Now that we have the Laravel Mix dependency installed, we can use it to process our JavaScript files
+              using Webpack.</p>
+            <blockquote>
+              <p>“Laravel Mix is a clean layer on top of webpack to make the 80% use case laughably simple to execute.
+                Most would agree that, though incredibly powerful, webpack ships with a steep learning curve. But what
+                if you didn’t have to worry about that?” <a
+                   href="https://laravel-mix.com/docs/5.0/basic-example">https://laravel-mix.com/docs/5.0/basic-example</a>
+              </p>
+            </blockquote>
+            <p>To configure Laravel Mix, create a new file <code v-pre>webpack.mix.js</code> in the root of your
+              project with
+              the following code:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">let</span> mix = <span class="hljs-built_in">require</span>(<span class="hljs-string">'laravel-mix'</span>);
+
+<span class="hljs-comment">// https://laravel-mix.com/docs/mixjs</span>
+<span class="hljs-comment">// source: src/script.js</span>
+<span class="hljs-comment">// output: js/master.js</span>
+mix.js(<span class="hljs-string">'src/script.js'</span>, <span class="hljs-string">'js/master.js'</span>);
+</code></pre>
+            <p>That’s it! With just a handful of lines of code, Mix will take care of the following:</p>
+            <ul>
+              <li>Compiling modern ES6 features into cross-browser friendly JS</li>
+              <li>Building and compiling Vue Single File Components</li>
+              <li>Setting up hot module replacement</li>
+            </ul>
+            <h2 id="jump-adapt-code"><span id="adapt-code" class="heading-anchor"></span><a href="#adapt-code"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Adapt code</h2>
+            <p>We now have the software and configurations needed for our build system. Our next step is to adapt our
+              existing project code so that we can harness this build system. Here are the steps to do that...</p>
+            <h3 id="jump-step-1-reorganize"><span id="step-1-reorganize" class="heading-anchor"></span><a
+                 href="#step-1-reorganize" class="heading-link"><i class="fa fa-link"></i> </a> Step 1. Reorganize</h3>
+            <p>Within <code v-pre>week8/</code>, create a new directory called <code v-pre>src</code>. This is where
+              we’ll put all
+              our pre-compiled files.</p>
+            <p>Move your <code v-pre>scripts.js</code> file into this directory.</p>
+            <p>Also within <code v-pre>src</code>, create a <code v-pre>components/</code> directory where you can put
+              the
+              <code v-pre>RoundDetail.vue</code> file we’ve already created.
+            </p>
+            <p>End result:</p>
+            <pre v-pre><code v-pre class="language-xml hljs">week8/
+    src/
+        components/
+            RoundDetail.vue
+        scripts.js
+    index.html
+</code></pre>
+            <h3 id="jump-step-2-update-scriptjs"><span id="step-2-update-scriptjs" class="heading-anchor"></span><a
+                 href="#step-2-update-scriptjs" class="heading-link"><i class="fa fa-link"></i> </a> Step 2. Update
+              script.js</h3>
+            <p>Update <code v-pre>script.js</code> to...</p>
+            <ul>
+              <li>import <code v-pre>Vue</code> module</li>
+              <li>import <code v-pre>RoundDetail</code> module</li>
+              <li>add a <code v-pre>components</code> option to root Vue instance</li>
+            </ul>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>;
+<span class="hljs-keyword">import</span> RoundDetail <span class="hljs-keyword">from</span> <span class="hljs-string">'./components/RoundDetail.vue'</span>
+
+<span class="hljs-keyword">let</span> app = <span class="hljs-keyword">new</span> Vue({
+    <span class="hljs-attr">el</span>: <span class="hljs-string">'#app'</span>,
+    <span class="hljs-comment">// NEW: Add a components option</span>
+    <span class="hljs-attr">components</span>: {
+        <span class="hljs-string">'round-detail'</span> : RoundDetail
+    },
+    <span class="hljs-comment">// [...etc...]</span>
+</code></pre>
+            <h3 id="jump-step-3-update-indexhtml"><span id="step-3-update-indexhtml" class="heading-anchor"></span><a
+                 href="#step-3-update-indexhtml" class="heading-link"><i class="fa fa-link"></i> </a> Step 3. Update
+              index.html</h3>
+            <p>Remove reference to Vue.js from the CDN:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'</span> <span class="hljs-attr">defer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <p>Remove reference to our source JS file:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">'script.js'</span> <span class="hljs-attr">defer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <p>Add reference to our compiled/master JS file:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">'/js/master.js'</span> <span class="hljs-attr">defer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+            <h2 id="jump-run-the-build-system"><span id="run-the-build-system" class="heading-anchor"></span><a
+                 href="#run-the-build-system" class="heading-link"><i class="fa fa-link"></i> </a> Run the build system
+            </h2>
+            <p>With everything set up, we’re now going to run our build system.</p>
+            <p>We’ll do this by first invoking our <code v-pre>dev</code> script from <code v-pre>package.json</code>
+              via this
+              command:</p>
+            <pre v-pre><code class="hljs dockerfile">$ npm <span class="hljs-keyword">run</span><span class="bash"> dev</span>
+</code></pre>
+            <p>This will invoke webpack using our laravel-mix config which will compile our <code
+                    v-code>src/script.js</code>
+              file to <code v-pre>js/master.js</code></p>
+            <p>We could run this same command every time we make changes to our JavaScript files, but that would quickly
+              become tedious. Instead, we can use the <code v-pre>watch</code> script which will watch for changes in
+              our
+              JavaScript files and re-run the build system whenever it detects changes:</p>
+            <pre v-pre><code class="hljs dockerfile">$ npm <span class="hljs-keyword">run</span><span class="bash"> watch</span>
+</code></pre>
+            <p>Finally, if we want to take advantage of <strong>hot module reloading</strong>, we’ll want to run our
+              site using a webpack dev server, and that can be triggered via the <code v-pre>hot</code> script:</p>
+            <pre v-pre><code class="hljs dockerfile">$ npm <span class="hljs-keyword">run</span><span class="bash"> hot</span>
+</code></pre>
+            <p>Running this script will produce a localhost address you can use to access your project (e.g.
+              <code v-pre>http://localhost:8080/</code>), and whenever you make changes to the JavaScript in your
+              project, it
+              will automatically get updated in the browser.
+            </p>
+            <blockquote>
+              <blockquote>
+                <p>“Hot Module Replacement (or Hot Reloading) allows you to, not just refresh the page when a piece of
+                  JavaScript is changed, but it will also maintain the current state of the component in the browser. As
+                  an example, consider a simple counter component. When you press a button, the count goes up. Imagine
+                  that you click this button a number of times, and then update the component file. Once you do, the
+                  webpage will refresh to reflect your change, but the count will remain the same. It won’t reset. This
+                  is the beauty of hot reloading!” <a
+                     href="https://laravel-mix.com/docs/hot-module-replacement">https://laravel-mix.com/docs/hot-module-replacement</a>
+                </p>
+              </blockquote>
+            </blockquote>
+            <div markdown="1" class="squareTag fyi">
+              <div class="banner"><i class="icon fa fa-info-circle"></i>FYI</div>
+              <p>Using the webpack dev server supersedes the need to use XAMPP/Apache in local development.</p>
+            </div>
+            <h2 id="jump-next-steps"><span id="next-steps" class="heading-anchor"></span><a href="#next-steps"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Next steps...</h2>
+            <p>Now that our integrated build system is set up and working on local, we can move forward and see how this
+              build system impacts our work on production: <a href="build-integrated-production.html">Build integrated -
+                Production</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes: vue/diy-spa</title>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="../../../favicon/favicon.ico">
+
+  <link href="../../../css/notes%EF%B9%96cachebust=20200305.css" rel="stylesheet">
+  <style type="text/css">
+    #searchResults #searchTerm {
+      background-color: #ffffff;
+      padding: 5px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #searchResults .result {
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    #searchResults .context {
+      border-left: 5px solid #eee;
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #searchResults .highlight {
+      background-color: yellow;
+    }
+  </style>
+  <style type="text/css">
+    /* Base16 Atelier Sulphurpool Light - Theme */
+    /* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/sulphurpool) */
+    /* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+    /* Atelier-Sulphurpool Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #6b7394;
+    }
+
+    /* Atelier-Sulphurpool Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #c94922;
+    }
+
+    /* Atelier-Sulphurpool Orange */
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #c76b29;
+    }
+
+    /* Atelier-Sulphurpool Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #ac9739;
+    }
+
+    /* Atelier-Sulphurpool Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #3d8fd1;
+    }
+
+    /* Atelier-Sulphurpool Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #6679cc;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #f5f7ff;
+      color: #5e6687;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+  <style type="text/css">
+    /* Blueish */
+    .highlight {
+      background-color: #FFE787;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      margin-top: 60px;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    span.heading-anchor {
+      display: block;
+      border: 1px solid red;
+      position: relative;
+      top: -75px;
+      visibility: hidden;
+    }
+
+    a.heading-link:link,
+    a.heading-link:visited,
+    a.heading-link:active {
+      color: #ddd;
+      border-bottom: 0;
+    }
+
+    a.heading-link:hover {
+      color: #005b96;
+    }
+
+    img {
+      width: 100%;
+      margin: 10px 0px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #B71C1C;
+      background-color: #f8f8f8;
+      padding: 3px 5px;
+      font-size: 1.5rem;
+      font-family: 'Roboto Mono', Monaco, courier, monospace;
+    }
+
+    #nav {
+      border-top: 1px solid #eaecef;
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+
+    a:link.nav,
+    a:visited.nav {
+      display: block;
+      padding: 5px;
+      border: 0;
+    }
+
+    a:link.nav#prev,
+    a:visited.nav#prev {
+      float: left;
+    }
+
+    a:link.nav#next,
+    a:visited.nav#next {
+      float: right;
+    }
+
+    .squareTag {
+      border: 10px solid #aaa;
+      /* Each tag will overwrite this with its own color */
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    .squareTag .banner {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .squareTag .icon {
+      padding-right: 10px;
+    }
+
+    .squareTag h1,
+    .squareTag h2,
+    .squareTag h3,
+    .squareTag h4,
+    .squareTag h5,
+    .squareTag h6 {
+      color: #2b2b2b;
+    }
+
+    .important {
+      border-color: #f9d9d9;
+    }
+
+    .important .banner {
+      color: #f9d9d9;
+    }
+
+    .fyi {
+      border-color: #f7f7f7;
+    }
+
+    .fyi .banner {
+      color: #aaa;
+    }
+
+    #suggestAnEditButton {
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit {
+      position: relative;
+      font-size: 1.5rem;
+      background-color: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    #suggestAnEdit h2 {
+      margin-top: 0;
+    }
+
+    #suggestAnEdit #cancelSuggestion {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      text-align: center;
+    }
+
+    #suggestAnEdit #cancelSuggestion:hover {
+      color: #005b96;
+      cursor: pointer;
+    }
+
+    #suggestAnEdit textarea {
+      font-family: 'Courier New', Courier, monospace;
+      width: 100%;
+      height: 200px;
+    }
+
+    #suggestionConfirmation {
+      border-radius: 3px;
+      padding: 10px;
+      margin-bottom: 30px;
+      color: #2ECC40;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header dusk="notesHeader">
+      <h1><a href="https://hesweb.dev/e28">e28</a> |
+        <a href="../../notes.html"><i class="fa fa-book"></i> Notes</a>
+      </h1>
+    </header>
+    <menu>
+      <ul>
+        <li class="level-0">Misc
+
+          <ul>
+            <li><a href="../misc/e28-about.html" class="">About the notes</a></li>
+            <li><a href="../misc/philosophy.html" class="">Learning philosophies</a></li>
+            <li><a href="../misc/e28-intro.html" class="">Course introduction</a></li>
+            <li><a href="../misc/markdown.html" class="">Markdown</a></li>
+            <li><a href="../misc/vscode.html" class="">VSCode</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Command line
+
+          <ul>
+            <li><a href="../command-line/intro.html" class="">Introduction</a></li>
+            <li><a href="../command-line/mac-terminal.html" class="">Mac Terminal</a></li>
+            <li><a href="../command-line/windows-cmder.html" class="">Windows Cmder</a></li>
+            <li><a href="../command-line/primer.html" class="">Primer</a></li>
+            <li><a href="../command-line/nano.html" class="">Text editing with Nano</a></li>
+            <li><a href="../command-line/common-commands.html" class="">Common commands</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Local server
+
+          <ul>
+            <li><a href="../local-server/intro.html" class="">Introduction</a></li>
+            <li><a href="../local-server/xampp-mac.html" class="">Mac - XAMPP</a></li>
+            <li><a href="../local-server/xampp-windows.html" class="">Windows - XAMPP</a></li>
+            <li><a href="../local-server/local-domains.html" class="">Local domains</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Git
+
+          <ul>
+            <li><a href="../git/intro.html" class="">Introduction</a></li>
+            <li><a href="../git/setup.html" class="">Setup</a></li>
+            <li><a href="../git/github.html" class="">Github</a></li>
+            <li><a href="../git/repository-setup.html" class="">Repository setup</a></li>
+            <li><a href="../git/tracking-changes.html" class="">Tracking changes</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Production server
+
+          <ul>
+            <li><a href="../production-server/setup.html" class="">DigitalOcean setup</a></li>
+            <li><a href="../production-server/production-domains.html" class="">Production domains</a></li>
+            <li><a href="../production-server/deploying.html" class="">Deploying</a></li>
+            <li><a href="../production-server/summary.html" class="">Summary</a></li>
+            <li><a href="../production-server/https.html" class="">HTTPS</a></li>
+            <li><a href="../production-server/static-hosting.html" class="">Static hosting</a></li>
+          </ul>
+        </li>
+        <li class="level-0">JavaScript
+
+          <ul>
+            <li><a href="../javascript/review.html" class="">Review</a></li>
+            <li><a href="../javascript/evolution.html" class="">Evolution</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js essentials
+
+          <ul>
+            <li><a href="intro.html" class="">Introduction</a></li>
+            <li><a href="behind-the-scenes.html" class="">Behind the scenes</a></li>
+            <li><a href="vue3.html" class="">Vue 3</a></li>
+            <li><a href="conditional-rendering.html" class="">Conditional rendering</a></li>
+            <li><a href="list-rendering.html" class="">List rendering</a></li>
+            <li><a href="event-handling.html" class="">Event handling</a></li>
+            <li><a href="attribute-binding.html" class="">Attribute binding</a></li>
+            <li><a href="form-input-binding.html" class="">Form input binding</a></li>
+            <li><a href="computed-properties.html" class="">Computed properties</a></li>
+            <li><a href="watchers.html" class="">Watchers</a></li>
+            <li><a href="lifecycle-hooks.html" class="">Lifecycle hooks</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Vue.js components
+
+          <ul>
+            <li><a href="components.html" class="">Components</a></li>
+            <li><a href="components-props.html" class="">Props</a></li>
+            <li><a href="components-events.html" class="">Events</a></li>
+            <li><a href="components-slots.html" class="">Slots</a></li>
+            <li><a href="single-file-components.html" class="">Single file components</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Build systems
+
+          <ul>
+            <li><a href="build-systems.html" class="">Introduction</a></li>
+            <li><a href="package-management.html" class="">Package management (NPM)</a></li>
+            <li><a href="build-integrated-local.html" class="">Integrated build - Local</a></li>
+            <li><a href="build-integrated-production.html" class="">Integrated build - Production</a></li>
+            <li><a href="build-comprehensive.html" class="">Comprehensive build (Vue CLI)</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Applications
+
+          <ul>
+            <li><a href="applications-intro.html" class="">Introduction</a></li>
+            <li><a href="zipfoods-start.html" class="">Building ZipFoods</a></li>
+            <li><a href="diy-spa.html" class="router-link-exact-active router-link-active">DIY SPA</a></li>
+            <li><a href="vue-router.html" class="">Vue Router</a></li>
+            <li><a href="vue-router-production.html" class="">Vue Router on production</a></li>
+            <li><a href="apis.html" class="">Server APIs</a></li>
+            <li><a href="e28-api.html" class="">e28-api</a></li>
+            <li><a href="ajax.html" class="">Ajax - Client/Server communication</a></li>
+            <li><a href="local-storage.html" class="">Local storage</a></li>
+            <li><a href="add-to-cart.html" class="">Add to cart</a></li>
+            <li><a href="vuex.html" class="">State management w/ Vuex</a></li>
+            <li><a href="auth-intro.html" class="">Auth: Intro &amp; config</a></li>
+            <li><a href="auth-usage.html" class="">Auth: Usage</a></li>
+            <li><a href="auth-prod.html" class="">Auth: Production</a></li>
+            <li><a href="testing.html" class="">Testing: Introduction</a></li>
+            <li><a href="testing-e2e.html" class="">Testing: E2E</a></li>
+            <li><a href="validation.html" class="">Validation</a></li>
+            <li><a href="composition-api.html" class="">Composition API</a></li>
+          </ul>
+        </li>
+        <li class="level-0">Appendix
+
+          <ul>
+            <li><a href="../appendix/apache-configs.html" class="">Apache configs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </menu>
+    <div id="main">
+      <div id="centerInMain">
+        <div id="notesComponent">
+          <div id="notes">
+            <h1 id="jump-diy-spa"><span id="diy-spa" class="heading-anchor"></span><a href="#diy-spa"
+                 class="heading-link"><i class="fa fa-link"></i> </a> DIY SPA</h1>
+            <p><em>Do It Yourself Single-Page Application</em></p>
+            <p>Ultimately, we’ll transform our ZipFoods application into a true SPA using the <a
+                 href="https://router.vuejs.org">vue-router</a> library.</p>
+            <p>Before we do that, though, let’s explore how we could start to build a SPA using the techniques we
+              already have. This will be an opportunity to think critically about how SPAs work, and also practice
+              existing skills.</p>
+            <h2 id="jump-expectations-of-a-spa"><span id="expectations-of-a-spa" class="heading-anchor"></span><a
+                 href="#expectations-of-a-spa" class="heading-link"><i class="fa fa-link"></i> </a> Expectations of a
+              SPA</h2>
+            <ul>
+              <li>Visitor can click hyperlinks that lead to different “pages” in the application.</li>
+              <li>The actual web page is never refreshed; a new request is never sent to the server. All page switching
+                is simulated with JavaScript.</li>
+            </ul>
+            <h2 id="jump-our-pages"><span id="our-pages" class="heading-anchor"></span><a href="#our-pages"
+                 class="heading-link"><i class="fa fa-link"></i> </a> Our “pages”</h2>
+            <p>To start, we'll have 3 “pages”, each made via their own component:</p>
+            <h3 id="jump-page-1-home-page"><span id="page-1-home-page" class="heading-anchor"></span><a
+                 href="#page-1-home-page" class="heading-link"><i class="fa fa-link"></i> </a> Page 1) Home page</h3>
+            <p>For the home page, create a new <code v-pre>/components/pages/HomePage.vue</code> component that:</p>
+            <ul>
+              <li>displays the ZipFoods tagline that was previously in <code v-pre>App.vue</code>
+              </li>
+              <li>Displays the featured categories (via the <code v-pre>ShowFeatured</code> component)</li>
+            </ul>
+            <h3 id="jump-page-2-products-page"><span id="page-2-products-page" class="heading-anchor"></span><a
+                 href="#page-2-products-page" class="heading-link"><i class="fa fa-link"></i> </a> Page 2) Products page
+            </h3>
+            <p>For the products page, repurpose the existing <code v-pre>ShowProducts</code> component,
+              renaming/relocating it
+              to <code v-pre>/components/pages/ProductsPage.vue</code>.</p>
+            <h3 id="jump-page-3-categories-page"><span id="page-3-categories-page" class="heading-anchor"></span><a
+                 href="#page-3-categories-page" class="heading-link"><i class="fa fa-link"></i> </a> Page 3) Categories
+              page</h3>
+            <p>For the categories page, create a new <code v-pre>/components/pages/CategoriesPage.vue</code> component
+              that
+              displays a list of unique categories.</p>
+            <p>Here’s a template you can use:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Categories<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'cleanList'</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">'(category, id) in categories'</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">'id'</span>&gt;</span>{{ category }}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+</code></pre>
+            <p>And here’s a computed property you can use to filter unique categories out of the products data:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">categories() {
+    <span class="hljs-keyword">let</span> categories = <span class="hljs-keyword">this</span>.products.map(<span class="hljs-function"><span class="hljs-params">product</span> =&gt;</span> product.categories);
+    <span class="hljs-keyword">let</span> mergedCategories = [].concat.apply([], categories);
+
+    <span class="hljs-comment">// Return unique, sorted categories</span>
+    <span class="hljs-keyword">return</span> [...new <span class="hljs-built_in">Set</span>(mergedCategories)].sort();
+}
+</code></pre>
+            <h2 id="jump-test-the-pages"><span id="test-the-pages" class="heading-anchor"></span><a
+                 href="#test-the-pages" class="heading-link"><i class="fa fa-link"></i> </a> Test the pages</h2>
+            <p>After completing the above steps, you could test that all three ”page” components are working my making
+              them all display in the root App component:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">home-page</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">home-page</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">categories-page</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">categories-page</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">products-page</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">products-page</span>&gt;</span>
+</code></pre>
+            <p>The results should look like this:</p>
+            <img src="../../../../s3.amazonaws.com/making-the-internet/vue-zipfoods-spa-testing-pages@2x.png"
+                 style="max-width:1281px;" alt="">
+            <h2 id="jump-content-swapping-approach-a"><span id="content-swapping-approach-a"
+                    class="heading-anchor"></span><a href="#content-swapping-approach-a" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Content swapping - Approach A</h2>
+            <p>To accomplish the multi-page application effect, we need to <strong>swap out the content on the page,
+                giving the impression that the page is switching.</strong></p>
+            <p>One way we could accomplish this is by introducing a <code v-pre>page</code> data property that is
+              changed from
+              navigation links and used determine which page component to show.</p>
+            <p>Example:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-comment">&lt;!-- Added to the App.vue template --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">'#'</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">'page = "home"'</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">'#'</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">'page = "products"'</span>&gt;</span>Products<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">'#'</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">'page = "categories"'</span>&gt;</span>Categories<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">home-page</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">'page == "home"'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">home-page</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">products-page</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">'page == "products"'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">products-page</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">categories-page</span> <span class="hljs-attr">v-else-if</span>=<span class="hljs-string">'page == "categories"'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">categories-page</span>&gt;</span>
+</code></pre>
+            <p>The above code would require the following data properties:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript">page: <span class="hljs-string">'home'</span>, <span class="hljs-comment">/* Default page to start with */</span>
+</code></pre>
+            <h2 id="jump-content-swapping-approach-b"><span id="content-swapping-approach-b"
+                    class="heading-anchor"></span><a href="#content-swapping-approach-b" class="heading-link"><i
+                   class="fa fa-link"></i> </a> Content swapping - Approach B</h2>
+            <p>Let’s refactor the above code so that each link in our navigation is generated from a list of pages. This
+              will remove some redundant code and make it easy to add new links in the future.</p>
+            <p>We’ll also take advantage of a feature called <a
+                 href="https://vuejs.org/v2/guide/components-dynamic-async.html">dynamic components</a> that lets you
+              dynamically display a component like this:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">component</span> <span class="hljs-attr">v-bind:is</span>=<span class="hljs-string">'my-component'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+</code></pre>
+            <p>Here’s the refactored code:</p>
+            <pre v-pre><code v-pre class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">'link in links'</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">'link'</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">'#'</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">'page = link'</span>&gt;</span>{{ link }}<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">component</span> <span class="hljs-attr">v-bind:is</span>=<span class="hljs-string">'linkComponents[page]'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+</code></pre>
+            <p>Data properties:</p>
+            <pre v-pre><code v-pre class="language-js hljs javascript"><span class="hljs-comment">/* Default page to start with */</span>
+<span class="hljs-attr">page</span>: <span class="hljs-string">'home'</span>,
+
+<span class="hljs-comment">/* Store links in an array to maintain order */</span>
+<span class="hljs-attr">links</span>: [<span class="hljs-string">'home'</span>, <span class="hljs-string">'products'</span>, <span class="hljs-string">'categories'</span>],
+
+<span class="hljs-comment">/* Map links to the appropriate component */</span>
+<span class="hljs-attr">linkComponents</span>: {
+    <span class="hljs-attr">home</span>: <span class="hljs-string">'home-page'</span>,
+    <span class="hljs-attr">products</span>: <span class="hljs-string">'products-page'</span>,
+    <span class="hljs-attr">categories</span>: <span class="hljs-string">'categories-page'</span>
+}
+</code></pre>
+            <h2 id="jump-what-were-missing-dynamic-urls"><span id="what-were-missing-dynamic-urls"
+                    class="heading-anchor"></span><a href="#what-were-missing-dynamic-urls" class="heading-link"><i
+                   class="fa fa-link"></i> </a> What we’re missing: Dynamic URLs</h2>
+            <p>Our DIY approach to making a SPA is off to a good start - but we’re missing a key feature:</p>
+            <p>When users visit different pages on a site, they expect the URL to update and reflect the current page
+              they’re on.</p>
+            <p>Not only is this important to help visitors <strong>identify where they are on a site</strong>, it’s
+              necessary for our visitors to be able to <strong>bookmark and copy/paste/share links to our site</strong>.
+            </p>
+            <p>Rather than continuing down the DIY path, let’s switch gears to working with <a
+                 href="vue-router.html"><em>vue-router</em></a>, which will solve the problem of dynamic URLS - as well
+              as many other SPA features we’ll want to address.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript">
+    document.write = function () { };
+    document.writeln = function () { };
+  </script>
+
+  <script>
+    // Make data available to Vue
+    var course = { "key": "e28", "path": "\/e28", "listing": "DGMD E-28", "name": "Single-Page Applications \u0026 Interfaces with Vue.js", "header": "DGMD E-28 \u003Cbr\u003ESingle-Page Apps \u0026 Interfaces w\/ Vue.js", "lectureDay": "Tuesday", "lectureTime": "8pm Eastern", "startDay": "Tue Sep 1", "shortName": "", "quickLinks": 1, "youtubePlaylist": "", "projects": { "p1": { "published": true, "id": "p1", "title": "Project 1: Fundamentals", "week": 7, "due": "Tue Oct 20 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/c1bc32abf6984bddd1d9120e4c9520b6" }, "p2": { "published": true, "id": "p2", "title": "Project 2: SPA, SFCs, server interaction", "week": 11, "due": "Tue Nov 17 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/f48844c9e23f4b411c82ec4b58291c38" }, "p3": { "published": true, "id": "p3", "title": "Project 3: Vuex, authentication, validation, testing", "week": 14, "due": "Tue Dec 15 @ 11:59pm Eastern", "readme": "https:\/\/gist.github.com\/susanBuck\/34be9f2a870df428595633fca86dd2fe" } }, "links": { "forum": "https:\/\/github.com\/susanBuck\/e28-fall20\/issues", "canvas": "https:\/\/canvas.harvard.edu\/courses\/79543", "canvasAssignments": "https:\/\/canvas.harvard.edu\/courses\/79543\/assignments" }, "nav": { "COURSE INFO": { "\/e28\/": "Home", "\/e28\/prereq": "Prerequisites", "\/e28\/policies": "Policies", "\/e28\/work": "Work \u0026 Grading", "\/e28\/software": "Software", "\/e28\/forum-about": "Forum" }, "Fall 2020": { "\/e28\/schedule": "Schedule\/Topics", "\/e28\/projects": "Projects" } } };
+    var user = null;
+
+  </script>
+  <script src="../../../js/notes.js"></script>
+
+
+
+</body>
+
+</html>
